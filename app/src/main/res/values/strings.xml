@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MPlayer</string>
+    <string name="_0_11">0:11</string>
+    <string name="_0_10">0:10</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up_here">Sign up here!</string>
+    <string name="sign_up">Sign up</string>
+    <string name="back">Back</string>
+</resources>
