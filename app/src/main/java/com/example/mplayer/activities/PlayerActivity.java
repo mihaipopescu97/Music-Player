@@ -1,9 +1,10 @@
-package com.example.mplayer;
+package com.example.mplayer.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.example.mplayer.R;
+import com.example.mplayer.utils.BluetoothSender;
 
 import java.io.IOException;
 
@@ -196,5 +200,9 @@ public class PlayerActivity extends AppCompatActivity {
     //Previous button functionality
     public void prevBtnClick(View view) {
 
+    }
+
+    public void back(View view) {
+        startActivity(new Intent(PlayerActivity.this, HomeActivity.class));
     }
 }

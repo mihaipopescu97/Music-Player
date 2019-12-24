@@ -1,10 +1,8 @@
-package com.example.mplayer;
+package com.example.mplayer.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.mplayer.R;
+import com.example.mplayer.utils.BluetoothSender;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,9 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private List<String> rooms = new ArrayList<>();
     private DatabaseReference usersRef = rootRef.child("Rooms");
 
-    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothSender bluetoothSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,11 @@ public class HomeActivity extends AppCompatActivity {
 
         roomsId = findViewById(R.id.rooms);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        try {
+            bluetoothSender = BluetoothSender.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         //Fetch from db
@@ -82,14 +86,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void play(View view) {
-        if(bluetoothAdapter.isEnabled()) {
-            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-
-            if(pairedDevices.size() > 0) {
-                startActivity(new Intent(HomeActivity.this, PlayerActivity.class));
-            } else {
-                Toast.makeText(HomeActivity.this, "No bluetooth devices paired",Toast.LENGTH_SHORT).show();
-            }
+        if(bluetoothSender.check()) {
+            startActivity(new Intent(HomeActivity.this, PlayerActivity.class));
         } else {
             Toast.makeText(HomeActivity.this, "Bluetooth off",Toast.LENGTH_SHORT).show();
         }

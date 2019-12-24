@@ -1,4 +1,4 @@
-package com.example.mplayer;
+package com.example.mplayer.utils;
 
 
 import android.bluetooth.BluetoothAdapter;
@@ -15,11 +15,13 @@ public class BluetoothSender {
 
     private static BluetoothSender instance = null;
 
+    private BluetoothAdapter bluetoothAdapter;
+
     private OutputStream outputStream;
 
     //TODO make connection to RPI based on name of device?
     private BluetoothSender() throws IOException {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(bluetoothAdapter != null) {
             Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
 
@@ -62,5 +64,18 @@ public class BluetoothSender {
     public synchronized void write(String s) throws IOException {
         outputStream.write(s.getBytes());
     }
+
+    public synchronized Boolean check() {
+        if (bluetoothAdapter.isEnabled()) {
+            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+
+            if (pairedDevices.size() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }
