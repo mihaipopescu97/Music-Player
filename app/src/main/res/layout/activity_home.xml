@@ -10,10 +10,18 @@
         android:id="@+id/logOutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginLeft="161dp"
+        android:layout_marginTop="571dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginRight="162dp"
+        android:layout_marginBottom="112dp"
         android:onClick="logOut"
         android:text="LOG OUT"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="606dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/rooms"
@@ -23,18 +31,31 @@
         tools:layout_editor_absoluteY="110dp" />
 
     <Button
-        android:id="@+id/createPlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CREATE"
-        tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="341dp" />
-
-    <Button
         android:id="@+id/updatePlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="updatePlaylist"
         android:text="@string/common_google_play_services_update_button"
-        tools:layout_editor_absoluteX="284dp"
-        tools:layout_editor_absoluteY="345dp" />
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="341dp"
+        tools:text="Update playlist" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="play"
+        android:text="Play"
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="451dp" />
+
+    <Button
+        android:id="@+id/createSetup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="setup"
+        android:text="Create setup"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="221dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

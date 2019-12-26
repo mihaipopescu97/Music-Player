@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText emailId, password;
+    private EditText emailId, password, deviceId;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         emailId = findViewById(R.id.signUpEmail);
         password = findViewById(R.id.signUpPass);
+        deviceId = findViewById(R.id.signUpDev);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
 
@@ -38,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
                     Toast.makeText(MainActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("devId", deviceId.toString());
+                    startActivity(i);
                 } else {
                     Toast.makeText(MainActivity.this, "Please login!", Toast.LENGTH_SHORT).show();
                 }
@@ -57,11 +63,14 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view) {
         String email = emailId.getText().toString();
         String pass = password.getText().toString();
+        String devId = deviceId.getText().toString();
 
         if(email.isEmpty()) {
             emailId.setError("Please enter email!");
         } else if(pass.isEmpty()) {
             password.setError("Please enter password!");
+        } else if (devId.isEmpty()) {
+            deviceId.setError("Please enter device id!");
         } else {
             firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -69,8 +78,12 @@ public class MainActivity extends AppCompatActivity {
                     if(!task.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
                     } else {
+                        Intent i = new Intent(MainActivity.this, HomeActivity.class);
 
-                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                        Bundle bundle = new Bundle();
+
+                        bundle.putString("devId", deviceId.toString());
+                        startActivity(i);
                     }
                 }
             });

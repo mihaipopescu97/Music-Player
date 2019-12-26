@@ -1,6 +1,6 @@
 package com.example.mplayer.entities;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Playlist {
 
     private String id;
-    private Set<Song> songs;
+    private List<Song> songs;
 
     public Playlist() {
         id = UUID.randomUUID().toString();

@@ -49,7 +49,7 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_playlist);
 
         songs = findViewById(R.id.songs);
-        playlistSongs = findViewById(R.id.playlist);
+        playlistSongs = findViewById(R.id.playlistSongs);
 
         try {
             bluetoothSender = BluetoothSender.getInstance();
@@ -80,6 +80,7 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
         };
     }
 
+    //Needs work
     public void delete(View view) {
         Query deleteSong = playlistRef.orderByChild("name").equalTo(playlistSongs.getSelectedItem().toString());
         deleteSong.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,26 +99,27 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
         });
     }
 
-    public void add(View view) {
-        Query addSong = songsRef.orderByChild("name").equalTo(songs.getSelectedItem().toString());
-        addSong.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                    playlistRef =
-
-                    Log.i(TAG, "Added song :" + ds.getRef().toString());
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+    //Needs work
+//    public void add(View view) {
+//        Query addSong = songsRef.orderByChild("name").equalTo(songs.getSelectedItem().toString());
+//        addSong.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+//
+//                    playlistRef =
+//
+//                    Log.i(TAG, "Added song :" + ds.getRef().toString());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     public void backToHome(View view) {
         startActivity(new Intent(UpdatePlaylistActivity.this, HomeActivity.class));

@@ -13,7 +13,7 @@ public class Device {
     private String id;
     private String setupId;
 
-    public Device() {
-        id = UUID.randomUUID().toString();
+    public Device(String id) {
+        this.id = id;
     }
 }

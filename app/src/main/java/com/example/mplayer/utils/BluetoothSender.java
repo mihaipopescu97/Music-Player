@@ -69,9 +69,7 @@ public class BluetoothSender {
         if (bluetoothAdapter.isEnabled()) {
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-            if (pairedDevices.size() > 0) {
-                return true;
-            }
+            return pairedDevices.size() > 0;
         }
 
         return false;
