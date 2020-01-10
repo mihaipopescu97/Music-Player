@@ -43,7 +43,7 @@ public class SetupActivity extends AppCompatActivity {
 
         //Removes current setup if there is one on the current device;
         if(FirebaseHandler.checkChild("Setups", devId))
-            FirebaseHandler.removeSetup(devId);
+            FirebaseHandler.deleteSetup(devId);
 
         //Creates a new setup
         Setup setup = new Setup(devId);
