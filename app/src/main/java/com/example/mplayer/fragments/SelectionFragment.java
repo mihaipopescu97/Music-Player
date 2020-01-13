@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
 import com.example.mplayer.activities.HomeActivity;
-import com.example.mplayer.activities.MainActivity;
+import com.example.mplayer.activities.login.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SelectionFragment extends Fragment {

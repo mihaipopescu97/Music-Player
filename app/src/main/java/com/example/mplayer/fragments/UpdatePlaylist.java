@@ -59,7 +59,7 @@ public class UpdatePlaylist extends Fragment {
         //Step 1
         //Set the playlist spinner
         List<Playlist> playlists = FirebaseHandler.getPlaylists();
-        List<String> playlistsId = new ArrayList<>();
+        final List<String> playlistsId = new ArrayList<>();
 
         for(Playlist playlist1 : playlists) {
             playlistsId.add(playlist1.getId());
@@ -73,13 +73,9 @@ public class UpdatePlaylist extends Fragment {
             public void run() {
                 while (1) {
 
-                    songNames.clear();
-                    playlistMap.clear();
+                   playlistSongs.clear;
 
-                    for(Song song : songs) {
-                        songNames.add(song.getName());
-                        songsMap.put(song.getName(), song.getId());
-                    }
+                   playlistSongs = FirebaseHandler.getPlaylist(playlistId);
 
                     ArrayAdapter<String> songAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, songNames);
                     playlistSpinner.setAdapter(songAdapter);
@@ -97,6 +93,7 @@ public class UpdatePlaylist extends Fragment {
         setPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playlistId = playlistSpinner.getSelectedItem();
                 playlistSpinner.setVisibility(View.GONE);
                 deleteFromPlaylistBtn.setVisibility(View.VISIBLE);
                 addToPlaylistBtn.setVisibility(View.VISIBLE);
@@ -122,7 +119,7 @@ public class UpdatePlaylist extends Fragment {
                 }
 
                 ArrayAdapter<String> songAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, songNames);
-                playlistSpinner.setAdapter(songAdapter);
+                songSpinner.setAdapter(songAdapter);
 
                 thread.start();
             }

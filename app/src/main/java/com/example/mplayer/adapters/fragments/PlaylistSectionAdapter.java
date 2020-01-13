@@ -1,4 +1,4 @@
-package com.example.mplayer;
+package com.example.mplayer.adapters.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -8,11 +8,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeSectionAdapter extends FragmentStatePagerAdapter {
+public class PlaylistSectionAdapter extends FragmentStatePagerAdapter {
+
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();
 
-    public  HomeSectionAdapter(FragmentManager fragmentManager) {
+    public PlaylistSectionAdapter(FragmentManager fragmentManager) {
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 

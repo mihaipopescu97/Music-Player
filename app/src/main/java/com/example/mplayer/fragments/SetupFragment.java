@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
 import com.example.mplayer.activities.HomeActivity;
-import com.example.mplayer.activities.PlayerActivity;
+import com.example.mplayer.activities.player.PlayerActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 

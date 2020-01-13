@@ -38,19 +38,8 @@ public class FirebaseHandler {
 
 
     private FirebaseHandler() {
-
-    }
-
-    public static synchronized FirebaseHandler getInstance() {
-        if (instance == null) {
-            instance = new FirebaseHandler();
-        }
-        return instance;
-    }
-
-    public static synchronized void setInstance(FirebaseDatabase firebaseDatabase) {
         //Set the instance
-        ref = firebaseDatabase.getReference();
+        ref = FirebaseDatabase.getInstance().getReference();
 
         //Set the references
         userRef = ref.child("Users");
@@ -61,8 +50,17 @@ public class FirebaseHandler {
         songRef = ref.child("Songs");
     }
 
+    public static synchronized FirebaseHandler getInstance() {
+        if (instance == null) {
+            instance = new FirebaseHandler();
+        }
+        return instance;
+    }
+
+    ////////////////////
     //User crud
-    public static void addUser(User user) {
+    ///////////////////
+    public void addUser(User user) {
         userRef.child(user.getId()).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -78,7 +76,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<User> getUsers() {
+    public List<User> getUsers() {
 
         final List<User> users = new ArrayList<>();
 
@@ -103,7 +101,7 @@ public class FirebaseHandler {
         return users;
     }
 
-    public static User getUser(final String id) {
+    public User getUser(final String id) {
 
         final User[] searchedUser = new User[1];
         userRef.addValueEventListener(new ValueEventListener() {
@@ -129,7 +127,7 @@ public class FirebaseHandler {
         return searchedUser[0];
     }
 
-    public static void updateUser(final String id, User user) {
+    public void updateUser(final String id, User user) {
         userRef.child(id).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -146,7 +144,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deleteUser(final String id) {
+    public void deleteUser(final String id) {
         userRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -162,8 +160,10 @@ public class FirebaseHandler {
                 });
     }
 
+    ///////////////////
     //Device crud
-    public static void addDevice(Device device) {
+    ///////////////////
+    public void addDevice(Device device) {
         deviceRef.child(device.getId()).setValue(device)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -179,7 +179,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Device> getDevices() {
+    public List<Device> getDevices() {
 
         final List<Device> devices = new ArrayList<>();
 
@@ -204,7 +204,7 @@ public class FirebaseHandler {
         return devices;
     }
 
-    public static Device getDevice(final String id) {
+    public Device getDevice(final String id) {
 
         final Device[] searchedDevice = new Device[1];
         deviceRef.addValueEventListener(new ValueEventListener() {
@@ -230,7 +230,7 @@ public class FirebaseHandler {
         return searchedDevice[0];
     }
 
-    public static void updateDevice(final String id, Device device) {
+    public void updateDevice(final String id, Device device) {
         deviceRef.child(id).setValue(device)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -247,7 +247,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deleteDevice(final String id) {
+    public void deleteDevice(final String id) {
         deviceRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -263,7 +263,9 @@ public class FirebaseHandler {
                 });
     }
 
+    ///////////////////
     //Setup crud
+    ///////////////////
     public static void addSetup(Setup setup) {
         setupRef.child(setup.getId()).setValue(setup)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -280,7 +282,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Setup> getSetups() {
+    public List<Setup> getSetups() {
 
         final List<Setup> setups = new ArrayList<>();
 
@@ -305,7 +307,7 @@ public class FirebaseHandler {
         return setups;
     }
 
-    public static Setup getSetup(final String id) {
+    public Setup getSetup(final String id) {
 
         final Setup[] searchedSetup = new Setup[1];
         setupRef.addValueEventListener(new ValueEventListener() {
@@ -331,7 +333,7 @@ public class FirebaseHandler {
         return searchedSetup[0];
     }
 
-    public static void updateSetup(final String id, Setup setup) {
+    public void updateSetup(final String id, Setup setup) {
         setupRef.child(id).setValue(setup)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -348,7 +350,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deleteSetup(final String id) {
+    public void deleteSetup(final String id) {
         setupRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -364,9 +366,10 @@ public class FirebaseHandler {
                 });
     }
 
-
+    ///////////////////
     //Room crud
-    public static void addRoom(Room room) {
+    ///////////////////
+    public void addRoom(Room room) {
         roomRef.child(room.getId()).setValue(room)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -382,7 +385,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Room> getRooms() {
+    public List<Room> getRooms() {
 
         final List<Room> rooms = new ArrayList<>();
 
@@ -407,7 +410,7 @@ public class FirebaseHandler {
         return rooms;
     }
 
-    public static Room getRoom(final String id) {
+    public Room getRoom(final String id) {
 
         final Room[] searchedRoom = new Room[1];
         roomRef.addValueEventListener(new ValueEventListener() {
@@ -433,7 +436,7 @@ public class FirebaseHandler {
         return searchedRoom[0];
     }
 
-    public static void updateRoom(final String id, Room room) {
+    public void updateRoom(final String id, Room room) {
         roomRef.child(id).setValue(room)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -450,7 +453,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deleteRoom(final String id) {
+    public void deleteRoom(final String id) {
         roomRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -466,9 +469,10 @@ public class FirebaseHandler {
                 });
     }
 
-
+    ///////////////////
     //Playlist crud
-    public static void addPlaylist(Playlist playlist) {
+    ///////////////////
+    public void addPlaylist(Playlist playlist) {
         playlistRef.child(playlist.getId()).setValue(playlist)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -484,7 +488,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Playlist> getPlaylists() {
+    public List<Playlist> getPlaylists() {
 
         final List<Playlist> playlists = new ArrayList<>();
 
@@ -509,7 +513,7 @@ public class FirebaseHandler {
         return playlists;
     }
 
-    public static Playlist getPlaylist(final String id) {
+    public Playlist getPlaylist(final String id) {
 
         final Playlist[] searchedPlaylist = new Playlist[1];
         playlistRef.addValueEventListener(new ValueEventListener() {
@@ -535,7 +539,7 @@ public class FirebaseHandler {
         return searchedPlaylist[0];
     }
 
-    public static void updatePlaylist(final String id, Playlist playlist) {
+    public void updatePlaylist(final String id, Playlist playlist) {
         playlistRef.child(id).setValue(playlist)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -552,7 +556,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deletePlaylist(final String id) {
+    public void deletePlaylist(final String id) {
         playlistRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -568,9 +572,15 @@ public class FirebaseHandler {
                 });
     }
 
+    //TODO test this
+    public void setPlaylistSongs(final String id, final List<String> songs) {
+        playlistRef.child(id).child("song").setValue(songs);
+    }
 
+    ///////////////////
     //Song crud
-    public static void addSong(Song song) {
+    ///////////////////
+    public void addSong(Song song) {
         songRef.child(song.getId()).setValue(song)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -586,7 +596,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Song> getSongs() {
+    public List<Song> getSongs() {
 
         final List<Song> songs = new ArrayList<>();
 
@@ -611,7 +621,7 @@ public class FirebaseHandler {
         return songs;
     }
 
-    public static Song getSong(final String id) {
+    public Song getSong(final String id) {
 
         final Song[] searchedSong = new Song[1];
         songRef.addValueEventListener(new ValueEventListener() {
@@ -637,7 +647,7 @@ public class FirebaseHandler {
         return searchedSong[0];
     }
 
-    public static void updateSong(final String id, Song song) {
+    public void updateSong(final String id, Song song) {
         songRef.child(id).setValue(song)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -654,7 +664,7 @@ public class FirebaseHandler {
 
     }
 
-    public static void deleteSong(final String id) {
+    public void deleteSong(final String id) {
         songRef.child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -670,7 +680,10 @@ public class FirebaseHandler {
                 });
     }
 
-    public static boolean checkChild(String baseReff, final String id) {
+    ///////////////////
+    //Other
+    ///////////////////
+    public boolean checkChild(String baseReff, final String id) {
         check = false;
         ref.child(baseReff).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

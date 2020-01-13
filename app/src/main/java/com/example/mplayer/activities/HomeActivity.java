@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.mplayer.HomeSectionAdapter;
+import com.example.mplayer.adapters.fragments.DeviceSectionAdapter;
 import com.example.mplayer.R;
+import com.example.mplayer.activities.login.MainActivity;
 import com.example.mplayer.fragments.SetupFragment;
 import com.example.mplayer.entities.Room;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -20,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
-    private HomeSectionAdapter homeSectionAdapter;
+    private DeviceSectionAdapter homeSectionAdapter;
     private ViewPager viewPager;
     private static String devId;
 
@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         roomsId = findViewById(R.id.setups);
 
         //Setup fragments
-        homeSectionAdapter = new HomeSectionAdapter(getSupportFragmentManager());
+        homeSectionAdapter = new DeviceSectionAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupViewPage(viewPager);
 
@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity {
 //        }
 
         //Fetch the rooms
-        FirebaseHandler.setInstance(FirebaseDatabase.getInstance());
+        FirebaseHandler firebaseHandler = FirebaseHandler.getInstance();
         DatabaseReference setupRef = FirebaseHandler.getSetupRef();
         setupRef.orderByChild("rooms").addValueEventListener(new ValueEventListener() {
             @Override
@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupViewPage(ViewPager viewPager) {
-        HomeSectionAdapter adapter = new HomeSectionAdapter(getSupportFragmentManager());
+        DeviceSectionAdapter adapter = new DeviceSectionAdapter(getSupportFragmentManager());
         adapter.addFragment(new SetupFragment(), "SetupFragment");
         viewPager.setAdapter(adapter);
     }
