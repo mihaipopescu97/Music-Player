@@ -2,6 +2,7 @@ package com.example.mplayer.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.mplayer.HomeSectionAdapter;
 import com.example.mplayer.R;
+import com.example.mplayer.fragments.SetupFragment;
 import com.example.mplayer.entities.Room;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private static final String TAG = "HomeActivity";
+
+    private HomeSectionAdapter homeSectionAdapter;
+    private ViewPager viewPager;
     private static String devId;
 
     //UI
@@ -42,7 +48,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        roomsId = findViewById(R.id.rooms);
+        roomsId = findViewById(R.id.setups);
+
+        //Setup fragments
+        homeSectionAdapter = new HomeSectionAdapter(getSupportFragmentManager());
+        viewPager = findViewById(R.id.container);
+        setupViewPage(viewPager);
+
 
         Bundle bundle = getIntent().getExtras();
 
@@ -83,6 +95,18 @@ public class HomeActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, rooms);
         roomsId.setAdapter(adapter);
     }
+
+    private void setupViewPage(ViewPager viewPager) {
+        HomeSectionAdapter adapter = new HomeSectionAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SetupFragment(), "SetupFragment");
+        viewPager.setAdapter(adapter);
+    }
+
+    public void setViewPager(int fragmentNumber) {
+        viewPager.setCurrentItem(fragmentNumber);
+    }
+
+
 
     public void logOut(View view) {
         FirebaseAuth.getInstance().signOut();

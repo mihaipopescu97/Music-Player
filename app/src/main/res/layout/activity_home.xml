@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.HomeActivity">
 
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container">
+    </androidx.viewpager.widget.ViewPager>
+
     <Button
         android:id="@+id/logOutBtn"
         android:layout_width="wrap_content"
@@ -24,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/rooms"
+        android:id="@+id/setups"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="1dp"

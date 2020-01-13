@@ -16,7 +16,7 @@ public class HomeSectionAdapter extends FragmentStatePagerAdapter {
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
-    private void addFragment(Fragment fragment, String title) {
+    public void addFragment(Fragment fragment, String title) {
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
     }

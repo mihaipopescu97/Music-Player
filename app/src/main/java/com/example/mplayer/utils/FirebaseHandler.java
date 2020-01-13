@@ -484,7 +484,7 @@ public class FirebaseHandler {
                 });
     }
 
-    public static List<Playlist> getPlaylist() {
+    public static List<Playlist> getPlaylists() {
 
         final List<Playlist> playlists = new ArrayList<>();
 
