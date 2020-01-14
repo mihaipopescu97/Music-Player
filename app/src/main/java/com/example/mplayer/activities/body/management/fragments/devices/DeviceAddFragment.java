@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,12 +30,11 @@ public class DeviceAddFragment extends Fragment {
         //TODO set layout
         View view = inflater.inflate(R.layout.fragment_setup, container, false);
 
-        Log.d(TAG, "Device add fragment started");
+        Log.i(TAG, "Device add fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
         //TODO set element references
-        final Spinner devicesSpinner = view.findViewById();
         final TextView deviceId = view.findViewById();
         final Button addDeviceBtn = view.findViewById();
         final Button backBtn = view.findViewById();
@@ -45,16 +45,27 @@ public class DeviceAddFragment extends Fragment {
         addDeviceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Device device = new Device(userId);
-                device.setId(deviceId.getText().toString());
-                firebaseHandler.addDevice(device);
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                if(deviceId.getText().toString().matches("")) {
+                    Log.e(TAG, "Empty device id");
+                    Toast.makeText(getActivity(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
+                } else {
+                    //TODO check if valid id
+                    Device device = new Device(userId);
+                    device.setId(deviceId.getText().toString());
+
+                    Log.d(TAG, "Adding device with id:" + device.getId());
+                    firebaseHandler.addDevice(device);
+
+                    Log.d(TAG, "Changing to device home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                }
             }
         });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Changing to device home fragment");
                 ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }
         });

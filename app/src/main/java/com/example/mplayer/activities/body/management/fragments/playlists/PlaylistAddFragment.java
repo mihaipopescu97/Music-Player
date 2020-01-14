@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +37,7 @@ public class PlaylistAddFragment extends Fragment {
         //TODO set layout
         View view = inflater.inflate(R.layout.fragment_setup, container, false);
 
-        Log.d(TAG, "Playlist add fragment started");
+        Log.i(TAG, "Playlist add fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
@@ -71,7 +72,6 @@ public class PlaylistAddFragment extends Fragment {
                 }
             }
         });
-
         thread.start();
 
         addSongBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,9 @@ public class PlaylistAddFragment extends Fragment {
             public void onClick(View v) {
                if(songsSpinner.getSelectedItem() != null) {
                    playlistSongs.add(String.valueOf(songsSpinner.getSelectedItemId()));
+               } else {
+                   Log.e(TAG, "Song not selected");
+                   Toast.makeText(getActivity(), "Please select a song to be added!", Toast.LENGTH_SHORT).show();
                }
             }
         });
@@ -88,7 +91,13 @@ public class PlaylistAddFragment extends Fragment {
             public void onClick(View v) {
                 Playlist playlist = new Playlist();
                 playlist.setSongs(playlistSongs);
+
+                Log.d(TAG, "Adding playlist with id:" + playlist.getId());
+                firebaseHandler.addPlaylist(playlist);
+
                 thread.interrupt();
+
+                Log.d(TAG, "Changing to playlist home fragment");
                 ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }
         });
@@ -97,6 +106,7 @@ public class PlaylistAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 thread.interrupt();
+                Log.d(TAG, "Changing to playlist home fragment");
                 ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }
         });

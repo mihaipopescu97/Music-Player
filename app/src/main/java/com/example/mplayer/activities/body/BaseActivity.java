@@ -13,6 +13,7 @@ import com.example.mplayer.activities.body.management.ManageDeviceActivity;
 import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
 import com.example.mplayer.activities.body.management.ManageSetupActivity;
 import com.example.mplayer.activities.login.MainActivity;
+import com.example.mplayer.activities.player.PlayerActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class BaseActivity extends AppCompatActivity {
@@ -46,6 +47,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void managePlaylist(View view) {
         startActivity(new Intent(BaseActivity.this, ManagePlaylistActivity.class));
+    }
+
+    public void play(View view) {
+        startActivity(new Intent(BaseActivity.this, PlayerActivity.class));
     }
 
     public void logOutFromBase(View view) {

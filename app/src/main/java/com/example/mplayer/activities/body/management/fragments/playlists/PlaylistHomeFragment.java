@@ -1,4 +1,4 @@
-package com.example.mplayer.activities.body.management.fragments.devices;
+package com.example.mplayer.activities.body.management.fragments.playlists;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +14,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
 import com.example.mplayer.activities.body.BaseActivity;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
+import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
 
-public class DeviceHomeFragment extends Fragment {
+public class PlaylistHomeFragment extends Fragment {
 
-    private static final String TAG = "DeviceHomeFragment";
+    private static final String TAG = "PlaylistHomeFragment";
 
     @Nullable
     @Override
@@ -26,42 +26,42 @@ public class DeviceHomeFragment extends Fragment {
         //TODO set layout
         View view = inflater.inflate(R.layout.fragment_setup, container, false);
 
-        Log.d(TAG, "Device home fragment started");
+        Log.d(TAG, "Playlist home fragment started");
 
         //TODO set references
-        final Button selectDevicesBtn = view.findViewById();
-        final Button addDeviceBtn = view.findViewById();
-        final Button deleteDeviceBtn = view.findViewById();
+        final Button selectPlaylistBtn = view.findViewById();
+        final Button addPlaylistBtn = view.findViewById();
+        final Button deletePlaylistBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 
-        selectDevicesBtn.setOnClickListener(new View.OnClickListener() {
+        selectPlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device select fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(1);
+                Log.d(TAG, "Changing to playlist select fragment");
+                ((ManagePlaylistActivity)getActivity()).setViewPager(1);
             }
         });
 
-        addDeviceBtn.setOnClickListener(new View.OnClickListener() {
+        addPlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device add fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(2);
+                Log.d(TAG, "Changing to playlist add fragment");
+                ((ManagePlaylistActivity)getActivity()).setViewPager(2);
             }
         });
 
-        deleteDeviceBtn.setOnClickListener(new View.OnClickListener() {
+        deletePlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device delete fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(3);
+                Log.d(TAG, "Changing to playlist delete fragment");
+                ((ManagePlaylistActivity)getActivity()).setViewPager(3);
             }
         });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device base activity");
+                Log.d(TAG, "Changing to base activity");
                 startActivity(new Intent(getActivity(), BaseActivity.class));
             }
         });
