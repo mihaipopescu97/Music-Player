@@ -7,31 +7,32 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
-import com.example.mplayer.adapters.fragments.DeviceSectionAdapter;
+import com.example.mplayer.adapters.fragments.PlaylistSectionAdapter;
+import com.example.mplayer.adapters.fragments.SetupSectionAdapter;
 import com.example.mplayer.fragments.SetupFragment;
 
-public class ManageDeviceActivity extends AppCompatActivity {
+public class ManageSetupActivity extends AppCompatActivity {
 
-    private static final String TAG = "ManageDeviceActivity";
+    private static final String TAG = "ManageSetupActivity";
 
-    private DeviceSectionAdapter deviceSectionAdapter;
+    private SetupSectionAdapter setupsSectionAdapter;
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_device);
+        setContentView(R.layout.activity_manage_setups);
 
-        Log.d(TAG, "Manage device activity started");
+        Log.d(TAG, "Manage setups activity started");
 
-        deviceSectionAdapter = new DeviceSectionAdapter(getSupportFragmentManager());
+        setupsSectionAdapter = new SetupSectionAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupViewPage(viewPager);
     }
 
     private void setupViewPage(ViewPager viewPager) {
-        DeviceSectionAdapter adapter = new DeviceSectionAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SetupFragment(), "SetupFragment");
+        SetupSectionAdapter adapter = new SetupSectionAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SetupFragment(), "SetupsFragment");
         viewPager.setAdapter(adapter);
     }
 

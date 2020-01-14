@@ -266,7 +266,7 @@ public class FirebaseHandler {
     ///////////////////
     //Setup crud
     ///////////////////
-    public static void addSetup(Setup setup) {
+    public void addSetup(Setup setup) {
         setupRef.child(setup.getId()).setValue(setup)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

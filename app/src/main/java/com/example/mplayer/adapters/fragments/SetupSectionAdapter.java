@@ -8,11 +8,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupsSectionAdapter extends FragmentStatePagerAdapter {
+public class SetupSectionAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();
 
-    public SetupsSectionAdapter(FragmentManager fragmentManager) {
+    public SetupSectionAdapter(FragmentManager fragmentManager) {
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 

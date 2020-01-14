@@ -11,9 +11,11 @@ import lombok.Setter;
 public class Device {
 
     private String id;
+    private String userId;
     private String setupId;
 
-    public Device(String id) {
-        this.id = id;
+    public Device(String userId) {
+        this.userId = userId;
+        id = UUID.randomUUID().toString();
     }
 }

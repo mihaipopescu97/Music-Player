@@ -1,5 +1,7 @@
 package com.example.mplayer.entities;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,8 @@ public class Room {
     private String id;
     private String playlistId;
 
-    public Room(String id) {
-        this.id = id;
+    public Room(String playlistId) {
+        this.playlistId = playlistId;
+        id = UUID.randomUUID().toString();
     }
 }

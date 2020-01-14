@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.body.management.ManagePlaylistActivity"></activity>
-        <activity android:name=".activities.body.management.ManageSetupsActivity" />
+        <activity android:name=".activities.body.management.ManageSetupActivity" />
         <activity android:name=".activities.body.management.ManageDeviceActivity" />
         <activity android:name=".activities.body.BaseActivity" />
         <activity android:name=".activities.SetupActivity" />

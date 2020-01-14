@@ -12,9 +12,11 @@ import lombok.Setter;
 public class Setup {
 
     private String id;
+    private String deviceId;
     private List<Room> rooms;
 
-    public Setup(String id) {
-        this.id = id;
+    public Setup(String deviceId) {
+        this.deviceId = deviceId;
+        id = UUID.randomUUID().toString();
     }
 }

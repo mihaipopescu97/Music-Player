@@ -11,7 +11,7 @@ import android.widget.Button;
 import com.example.mplayer.R;
 import com.example.mplayer.activities.body.management.ManageDeviceActivity;
 import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
-import com.example.mplayer.activities.body.management.ManageSetupsActivity;
+import com.example.mplayer.activities.body.management.ManageSetupActivity;
 import com.example.mplayer.activities.login.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -41,7 +41,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void manageSetups(View view) {
-        startActivity(new Intent(BaseActivity.this, ManageSetupsActivity.class));
+        startActivity(new Intent(BaseActivity.this, ManageSetupActivity.class));
     }
 
     public void managePlaylist(View view) {
