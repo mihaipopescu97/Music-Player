@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.setups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Room;
@@ -45,29 +47,38 @@ public class SetupAddFragment extends Fragment {
         final Button addSetupBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 
-        //TODO pass device id;
-        final String deviceId = "";
+        String deviceId = null;
+        if(getArguments() != null) {
+            deviceId = getArguments().getString("deviceId");
+        } else {
+            Log.e(TAG, "Device id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
 
+        final String finalDeviceId = deviceId;
         addSetupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Setup setup = new Setup(deviceId);
+                Setup setup = new Setup(finalDeviceId);
+                String text = nrOfRooms.getText().toString();
+                try {
+                    int nr = Integer.parseInt(text);
+                    for(int i = 0; i < nr; i++) {
+                        Room room = new Room(setup.getId());
+                        rooms.add(room);
+                    }
 
-                //TODO check if int has been added
-                int nr = Integer.parseInt(nrOfRooms.getText().toString());
+                    setup.setRooms(rooms);
 
-                for(int i = 0; i < nr; i++) {
-                    Room room = new Room(setup.getId());
-                    rooms.add(room);
+                    Log.d(TAG, "Setup added with id:" + setup.getId());
+                    firebaseHandler.addSetup(setup);
+
+                    Log.i(TAG, "Changing to setup home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } catch (NumberFormatException e) {
+                    Log.w(TAG, "Invalid number");
+                    e.printStackTrace();
                 }
-
-                setup.setRooms(rooms);
-
-                Log.d(TAG, "Setup added with id:" + setup.getId());
-                firebaseHandler.addSetup(setup);
-
-                Log.i(TAG, "Changing to setup home fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }
         });
 

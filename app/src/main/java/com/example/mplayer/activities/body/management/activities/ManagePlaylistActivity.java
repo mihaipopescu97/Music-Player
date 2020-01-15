@@ -30,6 +30,11 @@ public class ManagePlaylistActivity extends AppCompatActivity {
         playlistSectionAdapter = new PlaylistSectionAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupViewPage(viewPager);
+
+        //TODO get user id
+        final String userId = "";
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
     }
 
     private void setupViewPage(ViewPager viewPager) {

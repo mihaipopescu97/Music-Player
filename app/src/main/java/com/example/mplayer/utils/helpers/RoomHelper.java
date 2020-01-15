@@ -101,7 +101,7 @@ public class RoomHelper {
         });
 
         if(rooms.isEmpty()) {
-            Log.e(TAG, "No rooms for playlist:" + setupId);
+            Log.w(TAG, "No rooms for playlist:" + setupId);
         }
 
         return rooms;

@@ -75,6 +75,37 @@ public class PlaylistHelper {
         return playlists;
     }
 
+    public List<Playlist> getUserPlaylist(final String userId) {
+
+        final List<Playlist> playlists = new ArrayList<>();
+
+        playlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Playlist playlist = keyNode.getValue(Playlist.class);
+                    if(playlist.getUserId().equals(userId)) {
+                        playlists.add(playlist);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(playlists.isEmpty()) {
+            Log.w(TAG, "No playlists for user:" + userId);
+        }
+
+        return playlists;
+    }
+
     public Playlist getPlaylist(final String id) {
 
         final Playlist[] searchedPlaylist = new Playlist[1];

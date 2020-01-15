@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.setups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -42,13 +44,22 @@ public class SetupDeleteFragment extends Fragment {
 
         firebaseHandler = FirebaseHandler.getInstance();
 
+        String deviceId = null;
+        if(getArguments() != null) {
+            deviceId = getArguments().getString("deviceId");
+        } else {
+            Log.e(TAG, "Device id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
         final List<String> setupsId = new ArrayList<>();
 
+        final String finalDeviceId = deviceId;
+        //TODO add a check thread
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //TODO update when firebase handler is done
-                List<Setup> setups = firebaseHandler.getSetups();
+                List<Setup> setups = firebaseHandler.getDeviceSetups(finalDeviceId);
                 setupsId.clear();
 
                 for(Setup setup : setups) {

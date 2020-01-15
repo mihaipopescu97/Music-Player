@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.playlists;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.entities.Song;
@@ -48,6 +50,14 @@ public class PlaylistAddFragment extends Fragment {
         final Button addSongBtn = view.findViewById();
         final Button doneBtn = view.findViewById();
         final Button backBtn = view.findViewById();
+
+        String userId = null;
+        if(getArguments() != null) {
+            userId = getArguments().getString("userId");
+        } else {
+            Log.e(TAG, "User id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
 
         for(Song song : songs) {
             songNames.add(song.getName());
@@ -83,10 +93,11 @@ public class PlaylistAddFragment extends Fragment {
             }
         });
 
+        final String finalUserId = userId;
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Playlist playlist = new Playlist();
+                Playlist playlist = new Playlist(finalUserId);
                 playlist.setSongs(playlistSongs);
 
                 Log.d(TAG, "Adding playlist with id:" + playlist.getId());

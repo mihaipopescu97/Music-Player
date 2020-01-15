@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.setups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -47,6 +49,14 @@ public class SetupSelectFragment extends Fragment {
         List<Setup> setups = firebaseHandler.getSetups();
         List<String> setupsId = new ArrayList<>();
 
+        String deviceId = null;
+        if(getArguments() != null) {
+            deviceId = getArguments().getString("deviceId");
+        } else {
+            Log.e(TAG, "Device id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
         for(Setup setup : setups) {
             setupsId.add(setup.getId());
         }
@@ -59,7 +69,8 @@ public class SetupSelectFragment extends Fragment {
             public void onClick(View v) {
                 if(setupsSpinner.getSelectedItem() != null) {
                     //TODO send device id
-                    String.valueOf(setupsSpinner.getSelectedItem());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("deviceId",  String.valueOf(setupsSpinner.getSelectedItem()));
 
                     Log.d(TAG, "Changing to setup home fragment");
                     ((ManageSetupActivity)getActivity()).setViewPager(0);

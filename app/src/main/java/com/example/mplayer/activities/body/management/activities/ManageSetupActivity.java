@@ -32,6 +32,11 @@ public class ManageSetupActivity extends AppCompatActivity {
         setupsSectionAdapter = new SetupSectionAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.container);
         setupViewPage(viewPager);
+
+        //TODO get device id
+        final String deviceId = "";
+        Bundle bundle = new Bundle();
+        bundle.putString("deviceId", deviceId);
     }
 
     private void setupViewPage(ViewPager viewPager) {

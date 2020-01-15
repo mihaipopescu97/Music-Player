@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.playlists;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManagePlaylistActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -42,8 +44,16 @@ public class PlaylistSelectFragment extends Fragment {
         final Button selectBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 
+        String userId = null;
+        if(getArguments() != null) {
+            userId = getArguments().getString("userId");
+        } else {
+            Log.e(TAG, "User id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
         //TODO update when firebase handler is done
-        List<Playlist> playlists = firebaseHandler.getPlaylists();
+        List<Playlist> playlists = firebaseHandler.getUserPlaylists(userId);
         List<String> playlistsId = new ArrayList<>();
 
         for(Playlist playlist : playlists) {

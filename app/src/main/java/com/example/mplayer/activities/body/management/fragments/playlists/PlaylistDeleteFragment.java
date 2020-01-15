@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.playlists;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
+import com.example.mplayer.activities.body.BaseActivity;
 import com.example.mplayer.activities.body.management.activities.ManagePlaylistActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -41,11 +43,19 @@ public class PlaylistDeleteFragment extends Fragment {
         final Button deletePlaylistBtn = view.findViewById();
         final Button doneBtn = view.findViewById();
 
+        String userId = null;
+        if(getArguments() != null) {
+            userId = getArguments().getString("userId");
+        } else {
+            Log.e(TAG, "User id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
+        final String finalUserId = userId;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //TODO update when firebase handler is done
-                List<Playlist> playlists = firebaseHandler.getPlaylists();
+                List<Playlist> playlists = firebaseHandler.getUserPlaylists(finalUserId);
                 List<String> playlistsId = new ArrayList<>();
 
                 for(Playlist playlist : playlists) {
@@ -63,6 +73,7 @@ public class PlaylistDeleteFragment extends Fragment {
             }
         });
         thread.start();
+        //TODO create a check thread
 
 
         deletePlaylistBtn.setOnClickListener(new View.OnClickListener() {

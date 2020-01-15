@@ -11,9 +11,11 @@ import lombok.Setter;
 public class Playlist {
 
     private String id;
+    private String userId;
     private List<String> songs;
 
-    public Playlist() {
+    public Playlist(String userId) {
+        this.userId = userId;
         id = UUID.randomUUID().toString();
     }
 

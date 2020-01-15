@@ -194,6 +194,10 @@ public class FirebaseHandler {
         return playlistHelper.getPlaylists();
     }
 
+    public List<Playlist> getUserPlaylists(final String userId) {
+        return playlistHelper.getUserPlaylist(userId);
+    }
+
     public Playlist getPlaylist(final String id) {
         return playlistHelper.getPlaylist(id);
     }
