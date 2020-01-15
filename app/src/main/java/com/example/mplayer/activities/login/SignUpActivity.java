@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Device;
 import com.example.mplayer.entities.User;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +24,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText emailId;
     private EditText password;
-    private EditText deviceId;
     FirebaseAuth firebaseAuth;
     private FirebaseHandler firebaseHandler;
 
@@ -34,14 +32,13 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Log.d(TAG, "Sign up activity started");
+        Log.i(TAG, "Sign up activity started");
 
         firebaseHandler = FirebaseHandler.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         emailId = findViewById(R.id.signUpEmail);
         password = findViewById(R.id.signUpPass);
-        deviceId = findViewById(R.id.deviceId);
     }
 
     //Sign up logic
@@ -51,23 +48,20 @@ public class SignUpActivity extends AppCompatActivity {
 
         final String email = emailId.getText().toString().trim();
         final String pass = password.getText().toString().trim();
-        final String devId = deviceId.getText().toString().trim();
 
         if (email.isEmpty()) {
             emailId.setError("Please enter email!");
         } else if (pass.isEmpty()) {
             password.setError("Please enter password!");
-        } else if (devId.isEmpty()) {
-            deviceId.setError("Please enter device id!");
-        } else {
+        }  else {
             firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
+                        Log.d(TAG, "New user added with email:" + email + " and pass:" + pass);
                         Toast.makeText(SignUpActivity.this, "Sig Up failed!", Toast.LENGTH_SHORT).show();
                     } else {
-                        firebaseHandler.addUser(new User(email, pass, devId));
-                        firebaseHandler.addDevice(new Device(devId));
+                        firebaseHandler.addUser(new User(email, pass));
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                     }
                 }

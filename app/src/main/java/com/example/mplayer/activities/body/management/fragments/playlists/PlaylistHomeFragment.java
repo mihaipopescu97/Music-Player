@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
 import com.example.mplayer.activities.body.BaseActivity;
-import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
+import com.example.mplayer.activities.body.management.activities.ManagePlaylistActivity;
 
 public class PlaylistHomeFragment extends Fragment {
 

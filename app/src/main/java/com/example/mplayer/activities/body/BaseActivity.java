@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
-import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
-import com.example.mplayer.activities.body.management.ManageSetupActivity;
+import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
+import com.example.mplayer.activities.body.management.activities.ManagePlaylistActivity;
+import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.activities.login.MainActivity;
 import com.example.mplayer.activities.player.PlayerActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        Log.d(TAG, "Base activity started");
+        Log.i(TAG, "Base activity started");
 
         Button deviceBtn = findViewById();
         Button setupBtn = findViewById();

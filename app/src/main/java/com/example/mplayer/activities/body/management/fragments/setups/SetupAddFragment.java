@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
-import com.example.mplayer.activities.body.management.ManageSetupActivity;
+import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
+import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Room;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -33,13 +34,14 @@ public class SetupAddFragment extends Fragment {
         //TODO set layout
         View view = inflater.inflate(R.layout.fragment_setup, container, false);
 
-        Log.d(TAG, "Setup add fragment started");
+        Log.i(TAG, "Setup add fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
+
         final List<Room> rooms = new ArrayList<>();
 
         //TODO set element references
-        final TextView nrOfRooms = view.findViewById();
+        final EditText nrOfRooms = view.findViewById();
         final Button addSetupBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 
@@ -61,8 +63,10 @@ public class SetupAddFragment extends Fragment {
 
                 setup.setRooms(rooms);
 
+                Log.d(TAG, "Setup added with id:" + setup.getId());
                 firebaseHandler.addSetup(setup);
 
+                Log.i(TAG, "Changing to setup home fragment");
                 ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }
         });
@@ -70,6 +74,7 @@ public class SetupAddFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "Changing to setup home fragment");
                 ((ManageSetupActivity)getActivity()).setViewPager(0);
             }
         });

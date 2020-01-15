@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.devices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
+import com.example.mplayer.activities.body.BaseActivity;
+import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
 
@@ -42,8 +44,15 @@ public class DeviceSelectFragment extends Fragment {
         final Button selectBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 
-        //TODO update when firebase handler is done
-        List<Device> devices = firebaseHandler.getDevices();
+        String userId = null;
+        if(getArguments() != null) {
+            userId = getArguments().getString("userId");
+        } else {
+            Log.e(TAG, "User id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
+        List<Device> devices = firebaseHandler.getUserDevices(userId);
         List<String> devicesId = new ArrayList<>();
 
         for(Device device : devices) {
@@ -57,11 +66,13 @@ public class DeviceSelectFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(devicesSpinner.getSelectedItem() != null) {
-                    //TODO send device id
-                    String.valueOf(devicesSpinner.getSelectedItem());
 
-                    Log.d(TAG, "Changing to home device fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("deviceId",  String.valueOf(devicesSpinner.getSelectedItem()));
+
+                    //TODO send data to new activity
+                    Log.d(TAG, "Changing to base activity");
+                    startActivity(new Intent(getActivity(), BaseActivity.class));
                 } else {
                     Log.e(TAG, "Device not selected");
                     Toast.makeText(getActivity(), "Please select a device!", Toast.LENGTH_SHORT).show();

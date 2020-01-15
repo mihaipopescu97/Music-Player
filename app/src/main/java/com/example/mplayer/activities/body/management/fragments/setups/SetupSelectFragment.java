@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
-import com.example.mplayer.activities.body.management.ManageSetupActivity;
+import com.example.mplayer.activities.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 
@@ -31,12 +31,14 @@ public class SetupSelectFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //TODO set layout
         View view = inflater.inflate(R.layout.fragment_setup, container, false);
 
-        Log.d(TAG, "Device view fragment started");
+        Log.i(TAG, "Device view fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
+        //TODO set references
         final Spinner setupsSpinner = view.findViewById();
         final Button selectBtn = view.findViewById();
         final Button backBtn = view.findViewById();
@@ -58,6 +60,12 @@ public class SetupSelectFragment extends Fragment {
                 if(setupsSpinner.getSelectedItem() != null) {
                     //TODO send device id
                     String.valueOf(setupsSpinner.getSelectedItem());
+
+                    Log.d(TAG, "Changing to setup home fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Setup not selected");
+                    Toast.makeText(getActivity(), "Please select a setup!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -65,9 +73,11 @@ public class SetupSelectFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Changing to setup home fragment");
                 ((ManageSetupActivity)getActivity()).setViewPager(0);
             }
         });
 
         return view;
+    }
 }

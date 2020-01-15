@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManagePlaylistActivity;
+import com.example.mplayer.activities.body.management.activities.ManagePlaylistActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
 

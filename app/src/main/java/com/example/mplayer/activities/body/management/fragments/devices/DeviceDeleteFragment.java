@@ -1,5 +1,6 @@
 package com.example.mplayer.activities.body.management.fragments.devices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.activities.body.management.ManageDeviceActivity;
+import com.example.mplayer.activities.body.BaseActivity;
+import com.example.mplayer.activities.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
 
@@ -42,11 +44,20 @@ public class DeviceDeleteFragment extends Fragment {
         final Button deleteDeviceBtn = view.findViewById();
         final Button doneBtn = view.findViewById();
 
-        final Thread thread = new Thread(new Runnable() {
+        String userId = null;
+        if(getArguments() != null) {
+            userId = getArguments().getString("userId");
+        } else {
+            Log.e(TAG, "User id not received");
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
+
+        final String finalUserId = userId;
+        final Thread spinnerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //TODO get devices of user
-                List<Device> devices = firebaseHandler.getDevices();
+                List<Device> devices = firebaseHandler.getUserDevices(finalUserId);
                 List<String> devicesId = new ArrayList<>();
 
                 for(Device device : devices) {
@@ -63,7 +74,25 @@ public class DeviceDeleteFragment extends Fragment {
                 }
             }
         });
-        thread.start();
+        spinnerThread.start();
+
+        final Thread checkThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Device> devices = firebaseHandler.getUserDevices(finalUserId);
+
+                if(devices.isEmpty()) {
+                    Log.w(TAG, "User:" + finalUserId + " has no more devices");
+                    Toast.makeText(getActivity(), "You have no more devices to delete!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Changing to device home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+
+                    //TODO not sure
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        checkThread.start();
 
         deleteDeviceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +110,8 @@ public class DeviceDeleteFragment extends Fragment {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                thread.interrupt();
+                spinnerThread.interrupt();
+                checkThread.interrupt();
                 Log.d(TAG, "Changing to device home fragment");
                 ((ManageDeviceActivity)getActivity()).setViewPager(0);
             }

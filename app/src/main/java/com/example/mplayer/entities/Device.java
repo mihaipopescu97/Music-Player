@@ -12,7 +12,6 @@ public class Device {
 
     private String id;
     private String userId;
-    private String setupId;
 
     public Device(String userId) {
         this.userId = userId;
