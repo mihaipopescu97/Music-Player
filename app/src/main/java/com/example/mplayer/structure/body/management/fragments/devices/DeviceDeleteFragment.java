@@ -32,17 +32,15 @@ public class DeviceDeleteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_setup, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_delete, container, false);
 
         Log.i(TAG, "Device delete fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        //TODO set element references
-        final Spinner devicesSpinner = view.findViewById();
-        final Button deleteDeviceBtn = view.findViewById();
-        final Button doneBtn = view.findViewById();
+        final Spinner devicesSpinner = view.findViewById(R.id.devicesSpinner);
+        final Button deleteDeviceBtn = view.findViewById(R.id.deleteDeviceBtn);
+        final Button doneBtn = view.findViewById(R.id.doneBtn);
 
         String userId = null;
         if(getArguments() != null) {

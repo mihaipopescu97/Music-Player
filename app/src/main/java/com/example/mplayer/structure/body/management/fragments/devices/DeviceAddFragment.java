@@ -28,17 +28,15 @@ public class DeviceAddFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_setup, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
 
         Log.i(TAG, "Device add fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        //TODO set element references
-        final EditText deviceId = view.findViewById();
-        final Button addDeviceBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final EditText deviceId = view.findViewById(R.id.deviceId);
+        final Button addDeviceBtn = view.findViewById(R.id.addDeviceBtn);
+        final Button backBtn = view.findViewById(R.id.backBtn);
 
         String userId = null;
         if(getArguments() != null) {

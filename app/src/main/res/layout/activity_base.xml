@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".structure.body.BaseActivity">
 
+    <Button
+        android:id="@+id/logOutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="logOutFromBase"
+        android:text="Log out"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="64dp" />
+
+    <Button
+        android:id="@+id/playBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="play"
+        android:text="Play"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="630dp" />
+
+    <Button
+        android:id="@+id/playlistBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="managePlaylist"
+        android:text="Manage playlists"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="202dp" />
+
+    <Button
+        android:id="@+id/setupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="manageSetups"
+        android:text="Manage setups"
+        tools:layout_editor_absoluteX="255dp"
+        tools:layout_editor_absoluteY="198dp" />
+
+    <Button
+        android:id="@+id/deviceBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="manageDevice"
+        android:text="Manage devices"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="361dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

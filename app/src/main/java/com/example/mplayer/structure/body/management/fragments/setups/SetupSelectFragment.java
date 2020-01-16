@@ -34,7 +34,7 @@ public class SetupSelectFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_setup, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
 
         Log.i(TAG, "Device view fragment started");
 

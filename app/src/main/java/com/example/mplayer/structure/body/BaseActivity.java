@@ -22,7 +22,6 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseHandler firebaseHandler;
 
     private String userId;
     private String deviceId;
@@ -36,14 +35,14 @@ public class BaseActivity extends AppCompatActivity {
 
         Log.i(TAG, "Base activity started");
 
-        Button deviceBtn = findViewById();
-        Button setupBtn = findViewById();
-        Button playlistBtn = findViewById();
-        Button playBtn = findViewById();
-        Button logOutBtn = findViewById();
+        Button deviceBtn = findViewById(R.id.deviceBtn);
+        Button setupBtn = findViewById(R.id.setupBtn);
+        Button playlistBtn = findViewById(R.id.playlistBtn);
+        Button playBtn = findViewById(R.id.playBtn);
+        Button logOutBtn = findViewById(R.id.logOutBtn);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseHandler = FirebaseHandler.getInstance();
+        FirebaseHandler firebaseHandler = FirebaseHandler.getInstance();
 
         final String email = getIntent().getStringExtra("email");
         userId = firebaseHandler.getUserId(email);
@@ -68,7 +67,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void managePlaylist(View view) {
-        Intent intent = new Intent(BaseActivity.this, ManagePlaylistActivity.class)
+        Intent intent = new Intent(BaseActivity.this, ManagePlaylistActivity.class);
         intent.putExtra("roomId", roomId);
         startActivity(intent);
     }

@@ -32,15 +32,14 @@ public class DeviceSelectFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_setup, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_select, container, false);
 
         Log.d(TAG, "Device view fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
         //TODO set references
-        final Spinner devicesSpinner = view.findViewById();
+        final Spinner devicesSpinner = view.findViewById(R.id.devicesSpinner);
         final Button selectBtn = view.findViewById();
         final Button backBtn = view.findViewById();
 

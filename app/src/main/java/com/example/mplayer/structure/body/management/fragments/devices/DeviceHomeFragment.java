@@ -23,16 +23,14 @@ public class DeviceHomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_setup, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_home, container, false);
 
         Log.d(TAG, "Device home fragment started");
 
-        //TODO set references
-        final Button selectDevicesBtn = view.findViewById();
-        final Button addDeviceBtn = view.findViewById();
-        final Button deleteDeviceBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Button selectDevicesBtn = view.findViewById(R.id.selectDevicesBtn);
+        final Button addDeviceBtn = view.findViewById(R.id.addDeviceBtn);
+        final Button deleteDeviceBtn = view.findViewById(R.id.deleteDeviceBtn);
+        final Button backBtn = view.findViewById(R.id.backBtn);
 
         //TODO get devID from select
         final String deviceId = "";
