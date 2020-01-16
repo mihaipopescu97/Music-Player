@@ -1,9 +1,5 @@
 package com.example.mplayer.utils;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.entities.Room;
@@ -16,15 +12,9 @@ import com.example.mplayer.utils.helpers.RoomHelper;
 import com.example.mplayer.utils.helpers.SetupHelper;
 import com.example.mplayer.utils.helpers.SongHelper;
 import com.example.mplayer.utils.helpers.UserHelper;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseHandler {
@@ -93,6 +83,8 @@ public class FirebaseHandler {
     public User getUser(final String id) {
         return userHelper.getUser(id);
     }
+
+    public String getUserId(final String email) { return userHelper.getUserId(email);}
 
     public void updateUser(final String id, User user) {
         userHelper.updateUser(id, user);
@@ -194,8 +186,8 @@ public class FirebaseHandler {
         return playlistHelper.getPlaylists();
     }
 
-    public List<Playlist> getUserPlaylists(final String userId) {
-        return playlistHelper.getUserPlaylist(userId);
+    public List<Playlist> getRoomPlaylists(final String roomId) {
+        return playlistHelper.getRoomPlaylist(roomId);
     }
 
     public Playlist getPlaylist(final String id) {

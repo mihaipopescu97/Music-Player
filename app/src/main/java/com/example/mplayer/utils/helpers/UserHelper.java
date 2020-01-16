@@ -100,6 +100,32 @@ public class UserHelper {
         return searchedUser[0];
     }
 
+    public String getUserId(final String email) {
+
+        final String[] id = new String[1];
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    User user = keyNode.getValue(User.class);
+                    if (user.getEmail().equals(email)) {
+                        id[0] = user.getId();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        return id[0];
+    }
+
     public void updateUser(final String id, final User user) {
         userRef.child(id).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

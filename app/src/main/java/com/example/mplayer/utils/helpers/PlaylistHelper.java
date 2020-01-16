@@ -75,7 +75,7 @@ public class PlaylistHelper {
         return playlists;
     }
 
-    public List<Playlist> getUserPlaylist(final String userId) {
+    public List<Playlist> getRoomPlaylist(final String roomId) {
 
         final List<Playlist> playlists = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class PlaylistHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Playlist playlist = keyNode.getValue(Playlist.class);
-                    if(playlist.getUserId().equals(userId)) {
+                    if(playlist.getRoomId().equals(roomId)) {
                         playlists.add(playlist);
                     }
                 }
@@ -100,7 +100,7 @@ public class PlaylistHelper {
         });
 
         if(playlists.isEmpty()) {
-            Log.w(TAG, "No playlists for user:" + userId);
+            Log.w(TAG, "No playlists for room:" + roomId);
         }
 
         return playlists;
