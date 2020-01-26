@@ -26,24 +26,20 @@ import java.util.List;
 
 public class SetupSelectFragment extends Fragment {
 
-}
     private static final String TAG = "SetupSelectFragment";
-    private FirebaseHandler firebaseHandler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_setup_select, container, false);
 
         Log.i(TAG, "Device view fragment started");
 
-        firebaseHandler = FirebaseHandler.getInstance();
+        FirebaseHandler firebaseHandler = FirebaseHandler.getInstance();
 
-        //TODO set references
-        final Spinner setupsSpinner = view.findViewById();
-        final Button selectBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Spinner setupsSpinner = view.findViewById(R.id.setupSelectSpinner);
+        final Button selectBtn = view.findViewById(R.id.setupSelectBtn);
+        final Button backBtn = view.findViewById(R.id.setupSelectBackBtn);
 
         //TODO update when firebase handler is done
         List<Setup> setups = firebaseHandler.getSetups();
@@ -61,19 +57,28 @@ public class SetupSelectFragment extends Fragment {
             setupsId.add(setup.getId());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, setupsId);
+        ArrayAdapter<String> adapter = null;
+        if(getActivity() != null) {
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, setupsId);
+        } else {
+            Log.e(TAG, "Activity is null");
+        }
+
         setupsSpinner.setAdapter(adapter);
 
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(setupsSpinner.getSelectedItem() != null) {
-                    //TODO send device id
                     Bundle bundle = new Bundle();
-                    bundle.putString("deviceId",  String.valueOf(setupsSpinner.getSelectedItem()));
+                    bundle.putString("setupId",  String.valueOf(setupsSpinner.getSelectedItem()));
 
-                    Log.d(TAG, "Changing to setup home fragment");
-                    ((ManageSetupActivity)getActivity()).setViewPager(0);
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to setup home fragment");
+                        ((ManageSetupActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
                 } else {
                     Log.e(TAG, "Setup not selected");
                     Toast.makeText(getActivity(), "Please select a setup!", Toast.LENGTH_SHORT).show();
@@ -84,8 +89,12 @@ public class SetupSelectFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to setup home fragment");
-                ((ManageSetupActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to setup home fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

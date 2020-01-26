@@ -6,10 +6,25 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/devicesSpinner"
+        android:id="@+id/deviceSelectSpinner"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="70dp" />
+        tools:layout_editor_absoluteY="106dp" />
+
+    <Button
+        android:id="@+id/deviceSelectBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select"
+        tools:layout_editor_absoluteX="167dp"
+        tools:layout_editor_absoluteY="226dp" />
+
+    <Button
+        android:id="@+id/deviceSelectBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="411dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

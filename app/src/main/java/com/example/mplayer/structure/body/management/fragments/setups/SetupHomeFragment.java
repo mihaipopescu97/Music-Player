@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
+import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
 
 public class SetupHomeFragment extends Fragment {
     private static final String TAG = "SetupHomeFragment";
@@ -22,16 +22,14 @@ public class SetupHomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_setup_home, container, false);
 
         Log.i(TAG, "Setup home fragment started");
 
-        //TODO set references
-        final Button selectSetupBtn = view.findViewById();
-        final Button addSetupBtn = view.findViewById();
-        final Button deleteSetupBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Button selectSetupBtn = view.findViewById(R.id.setupHomeSelectBtn);
+        final Button addSetupBtn = view.findViewById(R.id.setupHomeAddBtn);
+        final Button deleteSetupBtn = view.findViewById(R.id.setupHomeDeleteBtn);
+        final Button backBtn = view.findViewById(R.id.setupHomeBackBtn);
 
         //TODO get setupId
         final String setupId = "";
@@ -39,24 +37,36 @@ public class SetupHomeFragment extends Fragment {
         selectSetupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to setup select fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(1);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to setup select fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(1);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         addSetupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to setup add fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(2);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to setup add fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(2);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         deleteSetupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to setup delete fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(3);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to setup delete fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(3);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

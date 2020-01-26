@@ -31,17 +31,15 @@ public class PlaylistDeleteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_playlist_delete, container, false);
 
         Log.i(TAG, "Playlist delete fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        //TODO set element references
-        final Spinner playlistSpinner = view.findViewById();
-        final Button deletePlaylistBtn = view.findViewById();
-        final Button doneBtn = view.findViewById();
+        final Spinner playlistSpinner = view.findViewById(R.id.playlistDeleteSpinner);
+        final Button deletePlaylistBtn = view.findViewById(R.id.playlistDeleteBtn);
+        final Button doneBtn = view.findViewById(R.id.playlistDeleteDoneBtn);
 
         String userId = null;
         if(getArguments() != null) {
@@ -62,7 +60,12 @@ public class PlaylistDeleteFragment extends Fragment {
                     playlistsId.add(playlist.getId());
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistsId);
+                ArrayAdapter<String> adapter = null;
+                if(getActivity() != null) {
+                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistsId);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
                 playlistSpinner.setAdapter(adapter);
 
                 try {
@@ -82,8 +85,12 @@ public class PlaylistDeleteFragment extends Fragment {
                 if(playlists.isEmpty()) {
                     Log.w(TAG, "User:" + finalUserId + " has no more playlists");
                     Toast.makeText(getActivity(), "You have no more playlists to delete!", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Changing to playlist home fragment");
-                    ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to playlist home fragment");
+                        ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
 
                     //TODO not sure
                     Thread.currentThread().interrupt();
@@ -111,8 +118,12 @@ public class PlaylistDeleteFragment extends Fragment {
             public void onClick(View v) {
                 spinnerThread.interrupt();
                 checkThread.interrupt();
-                Log.d(TAG, "Changing to playlist home fragment");
-                ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist home fragment");
+                    ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

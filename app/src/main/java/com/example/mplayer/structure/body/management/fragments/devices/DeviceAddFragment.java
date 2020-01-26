@@ -34,17 +34,17 @@ public class DeviceAddFragment extends Fragment {
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        final EditText deviceId = view.findViewById(R.id.deviceId);
-        final Button addDeviceBtn = view.findViewById(R.id.addDeviceBtn);
-        final Button backBtn = view.findViewById(R.id.backBtn);
+        final EditText deviceId = view.findViewById(R.id.deviceAddId);
+        final Button addDeviceBtn = view.findViewById(R.id.deviceAddBtn);
+        final Button backBtn = view.findViewById(R.id.deviceAddBackBtn);
 
         String userId = null;
-        if(getArguments() != null) {
-            userId = getArguments().getString("userId");
-        } else {
-            Log.e(TAG, "User id not received");
-            startActivity(new Intent(getActivity(), BaseActivity.class));
-        }
+//        if(getArguments() != null) {
+//            userId = getArguments().getString("userId");
+//        } else {
+//            Log.e(TAG, "User id not received");
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
+//        }
 
         final String finalUserId = userId;
         addDeviceBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +60,13 @@ public class DeviceAddFragment extends Fragment {
                     Log.d(TAG, "Adding device with id:" + device.getId());
                     firebaseHandler.addDevice(device);
 
-                    Log.d(TAG, "Changing to device home fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to device home fragment");
+                        ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
+
                 }
             }
         });
@@ -69,8 +74,12 @@ public class DeviceAddFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device home fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

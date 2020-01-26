@@ -27,10 +27,10 @@ public class DeviceHomeFragment extends Fragment {
 
         Log.d(TAG, "Device home fragment started");
 
-        final Button selectDevicesBtn = view.findViewById(R.id.selectDevicesBtn);
-        final Button addDeviceBtn = view.findViewById(R.id.addDeviceBtn);
-        final Button deleteDeviceBtn = view.findViewById(R.id.deleteDeviceBtn);
-        final Button backBtn = view.findViewById(R.id.backBtn);
+        final Button selectDevicesBtn = view.findViewById(R.id.deviceHomeSelectBtn);
+        final Button addDeviceBtn = view.findViewById(R.id.deviceHomeAddBtn);
+        final Button deleteDeviceBtn = view.findViewById(R.id.deviceHomeDeleteBtn);
+        final Button backBtn = view.findViewById(R.id.deviceHomeBackBtn);
 
         //TODO get devID from select
         final String deviceId = "";
@@ -38,24 +38,36 @@ public class DeviceHomeFragment extends Fragment {
         selectDevicesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device select fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(1);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device select fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(1);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         addDeviceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device add fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(2);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device add fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(2);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         deleteDeviceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to device delete fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(3);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device delete fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(3);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

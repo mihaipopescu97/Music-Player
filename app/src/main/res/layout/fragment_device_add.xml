@@ -6,8 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SetupFragment">
 
+    <Button
+        android:id="@+id/deviceAddBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="436dp" />
+
     <EditText
-        android:id="@+id/deviceId"
+        android:id="@+id/deviceAddId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -16,18 +24,11 @@
         tools:layout_editor_absoluteY="153dp" />
 
     <Button
-        android:id="@+id/addDeviceBtn"
+        android:id="@+id/deviceAddBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="333dp" />
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="276dp" />
 
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="34dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

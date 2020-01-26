@@ -23,16 +23,14 @@ public class PlaylistHomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_playlist_home, container, false);
 
         Log.d(TAG, "Playlist home fragment started");
 
-        //TODO set references
-        final Button selectPlaylistBtn = view.findViewById();
-        final Button addPlaylistBtn = view.findViewById();
-        final Button deletePlaylistBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Button selectPlaylistBtn = view.findViewById(R.id.playlistHomeSelectBtn);
+        final Button addPlaylistBtn = view.findViewById(R.id.playlistHomeAddBtn);
+        final Button deletePlaylistBtn = view.findViewById(R.id.playlistHomeDeleteBtn);
+        final Button backBtn = view.findViewById(R.id.playlistHomeBackBtn);
 
         //TODO get playlistId
         final String playlistId = "";
@@ -40,24 +38,36 @@ public class PlaylistHomeFragment extends Fragment {
         selectPlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to playlist select fragment");
-                ((ManagePlaylistActivity)getActivity()).setViewPager(1);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist select fragment");
+                    ((ManagePlaylistActivity)getActivity()).setViewPager(1);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         addPlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to playlist add fragment");
-                ((ManagePlaylistActivity)getActivity()).setViewPager(2);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist add fragment");
+                    ((ManagePlaylistActivity)getActivity()).setViewPager(2);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
         deletePlaylistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to playlist delete fragment");
-                ((ManagePlaylistActivity)getActivity()).setViewPager(3);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist delete fragment");
+                    ((ManagePlaylistActivity)getActivity()).setViewPager(3);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

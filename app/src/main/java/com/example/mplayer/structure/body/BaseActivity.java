@@ -17,13 +17,15 @@ import com.example.mplayer.structure.player.PlayerActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
 
     private FirebaseAuth firebaseAuth;
 
-    private String userId;
+    private AtomicReference<String> userId = new AtomicReference<>();
     private String deviceId;
     private String setupId;
     private String roomId;
@@ -45,7 +47,11 @@ public class BaseActivity extends AppCompatActivity {
         FirebaseHandler firebaseHandler = FirebaseHandler.getInstance();
 
         final String email = getIntent().getStringExtra("email");
-        userId = firebaseHandler.getUserId(email);
+        firebaseHandler.getUserId(email, userId);
+
+
+        Log.i(TAG, "Received email:" + email);
+        Log.i(TAG, "User:" + userId);
 
         deviceId = getIntent().getStringExtra("deviceId");
         roomId = getIntent().getStringExtra("roomId");
@@ -56,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void manageDevice(View view) {
         Intent intent = new Intent(BaseActivity.this, ManageDeviceActivity.class);
-        intent.putExtra("userId", userId);
+        intent.putExtra("userId", userId.toString());
         startActivity(intent);
     }
 

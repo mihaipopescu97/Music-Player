@@ -32,15 +32,13 @@ public class SetupDeleteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_setup_delete, container, false);
 
         Log.i(TAG, "Setup delete fragment started");
 
-        //TODO set element references
-        final Spinner setupsSpinner = view.findViewById();
-        final Button deleteSetupBtn = view.findViewById();
-        final Button doneBtn = view.findViewById();
+        final Spinner setupsSpinner = view.findViewById(R.id.setupDeleteSpinner);
+        final Button deleteSetupBtn = view.findViewById(R.id.setupDeleteBtn);
+        final Button doneBtn = view.findViewById(R.id.setupDeleteDoneBtn);
 
         firebaseHandler = FirebaseHandler.getInstance();
 
@@ -66,7 +64,12 @@ public class SetupDeleteFragment extends Fragment {
                     setupsId.add(setup.getId());
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, setupsId);
+                ArrayAdapter<String> adapter = null;
+                if(getActivity() != null) {
+                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, setupsId);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
                 setupsSpinner.setAdapter(adapter);
 
                 try {
@@ -86,6 +89,12 @@ public class SetupDeleteFragment extends Fragment {
                 if(devices.isEmpty()) {
                     Log.w(TAG, "User:" + finalDeviceId + " has no more devices");
                     Toast.makeText(getActivity(), "You have no more devices to delete!", Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to device home fragment");
+                        ((ManageSetupActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
                     Log.d(TAG, "Changing to device home fragment");
                     ((ManageSetupActivity)getActivity()).setViewPager(0);
 
@@ -116,8 +125,12 @@ public class SetupDeleteFragment extends Fragment {
             public void onClick(View v) {
                 spinnerThread.interrupt();
                 checkThread.interrupt();
-                Log.d(TAG, "Changing to setup home fragment");
-                ((ManageSetupActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device home fragment");
+                    ((ManageSetupActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

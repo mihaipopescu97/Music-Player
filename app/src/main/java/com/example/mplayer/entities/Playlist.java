@@ -14,6 +14,8 @@ public class Playlist {
     private String roomId;
     private List<String> songs;
 
+    public Playlist() {
+    }
     public Playlist(String roomId) {
         this.roomId = roomId;
         id = UUID.randomUUID().toString();

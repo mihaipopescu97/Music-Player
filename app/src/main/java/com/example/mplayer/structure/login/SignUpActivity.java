@@ -65,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.d(TAG, "Creating user with email:" + email + " and password:" + pass);
                         firebaseHandler.addUser(new User(email, pass));
 
-                        Intent intent = new Intent(SignUpActivity.this, BaseActivity.class);
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
                     }

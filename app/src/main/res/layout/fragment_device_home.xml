@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/selectDevicesBtn"
+        android:id="@+id/deviceHomeSelectBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select device"
@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="155dp" />
 
     <Button
-        android:id="@+id/addDeviceBtn"
+        android:id="@+id/deviceHomeAddBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add device"
@@ -22,18 +22,18 @@
         tools:layout_editor_absoluteY="269dp" />
 
     <Button
-        android:id="@+id/deleteDeviceBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete device"
-        tools:layout_editor_absoluteX="78dp"
-        tools:layout_editor_absoluteY="389dp" />
-
-    <Button
-        android:id="@+id/backBtn"
+        android:id="@+id/deviceHomeBackBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"
         tools:layout_editor_absoluteX="81dp"
         tools:layout_editor_absoluteY="60dp" />
+
+    <Button
+        android:id="@+id/deviceHomeDeleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="413dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

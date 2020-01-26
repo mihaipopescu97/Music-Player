@@ -38,17 +38,17 @@ public class DeviceDeleteFragment extends Fragment {
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        final Spinner devicesSpinner = view.findViewById(R.id.devicesSpinner);
-        final Button deleteDeviceBtn = view.findViewById(R.id.deleteDeviceBtn);
-        final Button doneBtn = view.findViewById(R.id.doneBtn);
+        final Spinner devicesSpinner = view.findViewById(R.id.deviceDeleteSpinner);
+        final Button deleteDeviceBtn = view.findViewById(R.id.deviceDeleteBtn);
+        final Button doneBtn = view.findViewById(R.id.deviceDeleteDoneBtn);
 
         String userId = null;
-        if(getArguments() != null) {
-            userId = getArguments().getString("roomId");
-        } else {
-            Log.e(TAG, "User id not received");
-            startActivity(new Intent(getActivity(), BaseActivity.class));
-        }
+//        if(getArguments() != null) {
+//            userId = getArguments().getString("roomId");
+//        } else {
+//            Log.e(TAG, "User id not received");
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
+//        }
 
 
         final String finalUserId = userId;
@@ -62,7 +62,13 @@ public class DeviceDeleteFragment extends Fragment {
                     devicesId.add(device.getId());
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, devicesId);
+                ArrayAdapter<String> adapter = null;
+                if(getActivity() != null) {
+                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, devicesId);
+                } else {
+                    Log.e(TAG, "Activity not started");
+                }
+
                 devicesSpinner.setAdapter(adapter);
 
                 try {
@@ -82,8 +88,12 @@ public class DeviceDeleteFragment extends Fragment {
                 if(devices.isEmpty()) {
                     Log.w(TAG, "User:" + finalUserId + " has no more devices");
                     Toast.makeText(getActivity(), "You have no more devices to delete!", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Changing to device home fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to device home fragment");
+                        ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
 
                     //TODO not sure
                     Thread.currentThread().interrupt();
@@ -110,8 +120,12 @@ public class DeviceDeleteFragment extends Fragment {
             public void onClick(View v) {
                 spinnerThread.interrupt();
                 checkThread.interrupt();
-                Log.d(TAG, "Changing to device home fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to device home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

@@ -17,7 +17,6 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageDeviceActivity";
 
-    private DeviceSectionAdapter deviceSectionAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -27,13 +26,16 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
         Log.i(TAG, "Manage device activity started");
 
-        deviceSectionAdapter = new DeviceSectionAdapter(getSupportFragmentManager());
-        viewPager = findViewById(R.id.container);
-        setupViewPage(viewPager);
-
         final String userId = getIntent().getStringExtra("userId");
+        Log.i(TAG, "Got user:" + userId);
         Bundle bundle = new Bundle();
         bundle.putString("userId", userId);
+
+        viewPager = findViewById(R.id.deviceContainer);
+        setupViewPage(viewPager);
+        viewPager.setCurrentItem(0);
+
+
 
         DeviceAddFragment deviceAddFragment = new DeviceAddFragment();
         deviceAddFragment.setArguments(bundle);

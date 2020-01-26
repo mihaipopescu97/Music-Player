@@ -17,7 +17,8 @@ public class DeviceSectionAdapter extends FragmentStatePagerAdapter {
     }
 
     public void addFragment(Fragment fragment, String title) {
-
+        fragmentList.add(fragment);
+        fragmentTitleList.add(title);
     }
 
     @NonNull

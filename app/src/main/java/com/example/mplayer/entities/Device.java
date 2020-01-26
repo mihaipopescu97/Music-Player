@@ -13,6 +13,9 @@ public class Device {
     private String id;
     private String userId;
 
+    public Device() {
+
+    }
     public Device(String userId) {
         this.userId = userId;
         id = UUID.randomUUID().toString();

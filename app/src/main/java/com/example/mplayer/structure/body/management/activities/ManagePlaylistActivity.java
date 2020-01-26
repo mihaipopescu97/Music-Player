@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistHomeFragment;
@@ -18,7 +17,6 @@ public class ManagePlaylistActivity extends AppCompatActivity {
 
     private static final String TAG = "ManagePlaylistActivity";
 
-    private PlaylistSectionAdapter playlistSectionAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -28,9 +26,9 @@ public class ManagePlaylistActivity extends AppCompatActivity {
 
         Log.i(TAG, "Manage playlist activity started");
 
-        playlistSectionAdapter = new PlaylistSectionAdapter(getSupportFragmentManager());
-        viewPager = findViewById(R.id.container);
+        viewPager = findViewById(R.id.playlistContainer);
         setupViewPage(viewPager);
+        viewPager.setCurrentItem(0);
 
         final String roomId = getIntent().getStringExtra("roomId");
         Bundle bundle = new Bundle();

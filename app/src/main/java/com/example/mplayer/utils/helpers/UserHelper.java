@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UserHelper {
 
@@ -100,18 +102,17 @@ public class UserHelper {
         return searchedUser[0];
     }
 
-    public String getUserId(final String email) {
+    public synchronized void getUserId(final String email, final AtomicReference<String> userId) {
 
-        final String[] id = new String[1];
+        final AtomicReference<String> id = new AtomicReference<>();
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> keys = new ArrayList<>();
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                    keys.add(keyNode.getKey());
                     User user = keyNode.getValue(User.class);
-                    if (user.getEmail().equals(email)) {
-                        id[0] = user.getId();
+                    final String userEmail = user.getEmail();
+                    if (userEmail.equals(email)) {
+                        userId.set(user.getId());
                     }
                 }
 
@@ -122,8 +123,6 @@ public class UserHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return id[0];
     }
 
     public void updateUser(final String id, final User user) {

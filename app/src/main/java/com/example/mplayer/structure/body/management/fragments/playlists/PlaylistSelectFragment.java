@@ -27,22 +27,19 @@ import java.util.List;
 public class PlaylistSelectFragment extends Fragment {
 
     private static final String TAG = "PlaylistSelectFragment";
-    private FirebaseHandler firebaseHandler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_playlist_select, container, false);
 
         Log.d(TAG, "Device view fragment started");
 
-        firebaseHandler = FirebaseHandler.getInstance();
+        FirebaseHandler firebaseHandler = FirebaseHandler.getInstance();
 
-        //TODO set references
-        final Spinner playlistSpinner = view.findViewById();
-        final Button selectBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Spinner playlistSpinner = view.findViewById(R.id.playlistSelectSpinner);
+        final Button selectBtn = view.findViewById(R.id.playlistSelectBtn);
+        final Button backBtn = view.findViewById(R.id.playlistSelectBackBtn);
 
         String userId = null;
         if(getArguments() != null) {
@@ -60,17 +57,29 @@ public class PlaylistSelectFragment extends Fragment {
             playlistsId.add(playlist.getId());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistsId);
+        ArrayAdapter<String> adapter = null;
+        if(getActivity() != null) {
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistsId);
+        } else {
+            Log.e(TAG, "Activity is null");
+        }
         playlistSpinner.setAdapter(adapter);
 
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(playlistSpinner.getSelectedItem() != null) {
-                    //TODO send device id
-                    String.valueOf(playlistSpinner.getSelectedItem());
-                    Log.d(TAG, "Changing to playlist home fragment");
-                    ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("playlistId", String.valueOf(playlistSpinner.getSelectedItem()));
+
+                    if(getActivity() != null) {
+                        Log.d(TAG, "Changing to playlist home fragment");
+                        ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
+
                 } else {
                     Log.e(TAG, "Playlist not selected");
                     Toast.makeText(getActivity(), "Please select a playlist!", Toast.LENGTH_SHORT).show();
@@ -81,8 +90,12 @@ public class PlaylistSelectFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Changing to playlist home fragment");
-                ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist home fragment");
+                    ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

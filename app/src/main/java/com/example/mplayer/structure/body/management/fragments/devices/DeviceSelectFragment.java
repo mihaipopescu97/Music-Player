@@ -39,17 +39,17 @@ public class DeviceSelectFragment extends Fragment {
         firebaseHandler = FirebaseHandler.getInstance();
 
         //TODO set references
-        final Spinner devicesSpinner = view.findViewById(R.id.devicesSpinner);
-        final Button selectBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Spinner devicesSpinner = view.findViewById(R.id.deviceSelectSpinner);
+        final Button selectBtn = view.findViewById(R.id.deviceSelectBtn);
+        final Button backBtn = view.findViewById(R.id.deviceSelectBackBtn);
 
         String userId = null;
-        if(getArguments() != null) {
-            userId = getArguments().getString("roomId");
-        } else {
-            Log.e(TAG, "User id not received");
-            startActivity(new Intent(getActivity(), BaseActivity.class));
-        }
+//        if(getArguments() != null) {
+//            userId = getArguments().getString("roomId");
+//        } else {
+//            Log.e(TAG, "User id not received");
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
+//        }
 
         List<Device> devices = firebaseHandler.getUserDevices(userId);
         List<String> devicesId = new ArrayList<>();

@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.BaseActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
-import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Room;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -32,8 +31,7 @@ public class SetupAddFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_setup_add, container, false);
 
         Log.i(TAG, "Setup add fragment started");
 
@@ -41,10 +39,9 @@ public class SetupAddFragment extends Fragment {
 
         final List<Room> rooms = new ArrayList<>();
 
-        //TODO set element references
-        final EditText nrOfRooms = view.findViewById();
-        final Button addSetupBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final EditText nrOfRooms = view.findViewById(R.id.setupAddId);
+        final Button addSetupBtn = view.findViewById(R.id.setupAddBtn);
+        final Button backBtn = view.findViewById(R.id.setupAddBackBtn);
 
         String deviceId = null;
         if(getArguments() != null) {
@@ -72,8 +69,13 @@ public class SetupAddFragment extends Fragment {
                     Log.d(TAG, "Setup added with id:" + setup.getId());
                     firebaseHandler.addSetup(setup);
 
-                    Log.i(TAG, "Changing to setup home fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    if(getActivity() != null) {
+                        Log.i(TAG, "Changing to setup home fragment");
+                        ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    } else {
+                        Log.e(TAG, "Activity is null");
+                    }
+
                 } catch (NumberFormatException e) {
                     Log.w(TAG, "Invalid number");
                     e.printStackTrace();
@@ -84,8 +86,12 @@ public class SetupAddFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Changing to setup home fragment");
-                ((ManageSetupActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.i(TAG, "Changing to setup home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

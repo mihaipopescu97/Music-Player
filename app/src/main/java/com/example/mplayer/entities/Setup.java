@@ -15,6 +15,8 @@ public class Setup {
     private String deviceId;
     private List<Room> rooms;
 
+    public Setup() {}
+
     public Setup(String deviceId) {
         this.deviceId = deviceId;
         id = UUID.randomUUID().toString();

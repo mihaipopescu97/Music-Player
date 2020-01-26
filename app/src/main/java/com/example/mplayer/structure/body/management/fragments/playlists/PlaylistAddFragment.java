@@ -33,8 +33,7 @@ public class PlaylistAddFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO set layout
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_playlist_add, container, false);
 
         Log.i(TAG, "Playlist add fragment started");
 
@@ -44,12 +43,11 @@ public class PlaylistAddFragment extends Fragment {
         final List<String> songNames = new ArrayList<>();
         final List<String> playlistSongs = new ArrayList<>();
 
-        //TODO set element references
-        final Spinner songsSpinner = view.findViewById();
-        final Spinner playlistSongsSpinner = view.findViewById();
-        final Button addSongBtn = view.findViewById();
-        final Button doneBtn = view.findViewById();
-        final Button backBtn = view.findViewById();
+        final Spinner songsSpinner = view.findViewById(R.id.playlistAddSpinner);
+        final Spinner playlistSongsSpinner = view.findViewById(R.id.playlistAddSongSpinner);
+        final Button addSongBtn = view.findViewById(R.id.playlistAddBtn);
+        final Button doneBtn = view.findViewById(R.id.playlistAddDoneBtn);
+        final Button backBtn = view.findViewById(R.id.playlistAddBackBtn);
 
         String userId = null;
         if(getArguments() != null) {
@@ -64,14 +62,26 @@ public class PlaylistAddFragment extends Fragment {
         }
 
 
-        ArrayAdapter<String> songsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, songNames);
+        ArrayAdapter<String> songsAdapter = null;
+        if(getActivity() != null) {
+            songsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, songNames);
+        } else {
+            Log.e(TAG, "Activity is null");
+        }
         songsSpinner.setAdapter(songsAdapter);
 
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-               ArrayAdapter<String> playlistAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistSongs);
-               playlistSongsSpinner.setAdapter(playlistAdapter);
+                ArrayAdapter<String> playlistAdapter = null;
+
+                if(getActivity() != null) {
+                    playlistAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, playlistSongs);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
+                playlistSongsSpinner.setAdapter(playlistAdapter);
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -105,8 +115,12 @@ public class PlaylistAddFragment extends Fragment {
 
                 thread.interrupt();
 
-                Log.d(TAG, "Changing to playlist home fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 
@@ -114,8 +128,13 @@ public class PlaylistAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 thread.interrupt();
-                Log.d(TAG, "Changing to playlist home fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+
+                if(getActivity() != null) {
+                    Log.d(TAG, "Changing to playlist home fragment");
+                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                } else {
+                    Log.e(TAG, "Activity is null");
+                }
             }
         });
 

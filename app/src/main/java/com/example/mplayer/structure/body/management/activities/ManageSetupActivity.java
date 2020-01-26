@@ -17,7 +17,7 @@ public class ManageSetupActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageSetupActivity";
 
-    private SetupSectionAdapter setupsSectionAdapter;
+
     private ViewPager viewPager;
 
     @Override
@@ -27,9 +27,9 @@ public class ManageSetupActivity extends AppCompatActivity {
 
         Log.i(TAG, "Manage setups activity started");
 
-        setupsSectionAdapter = new SetupSectionAdapter(getSupportFragmentManager());
-        viewPager = findViewById(R.id.container);
+        viewPager = findViewById(R.id.setupsContainer);
         setupViewPage(viewPager);
+        viewPager.setCurrentItem(0);
 
         final String deviceId = getIntent().getStringExtra("deviceId");
         Bundle bundle = new Bundle();

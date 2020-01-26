@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FirebaseHandler {
 
@@ -41,6 +42,7 @@ public class FirebaseHandler {
 
     private FirebaseHandler() {
         //Set the instance
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         ref = FirebaseDatabase.getInstance().getReference();
 
         //Set the references
@@ -84,7 +86,7 @@ public class FirebaseHandler {
         return userHelper.getUser(id);
     }
 
-    public String getUserId(final String email) { return userHelper.getUserId(email);}
+    public void getUserId(final String email, final AtomicReference<String> userId) { userHelper.getUserId(email, userId);}
 
     public void updateUser(final String id, User user) {
         userHelper.updateUser(id, user);
