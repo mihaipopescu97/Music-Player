@@ -33,53 +33,46 @@ public class DeviceAddFragment extends Fragment {
         Log.i(TAG, "Device add fragment started");
 
         firebaseHandler = FirebaseHandler.getInstance();
-
         final EditText deviceId = view.findViewById(R.id.deviceAddId);
         final Button addDeviceBtn = view.findViewById(R.id.deviceAddBtn);
         final Button backBtn = view.findViewById(R.id.deviceAddBackBtn);
 
-        String userId = null;
+//        String userId = ;
 //        if(getArguments() != null) {
-//            userId = getArguments().getString("userId");
+            String userId = getArguments().getString("userId2");
 //        } else {
 //            Log.e(TAG, "User id not received");
 //            startActivity(new Intent(getActivity(), BaseActivity.class));
 //        }
 
         final String finalUserId = userId;
-        addDeviceBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(deviceId.getText().toString().matches("")) {
-                    Log.e(TAG, "Empty device id");
-                    Toast.makeText(getActivity(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Device device = new Device(finalUserId);
-                    device.setId(deviceId.getText().toString());
+        addDeviceBtn.setOnClickListener(v -> {
+            if(deviceId.getText().toString().matches("")) {
+                Log.e(TAG, "Empty device id");
+                Toast.makeText(getActivity(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
+            } else {
+                Device device = new Device(finalUserId);
+                device.setId(deviceId.getText().toString());
 
-                    Log.d(TAG, "Adding device with id:" + device.getId());
-                    firebaseHandler.addDevice(device);
+                Log.d(TAG, "Adding device with id:" + device.getId());
+                firebaseHandler.addDevice(device);
 
-                    if(getActivity() != null) {
-                        Log.d(TAG, "Changing to device home fragment");
-                        ((ManageDeviceActivity)getActivity()).setViewPager(0);
-                    } else {
-                        Log.e(TAG, "Activity is null");
-                    }
-
-                }
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to device home fragment");
                     ((ManageDeviceActivity)getActivity()).setViewPager(0);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }
+
+            }
+        });
+
+        backBtn.setOnClickListener(v -> {
+            if(getActivity() != null) {
+                Log.d(TAG, "Changing to device home fragment");
+                ((ManageDeviceActivity)getActivity()).setViewPager(0);
+            } else {
+                Log.e(TAG, "Activity is null");
             }
         });
 

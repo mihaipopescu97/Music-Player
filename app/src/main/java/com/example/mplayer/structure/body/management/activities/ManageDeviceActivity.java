@@ -3,6 +3,7 @@ package com.example.mplayer.structure.body.management.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,11 +14,15 @@ import com.example.mplayer.structure.body.management.fragments.devices.DeviceHom
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceSelectFragment;
 import com.example.mplayer.adapters.fragments.DeviceSectionAdapter;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ManageDeviceActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageDeviceActivity";
 
     private ViewPager viewPager;
+    private Thread userIdThread;
+    private final AtomicReference<String> userId = new AtomicReference<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +31,33 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
         Log.i(TAG, "Manage device activity started");
 
-        final String userId = getIntent().getStringExtra("userId");
-        Log.i(TAG, "Got user:" + userId);
-        Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+
+        userIdThread = new Thread(() -> {
+            Intent intent = getIntent();
+            userId.set(intent.getStringExtra("userId"));
+        });
 
         viewPager = findViewById(R.id.deviceContainer);
         setupViewPage(viewPager);
         viewPager.setCurrentItem(0);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userIdThread.start();
 
-        DeviceAddFragment deviceAddFragment = new DeviceAddFragment();
-        deviceAddFragment.setArguments(bundle);
+        while(userIdThread.isAlive()) {
+            Log.d(TAG, "Waiting for thread to read");
+        }
 
-        DeviceDeleteFragment deviceDeleteFragment = new DeviceDeleteFragment();
-        deviceDeleteFragment.setArguments(bundle);
+        Log.i(TAG, "Got user:" + userId.get());
+        Bundle bundle = new Bundle();
+        bundle.putString("userId2", userId.get());
 
-        DeviceSelectFragment deviceSelectFragment = new DeviceSelectFragment();
-        deviceSelectFragment.setArguments(bundle);
-
+        DeviceHomeFragment deviceHomeFragment = new DeviceHomeFragment();
+        deviceHomeFragment.setArguments(bundle);
     }
 
     private void setupViewPage(ViewPager viewPager) {
@@ -69,4 +81,5 @@ public class ManageDeviceActivity extends AppCompatActivity {
     public void setViewPager(int fragmentNumber) {
         viewPager.setCurrentItem(fragmentNumber);
     }
+
 }
