@@ -62,26 +62,20 @@ public class BaseActivity extends AppCompatActivity {
         manageSetupsBtn = findViewById(R.id.setupBtn);
         playBtn = findViewById(R.id.playBtn);
 
-        List<Button> list = Arrays.asList(manageDevicesBtn, managePlayliststBtn, manageSetupsBtn, playBtn);
-        list.forEach(button -> {
-            button.setVisibility(View.GONE);
+        //Initially, buttons are gone
+        List<Button> list = Arrays.asList(manageDevicesBtn, managePlayliststBtn,
+                manageSetupsBtn, playBtn);
+        list.forEach(button -> button.setVisibility(View.GONE));
+
+        thread = new Thread(() -> {
+            Intent intent = getIntent();
+            email.set(intent.getStringExtra("email"));
+            firebaseHandler.getUserId(email.get(), userId);
         });
 
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = getIntent();
-                email.set(intent.getStringExtra("email"));
-                firebaseHandler.getUserId(email.get(), userId);
-            }
-        });
-
-
-
-
-        deviceId = getIntent().getStringExtra("deviceId");
-        roomId = getIntent().getStringExtra("roomId");
-        setupId = getIntent().getStringExtra("setupId");
+//        deviceId = getIntent().getStringExtra("deviceId");
+//        roomId = getIntent().getStringExtra("roomId");
+//        setupId = getIntent().getStringExtra("setupId");
 
 
     }
@@ -101,6 +95,7 @@ public class BaseActivity extends AppCompatActivity {
                 }
             } else {
                 Log.i(TAG, "Received email:" + email.get());
+                logOutBtn.setVisibility(View.VISIBLE);
                 manageDevicesBtn.setVisibility(View.VISIBLE);
                 break;
             }

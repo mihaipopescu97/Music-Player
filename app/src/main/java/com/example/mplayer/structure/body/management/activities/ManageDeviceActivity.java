@@ -21,7 +21,7 @@ public class ManageDeviceActivity extends AppCompatActivity {
     private static final String TAG = "ManageDeviceActivity";
 
     private ViewPager viewPager;
-    private Thread userIdThread;
+    private Thread userIdThread, uiThread;
     private final AtomicReference<String> userId = new AtomicReference<>();
 
     @Override
@@ -31,22 +31,23 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
         Log.i(TAG, "Manage device activity started");
 
-
         userIdThread = new Thread(() -> {
             Intent intent = getIntent();
             userId.set(intent.getStringExtra("userId"));
         });
 
-        viewPager = findViewById(R.id.deviceContainer);
-        setupViewPage(viewPager);
-        viewPager.setCurrentItem(0);
-
+        uiThread = new Thread(() -> {
+            viewPager = findViewById(R.id.deviceContainer);
+            setupViewPage(viewPager);
+            viewPager.setCurrentItem(0);
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         userIdThread.start();
+        uiThread.start();
 
         while(userIdThread.isAlive()) {
             Log.d(TAG, "Waiting for thread to read");
@@ -54,13 +55,14 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
         Log.i(TAG, "Got user:" + userId.get());
         Bundle bundle = new Bundle();
-        bundle.putString("userId2", userId.get());
+        bundle.putString("user", userId.get());
 
+        //TODO may need check
         DeviceHomeFragment deviceHomeFragment = new DeviceHomeFragment();
         deviceHomeFragment.setArguments(bundle);
     }
 
-    private void setupViewPage(ViewPager viewPager) {
+    private synchronized void setupViewPage(ViewPager viewPager) {
         DeviceSectionAdapter adapter = new DeviceSectionAdapter(getSupportFragmentManager());
 
         Log.d(TAG, "Device home -> 0");
@@ -78,7 +80,7 @@ public class ManageDeviceActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    public void setViewPager(int fragmentNumber) {
+    public synchronized void setViewPager(int fragmentNumber) {
         viewPager.setCurrentItem(fragmentNumber);
     }
 

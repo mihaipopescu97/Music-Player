@@ -24,6 +24,7 @@ public class DeviceAddFragment extends Fragment {
 
     private static final String TAG = "DeviceAddFragment";
     private FirebaseHandler firebaseHandler;
+    private Thread listener1,listener2;
 
     @Nullable
     @Override

@@ -1,6 +1,7 @@
 package com.example.mplayer.structure.body.management.fragments.devices;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,3 +96,4 @@ public class DeviceHomeFragment extends Fragment {
         Log.i(TAG, "Got user:" + userId.get());
     }
 }
+
