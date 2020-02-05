@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".structure.body.SingleActivity">
+
+    <Button
+        android:id="@+id/createNewSetupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="singleCreateNewSetup"
+        android:text="Create new setup"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="88dp" />
+
+    <Button
+        android:id="@+id/useSetupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="singleUseSetup"
+        android:text="Use setup"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="230dp" />
+
+    <Button
+        android:id="@+id/playBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="singlePlay"
+        android:text="play"
+        tools:layout_editor_absoluteX="178dp"
+        tools:layout_editor_absoluteY="476dp" />
+
+    <Button
+        android:id="@+id/manageSettingsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="singleManageSettings"
+        android:text="manage settings"
+        tools:layout_editor_absoluteX="178dp"
+        tools:layout_editor_absoluteY="339dp" />
+
+    <Button
+        android:id="@+id/backSingleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="backSingle"
+        android:text="@string/back"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="43dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

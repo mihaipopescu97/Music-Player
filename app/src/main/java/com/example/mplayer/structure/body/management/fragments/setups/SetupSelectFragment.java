@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.SingleActivity;
 import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -50,7 +50,7 @@ public class SetupSelectFragment extends Fragment {
             deviceId = getArguments().getString("deviceId");
         } else {
             Log.e(TAG, "Device id not received");
-            startActivity(new Intent(getActivity(), BaseActivity.class));
+            startActivity(new Intent(getActivity(), SingleActivity.class));
         }
 
         for(Setup setup : setups) {

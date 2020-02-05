@@ -1,6 +1,5 @@
 package com.example.mplayer.structure.body.management.fragments.devices;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -43,7 +41,7 @@ public class DeviceAddFragment extends Fragment {
             String userId = getArguments().getString("userId2");
 //        } else {
 //            Log.e(TAG, "User id not received");
-//            startActivity(new Intent(getActivity(), BaseActivity.class));
+//            startActivity(new Intent(getActivity(), SingleActivity.class));
 //        }
 
         final String finalUserId = userId;

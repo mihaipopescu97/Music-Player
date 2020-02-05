@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.SingleActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Room;
 import com.example.mplayer.entities.Setup;
@@ -48,7 +48,7 @@ public class SetupAddFragment extends Fragment {
             deviceId = getArguments().getString("deviceId");
         } else {
             Log.e(TAG, "Device id not received");
-            startActivity(new Intent(getActivity(), BaseActivity.class));
+            startActivity(new Intent(getActivity(), SingleActivity.class));
         }
 
         final String finalDeviceId = deviceId;

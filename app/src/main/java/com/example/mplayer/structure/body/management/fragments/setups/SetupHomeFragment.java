@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.SingleActivity;
 import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
 
 public class SetupHomeFragment extends Fragment {
@@ -74,9 +74,9 @@ public class SetupHomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Changing to base activity");
-                Intent intent = new Intent(getActivity(), BaseActivity.class);
+                Intent intent = new Intent(getActivity(), SingleActivity.class);
                 intent.putExtra("setupId", setupId);
-                startActivity(new Intent(getActivity(), BaseActivity.class));
+                startActivity(new Intent(getActivity(), SingleActivity.class));
             }
         });
 

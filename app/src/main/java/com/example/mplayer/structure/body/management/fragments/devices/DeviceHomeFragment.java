@@ -1,7 +1,6 @@
 package com.example.mplayer.structure.body.management.fragments.devices;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.SingleActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -76,9 +75,9 @@ public class DeviceHomeFragment extends Fragment {
 
         backBtn.setOnClickListener(v -> {
             Log.d(TAG, "Changing to device base activity");
-            Intent intent = new Intent(getActivity(), BaseActivity.class);
+            Intent intent = new Intent(getActivity(), SingleActivity.class);
             intent.putExtra("deviceId", deviceId);
-            startActivity(new Intent(getActivity(), BaseActivity.class));
+            startActivity(new Intent(getActivity(), SingleActivity.class));
         });
 
         return view;

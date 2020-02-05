@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.SelectActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(MainActivity.this, BaseActivity.class);
+                    Intent intent = new Intent(getBaseContext(), SelectActivity.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
                 }
