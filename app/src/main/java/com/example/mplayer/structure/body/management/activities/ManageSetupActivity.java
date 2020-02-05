@@ -16,7 +16,7 @@ import com.example.mplayer.structure.body.management.fragments.setups.SetupAddFr
 import com.example.mplayer.structure.body.management.fragments.setups.SetupDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupSelectFragment;
-import com.example.mplayer.adapters.fragments.SetupSectionAdapter;
+import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -32,7 +32,6 @@ public class ManageSetupActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private AtomicReference<String> userId = new AtomicReference<>();
-    private AtomicBoolean select = new AtomicBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class ManageSetupActivity extends AppCompatActivity {
     }
 
     private void setupViewPage(ViewPager viewPager) {
-        SetupSectionAdapter adapter = new SetupSectionAdapter(getSupportFragmentManager());
+        FragmentSectionAdapter adapter = new FragmentSectionAdapter(getSupportFragmentManager());
 
         Log.d(TAG, "Setup home -> 0");
         adapter.addFragment(new SetupHomeFragment(), "SetupHomeFragment");
@@ -84,7 +83,6 @@ public class ManageSetupActivity extends AppCompatActivity {
             ManageSetupActivity activity = weakReference.get();
             Intent intent = activity.getIntent();
             activity.userId.set(intent.getStringExtra("userId"));
-            activity.select.set(Objects.requireNonNull(intent.getExtras()).getBoolean("select"));
 
             return null;
         }
@@ -95,10 +93,6 @@ public class ManageSetupActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             ManageSetupActivity activity = weakReference.get();
-
-            if(activity.select.get()) {
-               activity.viewPager.setCurrentItem(1);
-            }
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", activity.userId.get());

@@ -17,6 +17,7 @@ import com.example.mplayer.structure.body.management.activities.ManageDeviceActi
 import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
 import com.example.mplayer.structure.body.management.activities.SettingsActivity;
 import com.example.mplayer.structure.player.PlayerActivity;
+import com.example.mplayer.utils.enums.Actions;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -64,7 +65,7 @@ public class SingleActivity extends AppCompatActivity {
             Intent intent = new Intent(SingleActivity.this, ManageDeviceActivity.class);
             intent.putExtra("userId", userId.get())
                     .putExtra("prevActivity", getBaseContext().toString())
-                    .putExtra("type", "create");
+                    .putExtra("type", Actions.CREATE);
             startActivity(intent);
         } else {
             Toast.makeText(getBaseContext(), "User not received! Please login again", Toast.LENGTH_SHORT).show();
@@ -75,7 +76,7 @@ public class SingleActivity extends AppCompatActivity {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(SingleActivity.this, ManageSetupActivity.class);
             intent.putExtra("userId", userId.get())
-                    .putExtra("type", "select");
+                    .putExtra("type", Actions.SELECT);
             startActivity(intent);
         } else {
             Toast.makeText(getBaseContext(), "User not received! Please login again", Toast.LENGTH_SHORT).show();

@@ -28,7 +28,6 @@ public class DeviceHomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_device_home, container, false);
-
         Log.d(TAG, "Device home fragment started");
 
         final Button selectDevicesBtn = view.findViewById(R.id.deviceHomeSelectBtn);

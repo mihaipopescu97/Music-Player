@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
+import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistSelectFragment;
-import com.example.mplayer.adapters.fragments.PlaylistSectionAdapter;
 
 public class ManagePlaylistActivity extends AppCompatActivity {
 
@@ -45,7 +45,7 @@ public class ManagePlaylistActivity extends AppCompatActivity {
     }
 
     private void setupViewPage(ViewPager viewPager) {
-        PlaylistSectionAdapter adapter = new PlaylistSectionAdapter(getSupportFragmentManager());
+        FragmentSectionAdapter adapter = new FragmentSectionAdapter(getSupportFragmentManager());
 
         Log.d(TAG, "Playlist home -> 0");
         adapter.addFragment(new PlaylistHomeFragment(), "PlaylistHomeFragment");

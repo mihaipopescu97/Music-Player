@@ -1,26 +1,30 @@
 package com.example.mplayer.structure.body.management.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddFragment;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceDeleteFragment;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceHomeFragment;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceSelectFragment;
+import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddFragment;
+import com.example.mplayer.structure.body.management.fragments.setups.SetupAddFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ManageDeviceActivity extends AppCompatActivity {
+public class NewSetupActivity extends AppCompatActivity {
 
-    private final String TAG = "ManageDeviceActivity";
+    private final String TAG = "NewSetupActivity";
 
     private ViewPager viewPager;
     private AtomicReference<String> userId;
@@ -28,9 +32,9 @@ public class ManageDeviceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_device);
+        setContentView(R.layout.activity_new_setup);
 
-        Log.i(TAG, "Manage device activity started");
+        Log.i(TAG, "Activity started");
 
         userId = new AtomicReference<>();
 
@@ -38,24 +42,20 @@ public class ManageDeviceActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         viewPager.setCurrentItem(0);
 
-        new BackgroundTasks(this).execute();
+        new BackgroundTask(this).execute();
     }
-
 
     private  void setupViewPager(ViewPager viewPager) {
         FragmentSectionAdapter adapter = new FragmentSectionAdapter(getSupportFragmentManager());
 
-        Log.d(TAG, "Device home -> 0");
-        adapter.addFragment(new DeviceHomeFragment(), "DeviceHomeFragment");
-
-        Log.d(TAG, "Device select -> 1");
-        adapter.addFragment(new DeviceSelectFragment(), "DeviceSelectFragment");
-
-        Log.d(TAG, "Device add -> 2");
+        Log.d(TAG, "Device create -> 0");
         adapter.addFragment(new DeviceAddFragment(), "DeviceAddFragment");
 
-        Log.d(TAG, "Device delete -> 3");
-        adapter.addFragment(new DeviceDeleteFragment(), "DeviceDeleteFragment");
+        Log.d(TAG, "Setup create -> 1");
+        adapter.addFragment(new SetupAddFragment(), "DeviceSelectFragment");
+
+        Log.d(TAG, "Playlist create -> 2");
+        adapter.addFragment(new PlaylistAddFragment(), "DeviceAddFragment");
 
         viewPager.setAdapter(adapter);
     }
@@ -64,41 +64,40 @@ public class ManageDeviceActivity extends AppCompatActivity {
         viewPager.setCurrentItem(fragmentNumber);
     }
 
-    private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
 
-        private WeakReference<ManageDeviceActivity> weakReference;
+    private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<NewSetupActivity> weakReference;
 
-        BackgroundTasks(ManageDeviceActivity activity) {
+        BackgroundTask(NewSetupActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
 
 
         @Override
         protected Void doInBackground(Void... voids) {
-            ManageDeviceActivity activity = weakReference.get();
+
+            NewSetupActivity activity = weakReference.get();
             Intent intent = activity.getIntent();
             activity.userId.set(intent.getStringExtra("userId"));
 
-
-
-            Bundle bundle = new Bundle();
-            bundle.putString("user", activity.userId.get());
-
-            DeviceHomeFragment deviceHomeFragment = new DeviceHomeFragment();
-            deviceHomeFragment.setArguments(bundle);
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
+            NewSetupActivity activity = weakReference.get();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", activity.userId.get());
+
+            List<Fragment> list = Arrays.asList(
+                    new DeviceAddFragment(),
+                    new SetupAddFragment(),
+                    new PlaylistAddFragment());
+            list.forEach(fragment -> fragment.setArguments(bundle));
         }
     }
 }
