@@ -41,7 +41,7 @@ public class DeviceAddFragment extends Fragment {
             String userId = getArguments().getString("userId2");
 //        } else {
 //            Log.e(TAG, "User id not received");
-//            startActivity(new Intent(getActivity(), SingleActivity.class));
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
 //        }
 
         final String finalUserId = userId;

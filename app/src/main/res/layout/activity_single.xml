@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".structure.body.SingleActivity">
+    tools:context=".structure.body.BaseActivity">
 
     <Button
         android:id="@+id/createNewSetupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="singleCreateNewSetup"
+        android:onClick="createNewSetup"
         android:text="Create new setup"
         tools:layout_editor_absoluteX="158dp"
         tools:layout_editor_absoluteY="88dp" />
@@ -19,7 +19,7 @@
         android:id="@+id/useSetupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="singleUseSetup"
+        android:onClick="useSetup"
         android:text="Use setup"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="230dp" />
@@ -28,7 +28,7 @@
         android:id="@+id/playBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="singlePlay"
+        android:onClick="play"
         android:text="play"
         tools:layout_editor_absoluteX="178dp"
         tools:layout_editor_absoluteY="476dp" />
@@ -37,7 +37,7 @@
         android:id="@+id/manageSettingsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="singleManageSettings"
+        android:onClick="manageSettings"
         android:text="manage settings"
         tools:layout_editor_absoluteX="178dp"
         tools:layout_editor_absoluteY="339dp" />

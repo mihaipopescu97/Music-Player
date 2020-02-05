@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.mplayer.R;
 import com.example.mplayer.structure.login.MainActivity;
 import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
@@ -55,8 +56,10 @@ public class SelectActivity extends AppCompatActivity {
 
     public void single(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(getBaseContext(), SingleActivity.class);
-            intent.putExtra("userId", userId.get()).putExtra("prevActivity", getBaseContext().toString());
+            Intent intent = new Intent(getBaseContext(), BaseActivity.class);
+            intent.putExtra("userId", userId.get())
+                    .putExtra("prevActivity", getBaseContext().toString())
+                    .putExtra("playType", PlayType.SINGLE.label);
             startActivity(intent);
         } else {
            Log.w(TAG, "Email not received");
@@ -65,8 +68,10 @@ public class SelectActivity extends AppCompatActivity {
 
     public void family(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(getBaseContext(), FamilyActivity.class);
-            intent.putExtra("userId", userId.get()).putExtra("prevActivity", getBaseContext().toString());
+            Intent intent = new Intent(getBaseContext(), BaseActivity.class);
+            intent.putExtra("userId", userId.get())
+                    .putExtra("prevActivity", getBaseContext().toString())
+                    .putExtra("playType", PlayType.FAMILY.label);
             startActivity(intent);
         } else {
             Log.w(TAG, "Email not received");

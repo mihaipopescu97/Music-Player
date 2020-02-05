@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.SingleActivity;
+import com.example.mplayer.structure.body.BaseActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.entities.Song;
@@ -54,7 +54,7 @@ public class PlaylistAddFragment extends Fragment {
             userId = getArguments().getString("roomId");
         } else {
             Log.e(TAG, "User id not received");
-            startActivity(new Intent(getActivity(), SingleActivity.class));
+            startActivity(new Intent(getActivity(), BaseActivity.class));
         }
 
         for(Song song : songs) {

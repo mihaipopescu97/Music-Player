@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.SelectActivity;
+import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "Main activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         firebaseAuth = FirebaseAuth.getInstance();
         emailId = findViewById(R.id.signUpEmail);

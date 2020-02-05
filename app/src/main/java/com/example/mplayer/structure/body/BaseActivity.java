@@ -18,19 +18,21 @@ import com.example.mplayer.structure.body.management.activities.ManageSetupActiv
 import com.example.mplayer.structure.body.management.activities.SettingsActivity;
 import com.example.mplayer.structure.player.PlayerActivity;
 import com.example.mplayer.utils.enums.Actions;
+import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SingleActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
 
-    private final String TAG = "SingleActivity";
+    private final String TAG = "BaseActivity";
 
     private AtomicReference<String> userId;
     private AtomicReference<String> setupId;
     private AtomicReference<String> prevActivity;
+    private AtomicReference<String> playType;
 
     private Button createNewSetupBtn;
     private Button useSetupBtn;
@@ -44,7 +46,7 @@ public class SingleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single);
 
-        Log.i(TAG, "Base activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         createNewSetupBtn = findViewById(R.id.createNewSetupBtn);
         useSetupBtn = findViewById(R.id.useSetupBtn);
@@ -54,15 +56,16 @@ public class SingleActivity extends AppCompatActivity {
         userId = new AtomicReference<>();
         setupId = new AtomicReference<>();
         prevActivity = new AtomicReference<>();
+        playType = new AtomicReference<>();
 
         new BackgroundTasks(this).execute();
     }
 
 
-    public void singleCreateNewSetup(View view) {
+    public void createNewSetup(View view) {
         if(!userId.get().isEmpty()) {
             Log.i(TAG, "Sending user:" + userId.get());
-            Intent intent = new Intent(SingleActivity.this, ManageDeviceActivity.class);
+            Intent intent = new Intent(BaseActivity.this, ManageDeviceActivity.class);
             intent.putExtra("userId", userId.get())
                     .putExtra("prevActivity", getBaseContext().toString())
                     .putExtra("type", Actions.CREATE);
@@ -72,9 +75,9 @@ public class SingleActivity extends AppCompatActivity {
         }
     }
 
-    public void singleUseSetup(View view) {
+    public void useSetup(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(SingleActivity.this, ManageSetupActivity.class);
+            Intent intent = new Intent(BaseActivity.this, ManageSetupActivity.class);
             intent.putExtra("userId", userId.get())
                     .putExtra("type", Actions.SELECT);
             startActivity(intent);
@@ -83,9 +86,9 @@ public class SingleActivity extends AppCompatActivity {
         }
     }
 
-    public void singleManageSettings(View view) {
+    public void manageSettings(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(SingleActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
             intent.putExtra("userId", userId.get());
             startActivity(intent);
         } else {
@@ -93,10 +96,11 @@ public class SingleActivity extends AppCompatActivity {
         }
     }
 
-    public void singlePlay(View view) {
+    public void play(View view) {
         if(!setupId.get().isEmpty()) {
-            Intent intent = new Intent(SingleActivity.this, PlayerActivity.class);
-            intent.putExtra("setupId", setupId.get());
+            Intent intent = new Intent(BaseActivity.this, PlayerActivity.class);
+            intent.putExtra("setupId", setupId.get())
+                    .putExtra("playType", playType);
             startActivity(intent);
         } else {
             Toast.makeText(getBaseContext(), "Setup not received! Please login again", Toast.LENGTH_SHORT).show();
@@ -106,7 +110,7 @@ public class SingleActivity extends AppCompatActivity {
     public void backSingle(View view) {
         //TODO test this approach
         try {
-            startActivity(new Intent(SingleActivity.this, Class.forName(prevActivity.get())));
+            startActivity(new Intent(BaseActivity.this, Class.forName(prevActivity.get())));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -114,9 +118,9 @@ public class SingleActivity extends AppCompatActivity {
 
 
     private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
-        WeakReference<SingleActivity> weakReference;
+        WeakReference<BaseActivity> weakReference;
 
-        BackgroundTasks(SingleActivity activity) {
+        BackgroundTasks(BaseActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
@@ -124,9 +128,9 @@ public class SingleActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            SingleActivity activity = weakReference.get();
+            BaseActivity activity = weakReference.get();
 
-            Log.i(activity.TAG, "Async task started...");
+            Log.i(activity.TAG, LogMessages.ASYNC_START.label);
             List<Button> list = Arrays.asList(
                     activity.createNewSetupBtn,
                     activity.useSetupBtn,
@@ -138,11 +142,12 @@ public class SingleActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            SingleActivity activity = weakReference.get();
+            BaseActivity activity = weakReference.get();
             Intent intent = activity.getIntent();
-            Log.d(activity.TAG, "Fetching userId and setupId if available");
+            Log.d(activity.TAG, LogMessages.ASYNC_FETCH.label);
             activity.userId.set(intent.getStringExtra("userId"));
             activity.setupId.set(intent.getStringExtra("setupId"));
+            activity.playType.set(intent.getStringExtra("playType"));
 
             return null;
         }
@@ -152,8 +157,8 @@ public class SingleActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            SingleActivity activity = weakReference.get();
-            Log.i(activity.TAG, "Async task ended");
+            BaseActivity activity = weakReference.get();
+            Log.i(activity.TAG, LogMessages.ASYNC_END.label);
             List<Button> list = Arrays.asList(
                     activity.createNewSetupBtn,
                     activity.useSetupBtn,

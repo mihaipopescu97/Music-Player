@@ -15,12 +15,11 @@
         <activity android:name=".structure.body.management.activities.SelectSetupActivity"></activity>
         <activity android:name=".structure.body.management.activities.NewSetupActivity" />
         <activity android:name=".structure.body.SelectActivity" />
-        <activity android:name=".structure.body.FamilyActivity" />
         <activity android:name=".structure.body.management.activities.SettingsActivity" />
         <activity android:name=".structure.body.management.activities.ManagePlaylistActivity" />
         <activity android:name=".structure.body.management.activities.ManageSetupActivity" />
         <activity android:name=".structure.body.management.activities.ManageDeviceActivity" />
-        <activity android:name=".structure.body.SingleActivity" />
+        <activity android:name=".structure.body.BaseActivity" />
         <activity android:name=".structure.login.SignUpActivity" />
         <activity android:name=".structure.player.PlayerActivity" />
         <activity android:name=".structure.login.MainActivity">

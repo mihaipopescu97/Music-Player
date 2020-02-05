@@ -15,7 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.SingleActivity;
+import com.example.mplayer.structure.body.BaseActivity;
 import com.example.mplayer.utils.BluetoothSender;
 
 import java.io.IOException;
@@ -175,7 +175,7 @@ public class PlayerActivity extends AppCompatActivity {
             playBtn.setBackgroundResource(R.drawable.stop_button);
 
             try {
-                bluetoothSender.write("action : singlePlay");
+                bluetoothSender.write("action : play");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,6 +204,6 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public void back(View view) {
-        startActivity(new Intent(PlayerActivity.this, SingleActivity.class));
+        startActivity(new Intent(PlayerActivity.this, BaseActivity.class));
     }
 }

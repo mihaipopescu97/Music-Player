@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.mplayer.R;
 import com.example.mplayer.entities.User;
 import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Log.i(TAG, "Sign up activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         firebaseHandler = FirebaseHandler.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();

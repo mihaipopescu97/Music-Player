@@ -45,7 +45,7 @@ public class DeviceDeleteFragment extends Fragment {
 //            userId = getArguments().getString("roomId");
 //        } else {
 //            Log.e(TAG, "User id not received");
-//            startActivity(new Intent(getActivity(), SingleActivity.class));
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
 //        }
 
 

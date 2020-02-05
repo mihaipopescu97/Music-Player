@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.SingleActivity;
+import com.example.mplayer.structure.body.BaseActivity;
 import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -48,7 +48,7 @@ public class DeviceSelectFragment extends Fragment {
 //            userId = getArguments().getString("roomId");
 //        } else {
 //            Log.e(TAG, "User id not received");
-//            startActivity(new Intent(getActivity(), SingleActivity.class));
+//            startActivity(new Intent(getActivity(), BaseActivity.class));
 //        }
 
         List<Device> devices = firebaseHandler.getUserDevices(userId);
@@ -71,7 +71,7 @@ public class DeviceSelectFragment extends Fragment {
 
                     //TODO send data to new activity
                     Log.d(TAG, "Changing to base activity");
-                    startActivity(new Intent(getActivity(), SingleActivity.class));
+                    startActivity(new Intent(getActivity(), BaseActivity.class));
                 } else {
                     Log.e(TAG, "Device not selected");
                     Toast.makeText(getActivity(), "Please select a device!", Toast.LENGTH_SHORT).show();

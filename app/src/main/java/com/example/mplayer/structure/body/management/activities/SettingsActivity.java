@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.SingleActivity;
+import com.example.mplayer.structure.body.BaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void backSettings(View view) {
-        Intent intent = new Intent(SettingsActivity.this, SingleActivity.class);
+        Intent intent = new Intent(SettingsActivity.this, BaseActivity.class);
         startActivity(intent);
     }
 
