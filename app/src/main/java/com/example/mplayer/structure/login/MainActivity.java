@@ -10,11 +10,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.SelectActivity;
+import com.example.mplayer.structure.body.management.activities.SelectActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
-
+//FROZEN
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

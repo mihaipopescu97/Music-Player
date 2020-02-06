@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.settings.SetupSettingsActivity;
 import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 
@@ -75,7 +75,7 @@ public class SetupSelectFragment extends Fragment {
 
                     if(getActivity() != null) {
                         Log.d(TAG, "Changing to setup home fragment");
-                        ((ManageSetupActivity)getActivity()).setViewPager(0);
+                        ((SetupSettingsActivity)getActivity()).setViewPager(0);
                     } else {
                         Log.e(TAG, "Activity is null");
                     }
@@ -91,7 +91,7 @@ public class SetupSelectFragment extends Fragment {
             public void onClick(View v) {
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to setup home fragment");
-                    ((ManageSetupActivity)getActivity()).setViewPager(0);
+                    ((SetupSettingsActivity)getActivity()).setViewPager(0);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }

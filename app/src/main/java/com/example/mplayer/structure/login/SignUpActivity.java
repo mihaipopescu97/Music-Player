@@ -15,6 +15,7 @@ import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
+//TODO ADD INFO
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = "SignUpActivity";

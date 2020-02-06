@@ -14,28 +14,31 @@ import android.util.Log;
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupSelectFragment;
+import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SelectSetupActivity extends AppCompatActivity {
+//TODO needs testing before freeze
+public class SelectBuildActivity extends AppCompatActivity {
 
-    private final String TAG = "SelectSetupActivity";
+    private final String TAG = "SelectBuildActivity";
 
     private ViewPager viewPager;
     private AtomicReference<String> userId;
-    private String prevActivity;
+    private AtomicReference<String> prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_setup);
 
-        Log.i(TAG, "Activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         userId = new AtomicReference<>();
+        prevActivity = new AtomicReference<>();
 
         viewPager = findViewById(R.id.setupsContainer);
         setupViewPager(viewPager);
@@ -58,38 +61,48 @@ public class SelectSetupActivity extends AppCompatActivity {
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<SelectSetupActivity> weakReference;
+        private WeakReference<SelectBuildActivity> weakReference;
 
-        BackgroundTask(SelectSetupActivity activity) {
+        BackgroundTask(SelectBuildActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
-
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-            SelectSetupActivity activity = weakReference.get();
-            Intent intent = activity.getIntent();
-            activity.userId.set(intent.getStringExtra("userId"));
-            activity.prevActivity = intent.getStringExtra("prevActivity");
-
-            return null;
+            SelectBuildActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected Void doInBackground(Void... voids) {
 
-            SelectSetupActivity activity = weakReference.get();
+            SelectBuildActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
+            Intent intent = activity.getIntent();
+            activity.userId.set(intent.getStringExtra("userId"));
+            activity.prevActivity.set(intent.getStringExtra("prevActivity"));
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", activity.userId.get());
-            bundle.putString("prevActivity", activity.prevActivity);
+            bundle.putString("prevActivity", activity.prevActivity.get());
 
             List<Fragment> list = Collections.singletonList(
                     new SetupSelectFragment());
             list.forEach(fragment -> fragment.setArguments(bundle));
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            SelectBuildActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 }

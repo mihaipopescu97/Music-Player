@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -48,7 +48,7 @@ public class DeviceHomeFragment extends Fragment {
         selectDevicesBtn.setOnClickListener(v -> {
             if(getActivity() != null) {
                 Log.d(TAG, "Changing to device select fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(1);
+                ((DeviceSettingsActivity)getActivity()).setViewPager(1);
             } else {
                 Log.e(TAG, "Activity is null");
             }
@@ -57,7 +57,7 @@ public class DeviceHomeFragment extends Fragment {
         addDeviceBtn.setOnClickListener(v -> {
             if(getActivity() != null) {
                 Log.d(TAG, "Changing to device add fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(2);
+                ((DeviceSettingsActivity)getActivity()).setViewPager(2);
             } else {
                 Log.e(TAG, "Activity is null");
             }
@@ -66,7 +66,7 @@ public class DeviceHomeFragment extends Fragment {
         deleteDeviceBtn.setOnClickListener(v -> {
             if(getActivity() != null) {
                 Log.d(TAG, "Changing to device delete fragment");
-                ((ManageDeviceActivity)getActivity()).setViewPager(3);
+                ((DeviceSettingsActivity)getActivity()).setViewPager(3);
             } else {
                 Log.e(TAG, "Activity is null");
             }

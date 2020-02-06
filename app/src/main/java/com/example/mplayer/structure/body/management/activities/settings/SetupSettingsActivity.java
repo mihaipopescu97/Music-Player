@@ -1,4 +1,4 @@
-package com.example.mplayer.structure.body.management.activities;
+package com.example.mplayer.structure.body.management.activities.settings;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,32 +17,38 @@ import com.example.mplayer.structure.body.management.fragments.setups.SetupDelet
 import com.example.mplayer.structure.body.management.fragments.setups.SetupHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupSelectFragment;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
+import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ManageSetupActivity extends AppCompatActivity {
+//TODO test then freeze
+public class SetupSettingsActivity extends AppCompatActivity {
 
-    private static final String TAG = "ManageSetupActivity";
+    private final String TAG = "SetupSettingsActivity";
 
 
     private ViewPager viewPager;
-    private AtomicReference<String> userId = new AtomicReference<>();
+
+    private AtomicReference<String> userId;
+    private AtomicReference<String> prevActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_setups);
 
-        Log.i(TAG, "Manage setups activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         viewPager = findViewById(R.id.setupsContainer);
         setupViewPage(viewPager);
         viewPager.setCurrentItem(0);
+
+        userId = new AtomicReference<>();
+        prevActivity = new AtomicReference<>();
 
        new BackgroundTask(this).execute();
     }
@@ -70,48 +76,51 @@ public class ManageSetupActivity extends AppCompatActivity {
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<ManageSetupActivity> weakReference;
+        private WeakReference<SetupSettingsActivity> weakReference;
 
-        BackgroundTask(ManageSetupActivity activity) {
+        BackgroundTask(SetupSettingsActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
-
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-            ManageSetupActivity activity = weakReference.get();
-            Intent intent = activity.getIntent();
-            activity.userId.set(intent.getStringExtra("userId"));
-
-            return null;
+            SetupSettingsActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected Void doInBackground(Void... voids) {
 
-            ManageSetupActivity activity = weakReference.get();
+            SetupSettingsActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
+            Intent intent = activity.getIntent();
+            activity.userId.set(intent.getStringExtra("userId"));
+            activity.prevActivity.set(intent.getStringExtra("prevActivity"));
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", activity.userId.get());
+            bundle.putString("prevActivity", activity.prevActivity.get());
 
             List<Fragment> list = Arrays.asList(
                     new SetupAddFragment(),
                     new SetupDeleteFragment(),
-                    new SetupSelectFragment(),
                     new SetupHomeFragment());
             list.forEach(fragment -> fragment.setArguments(bundle));
-//            SetupAddFragment setupAddFragment = new SetupAddFragment();
-//            setupAddFragment.setArguments(bundle);
-//
-//            SetupDeleteFragment setupDeleteFragment = new SetupDeleteFragment();
-//            setupDeleteFragment.setArguments(bundle);
-//
-//            SetupSelectFragment setupSelectFragment = new SetupSelectFragment();
-//            setupSelectFragment.setArguments(bundle);
-//
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            SetupSettingsActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 }

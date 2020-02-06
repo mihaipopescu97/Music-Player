@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManagePlaylistActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.settings.PlaylistSettingsActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
 
@@ -87,7 +87,7 @@ public class PlaylistDeleteFragment extends Fragment {
                     Toast.makeText(getActivity(), "You have no more playlists to delete!", Toast.LENGTH_SHORT).show();
                     if(getActivity() != null) {
                         Log.d(TAG, "Changing to playlist home fragment");
-                        ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                        ((PlaylistSettingsActivity)getActivity()).setViewPager(0);
                     } else {
                         Log.e(TAG, "Activity is null");
                     }
@@ -120,7 +120,7 @@ public class PlaylistDeleteFragment extends Fragment {
                 checkThread.interrupt();
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to playlist home fragment");
-                    ((ManagePlaylistActivity)getActivity()).setViewPager(0);
+                    ((PlaylistSettingsActivity)getActivity()).setViewPager(0);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }

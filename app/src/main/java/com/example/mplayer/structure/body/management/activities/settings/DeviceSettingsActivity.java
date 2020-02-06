@@ -1,10 +1,13 @@
-package com.example.mplayer.structure.body.management.activities;
+package com.example.mplayer.structure.body.management.activities.settings;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,25 +17,31 @@ import com.example.mplayer.structure.body.management.fragments.devices.DeviceAdd
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceSelectFragment;
+import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ManageDeviceActivity extends AppCompatActivity {
+//TODO test then freeze
+public class DeviceSettingsActivity extends AppCompatActivity {
 
-    private final String TAG = "ManageDeviceActivity";
+    private final String TAG = "DeviceSettingsActivity";
 
     private ViewPager viewPager;
     private AtomicReference<String> userId;
+    private AtomicReference<String> prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_device);
 
-        Log.i(TAG, "Manage device activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         userId = new AtomicReference<>();
+        prevActivity = new AtomicReference<>();
 
         viewPager = findViewById(R.id.setupsContainer);
         setupViewPager(viewPager);
@@ -66,9 +75,9 @@ public class ManageDeviceActivity extends AppCompatActivity {
 
     private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
 
-        private WeakReference<ManageDeviceActivity> weakReference;
+        private WeakReference<DeviceSettingsActivity> weakReference;
 
-        BackgroundTasks(ManageDeviceActivity activity) {
+        BackgroundTasks(DeviceSettingsActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
@@ -76,29 +85,39 @@ public class ManageDeviceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
+            DeviceSettingsActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
-
-
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Void doInBackground(Void... voids) {
-            ManageDeviceActivity activity = weakReference.get();
+            DeviceSettingsActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
             activity.userId.set(intent.getStringExtra("userId"));
-
-
+            activity.prevActivity.set(intent.getStringExtra("prevActivity"));
 
             Bundle bundle = new Bundle();
             bundle.putString("user", activity.userId.get());
+            bundle.putString("prevActivity", activity.prevActivity.get());
 
-            DeviceHomeFragment deviceHomeFragment = new DeviceHomeFragment();
-            deviceHomeFragment.setArguments(bundle);
+            List<Fragment> fragments = Arrays.asList(
+                    new DeviceHomeFragment(),
+                    new DeviceAddFragment(),
+                    new DeviceDeleteFragment());
+            fragments.forEach(fragment -> fragment.setArguments(bundle));
+
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
+            DeviceSettingsActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 }

@@ -15,7 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
 import com.example.mplayer.utils.BluetoothSender;
 
 import java.io.IOException;

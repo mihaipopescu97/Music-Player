@@ -1,4 +1,4 @@
-package com.example.mplayer.structure.body;
+package com.example.mplayer.structure.body.management.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.mplayer.R;
 import com.example.mplayer.structure.login.MainActivity;
 import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.enums.LogMessages;
 import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+//TODO needs testing then freeze
 public class SelectActivity extends AppCompatActivity {
 
     private final String TAG = "SelectActivity";
@@ -30,20 +32,19 @@ public class SelectActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
     private Button singleBtn;
-    private Button familyButton;
+    private Button familyBtn;
     private AtomicReference<String> userId;
     private AtomicReference<String> email;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
 
-        Log.i(TAG, "Select activity started");
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         singleBtn = findViewById(R.id.singleBtn);
-        familyButton = findViewById(R.id.familyBtn);
+        familyBtn = findViewById(R.id.familyBtn);
 
         firebaseHandler = FirebaseHandler.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -62,7 +63,7 @@ public class SelectActivity extends AppCompatActivity {
                     .putExtra("playType", PlayType.SINGLE.label);
             startActivity(intent);
         } else {
-           Log.w(TAG, "Email not received");
+           Log.e(TAG, LogMessages.EMAIL_FETCH_ERROR.label);
         }
     }
 
@@ -74,7 +75,7 @@ public class SelectActivity extends AppCompatActivity {
                     .putExtra("playType", PlayType.FAMILY.label);
             startActivity(intent);
         } else {
-            Log.w(TAG, "Email not received");
+            Log.e(TAG, LogMessages.EMAIL_FETCH_ERROR.label);
         }
     }
 
@@ -97,10 +98,10 @@ public class SelectActivity extends AppCompatActivity {
 
             SelectActivity activity = weakReference.get();
 
-            Log.i(activity.TAG, "Async task started....");
+            Log.i(activity.TAG, LogMessages.ASYNC_START.label);
             List<Button> list = Arrays.asList(
                     activity.singleBtn,
-                    activity.familyButton);
+                    activity.familyBtn);
             list.forEach(button -> button.setVisibility(View.GONE));
         }
 
@@ -108,9 +109,10 @@ public class SelectActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
 
             SelectActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
             activity.email.set(intent.getStringExtra("email"));
-            Log.d(activity.TAG, "Fetching user id");
             activity.firebaseHandler.getUserId(activity.email.get(), activity.userId);
             return null;
         }
@@ -121,10 +123,10 @@ public class SelectActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             SelectActivity activity = weakReference.get();
-            Log.i(activity.TAG, "Async task ended");
+            Log.i(activity.TAG, LogMessages.ASYNC_END.label);
             List<Button> list = Arrays.asList(
                     activity.singleBtn,
-                    activity.familyButton);
+                    activity.familyBtn);
             list.forEach(button -> button.setVisibility(View.VISIBLE));
         }
     }

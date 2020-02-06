@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManageDeviceActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.entities.Song;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -117,7 +117,7 @@ public class PlaylistAddFragment extends Fragment {
 
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to playlist home fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    ((DeviceSettingsActivity)getActivity()).setViewPager(0);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }
@@ -131,7 +131,7 @@ public class PlaylistAddFragment extends Fragment {
 
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to playlist home fragment");
-                    ((ManageDeviceActivity)getActivity()).setViewPager(0);
+                    ((DeviceSettingsActivity)getActivity()).setViewPager(0);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }

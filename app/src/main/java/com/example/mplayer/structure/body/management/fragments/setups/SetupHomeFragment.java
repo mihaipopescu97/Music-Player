@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.BaseActivity;
-import com.example.mplayer.structure.body.management.activities.ManageSetupActivity;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.settings.SetupSettingsActivity;
 
 public class SetupHomeFragment extends Fragment {
     private static final String TAG = "SetupHomeFragment";
@@ -39,7 +39,7 @@ public class SetupHomeFragment extends Fragment {
             public void onClick(View v) {
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to setup select fragment");
-                    ((ManageSetupActivity)getActivity()).setViewPager(1);
+                    ((SetupSettingsActivity)getActivity()).setViewPager(1);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }
@@ -51,7 +51,7 @@ public class SetupHomeFragment extends Fragment {
             public void onClick(View v) {
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to setup add fragment");
-                    ((ManageSetupActivity)getActivity()).setViewPager(2);
+                    ((SetupSettingsActivity)getActivity()).setViewPager(2);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }
@@ -63,7 +63,7 @@ public class SetupHomeFragment extends Fragment {
             public void onClick(View v) {
                 if(getActivity() != null) {
                     Log.d(TAG, "Changing to setup delete fragment");
-                    ((ManageSetupActivity)getActivity()).setViewPager(3);
+                    ((SetupSettingsActivity)getActivity()).setViewPager(3);
                 } else {
                     Log.e(TAG, "Activity is null");
                 }
