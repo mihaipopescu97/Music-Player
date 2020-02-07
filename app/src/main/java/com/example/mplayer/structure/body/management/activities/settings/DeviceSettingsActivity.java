@@ -99,15 +99,19 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             activity.userId.set(intent.getStringExtra("userId"));
             activity.prevActivity.set(intent.getStringExtra("prevActivity"));
 
-            Bundle bundle = new Bundle();
-            bundle.putString("user", activity.userId.get());
-            bundle.putString("prevActivity", activity.prevActivity.get());
+            Bundle userBundle = new Bundle();
+            userBundle.putString("user", activity.userId.get());
+
+            Bundle activityBundle = new Bundle();
+            activityBundle.putString("prevActivity", activity.prevActivity.get());
 
             List<Fragment> fragments = Arrays.asList(
-                    new DeviceHomeFragment(),
                     new DeviceAddFragment(),
                     new DeviceDeleteFragment());
-            fragments.forEach(fragment -> fragment.setArguments(bundle));
+            fragments.forEach(fragment -> fragment.setArguments(userBundle));
+
+            DeviceHomeFragment deviceHomeFragment = new DeviceHomeFragment();
+            deviceHomeFragment.setArguments(activityBundle);
 
             return null;
         }

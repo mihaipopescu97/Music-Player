@@ -1,6 +1,7 @@
 package com.example.mplayer.structure.body.management.fragments.devices;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
@@ -32,6 +35,8 @@ public class DeviceDeleteFragment extends Fragment {
     private final String TAG = "DeviceDeleteFragment";
     private FirebaseHandler firebaseHandler;
 
+    private Spinner devicesSpinner;
+    private ArrayAdapter<String> adapter;
     private AtomicReference<String> userId;
     private List<Device> devices;
 
@@ -44,42 +49,28 @@ public class DeviceDeleteFragment extends Fragment {
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        final Spinner devicesSpinner = view.findViewById(R.id.deviceDeleteSpinner);
+        devicesSpinner = view.findViewById(R.id.deviceDeleteSpinner);
         final Button deleteDeviceBtn = view.findViewById(R.id.deviceDeleteBtn);
         final Button doneBtn = view.findViewById(R.id.deviceDeleteDoneBtn);
 
         userId = new AtomicReference<>();
+        adapter = null;
 
         devices = Collections.synchronizedList(new ArrayList<>());
 
-        final String finalUserId = userId.get();
-        final Thread spinnerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Device> devices = firebaseHandler.getUserDevices(finalUserId);
-                List<String> devicesId = new ArrayList<>();
+        new BackgroundTasks(this).execute();
+        new CheckTask(this).execute();
 
-                for(Device device : devices) {
-                    devicesId.add(device.getId());
-                }
+        Thread thread = new Thread(() -> {
+            devicesSpinner.setAdapter(adapter);
 
-                ArrayAdapter<String> adapter = null;
-                if(getActivity() != null) {
-                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, devicesId);
-                } else {
-                    Log.e(TAG, "Activity not started");
-                }
-
-                devicesSpinner.setAdapter(adapter);
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        spinnerThread.start();
+        thread.start();
 
         deleteDeviceBtn.setOnClickListener(v -> {
             if(devicesSpinner.getSelectedItem() != null) {
@@ -92,22 +83,22 @@ public class DeviceDeleteFragment extends Fragment {
         });
 
         doneBtn.setOnClickListener(v -> {
-            spinnerThread.interrupt();
+            thread.interrupt();
             if(getActivity() != null) {
-                Log.d(TAG, "Changing to device home fragment");
+                Log.d(TAG, LogMessages.CHANGE_HOME.label);
                 ((DeviceSettingsActivity)getActivity()).setViewPager(0);
             } else {
-                Log.e(TAG, "Activity is null");
+                Log.e(TAG, LogMessages.ACTIVITY_NULL.label);
             }
         });
         return view;
     }
 
     //TODO make service for reading deleting etc for firebase
-    private static class BackupTasks extends AsyncTask<Void, Void, Void> {
+    private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
         WeakReference<DeviceDeleteFragment> weakReference;
 
-        public BackupTasks(DeviceDeleteFragment fragment) {
+        BackgroundTasks(DeviceDeleteFragment fragment) {
             weakReference = new WeakReference<>(fragment);
         }
 
@@ -131,6 +122,8 @@ public class DeviceDeleteFragment extends Fragment {
             } else {
                 Log.e(fragment.TAG, LogMessages.USER_FETCH_ERROR.label);
             }
+
+            return null;
         }
 
         @Override
@@ -142,7 +135,7 @@ public class DeviceDeleteFragment extends Fragment {
     private static class CheckTask extends AsyncTask<Void, Void, Void> {
         WeakReference<DeviceDeleteFragment> weakReference;
 
-        public CheckTask(DeviceDeleteFragment fragment) {
+        CheckTask(DeviceDeleteFragment fragment) {
             weakReference = new WeakReference<>(fragment);
         }
 
@@ -154,9 +147,35 @@ public class DeviceDeleteFragment extends Fragment {
             Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Void doInBackground(Void... voids) {
-            return null;
+            DeviceDeleteFragment fragment = weakReference.get();
+
+            Log.d(fragment.TAG, LogMessages.ASYNC_WORKING.label);
+            //TODO ALSO FIX DIS
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                List<String> devicesId = new ArrayList<>();
+
+                fragment.devices.forEach(device -> devicesId.add(device.getId()));
+
+                FragmentActivity fragmentActivity = fragment.getActivity();
+
+                if (fragmentActivity != null) {
+                    fragment.adapter = new ArrayAdapter<>(fragmentActivity, android.R.layout.simple_spinner_dropdown_item, devicesId);
+                } else {
+                    //TODO make log message
+                    Log.e(fragment.TAG, "Activity not started");
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
         @Override

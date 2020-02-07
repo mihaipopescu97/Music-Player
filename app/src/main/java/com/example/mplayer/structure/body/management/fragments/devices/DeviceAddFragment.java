@@ -109,10 +109,10 @@ public class DeviceAddFragment extends Fragment {
 
         backBtn.setOnClickListener(v -> {
             if(getActivity() != null) {
-                Log.d(TAG, "Changing to device home fragment");
+                Log.d(TAG, LogMessages.CHANGE_HOME.label);
                 ((DeviceSettingsActivity)getActivity()).setViewPager(0);
             } else {
-                Log.e(TAG, "Activity is null");
+                Log.e(TAG, LogMessages.ACTIVITY_NULL.label);
             }
         });
 
