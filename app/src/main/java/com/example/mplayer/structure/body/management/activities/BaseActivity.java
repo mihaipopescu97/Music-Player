@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private AtomicReference<String> userId;
     private AtomicReference<String> setupId;
-    private AtomicReference<String> prevActivity;
+    private AtomicReference<Class> prevActivity;
     private AtomicReference<String> playType;
 
     private Button createNewSetupBtn;
@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single);
+        setContentView(R.layout.activity_base);
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
@@ -108,11 +108,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void backSingle(View view) {
         //TODO test this approach
-        try {
-            startActivity(new Intent(BaseActivity.this, Class.forName(prevActivity.get())));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Class<?> cls = prevActivity.get();
+        Intent intent = new Intent(BaseActivity.this, cls);
+        //TODO logic here
+        startActivity(intent);
     }
 
 
@@ -148,6 +147,7 @@ public class BaseActivity extends AppCompatActivity {
             activity.userId.set(intent.getStringExtra("userId"));
             activity.setupId.set(intent.getStringExtra("setupId"));
             activity.playType.set(intent.getStringExtra("playType"));
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
 
             return null;
         }
@@ -165,7 +165,7 @@ public class BaseActivity extends AppCompatActivity {
                     activity.manageSettingsBtn);
             list.forEach(button -> button.setVisibility(View.VISIBLE));
 
-            if(!activity.setupId.get().isEmpty()) {
+            if(activity.setupId.get() != null) {
                 activity.playBtn.setVisibility(View.VISIBLE);
             }
         }

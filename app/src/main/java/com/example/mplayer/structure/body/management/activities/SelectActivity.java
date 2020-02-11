@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-//TODO needs testing then freeze
+//FROZEN
 public class SelectActivity extends AppCompatActivity {
 
     private final String TAG = "SelectActivity";
@@ -59,8 +59,8 @@ public class SelectActivity extends AppCompatActivity {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(getBaseContext(), BaseActivity.class);
             intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getBaseContext().toString())
-                    .putExtra("playType", PlayType.SINGLE.label);
+                    .putExtra("prevActivity", getClass())
+                    .putExtra("playType", PlayType.SINGLE.toString());
             startActivity(intent);
         } else {
            Log.e(TAG, LogMessages.EMAIL_FETCH_ERROR.label);
@@ -114,6 +114,12 @@ public class SelectActivity extends AppCompatActivity {
             Intent intent = activity.getIntent();
             activity.email.set(intent.getStringExtra("email"));
             activity.firebaseHandler.getUserId(activity.email.get(), activity.userId);
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -124,6 +130,7 @@ public class SelectActivity extends AppCompatActivity {
 
             SelectActivity activity = weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_END.label);
+            Log.i(activity.TAG, "Got user:" + activity.userId.get());
             List<Button> list = Arrays.asList(
                     activity.singleBtn,
                     activity.familyBtn);

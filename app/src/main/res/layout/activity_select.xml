@@ -10,27 +10,36 @@
         android:id="@+id/singleBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginLeft="161dp"
+        android:layout_marginTop="127dp"
         android:onClick="single"
         android:text="Single"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="127dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/familyBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginTop="269dp"
         android:onClick="family"
         android:text="family"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="269dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logOutFromSelectBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="38dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="64dp"
         android:onClick="logOutFromSelect"
         android:text="log out"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="64dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
