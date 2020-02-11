@@ -31,7 +31,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private AtomicReference<String> userId;
-    private AtomicReference<String> prevActivity;
+    private AtomicReference<Class> prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +97,13 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
             activity.userId.set(intent.getStringExtra("userId"));
-            activity.prevActivity.set(intent.getStringExtra("prevActivity"));
+            activity.prevActivity.set((Class)intent.getExtras().get("prevActivity"));
 
             Bundle userBundle = new Bundle();
             userBundle.putString("user", activity.userId.get());
 
             Bundle activityBundle = new Bundle();
-            activityBundle.putString("prevActivity", activity.prevActivity.get());
+            activityBundle.putString("prevActivity", activity.prevActivity.get().toString());
 
             List<Fragment> fragments = Arrays.asList(
                     new DeviceAddFragment(),

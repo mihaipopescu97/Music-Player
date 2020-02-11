@@ -113,12 +113,15 @@ public class SelectActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
             activity.email.set(intent.getStringExtra("email"));
-            activity.firebaseHandler.getUserId(activity.email.get(), activity.userId);
-
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(activity.email.get() != null) {
+                activity.firebaseHandler.getUserId(activity.email.get(), activity.userId);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else  {
+                activity.userId.set(intent.getStringExtra("userId"));
             }
             return null;
         }

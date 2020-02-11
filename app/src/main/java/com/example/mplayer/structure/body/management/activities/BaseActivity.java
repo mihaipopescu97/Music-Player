@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 //TODO needs testing then can freeze
+//Back - OK
 public class BaseActivity extends AppCompatActivity {
 
     private final String TAG = "BaseActivity";
@@ -64,9 +65,9 @@ public class BaseActivity extends AppCompatActivity {
     public void createNewSetup(View view) {
         if(!userId.get().isEmpty()) {
             Log.i(TAG, "Sending user:" + userId.get());
-            Intent intent = new Intent(BaseActivity.this, DeviceSettingsActivity.class);
+            Intent intent = new Intent(BaseActivity.this, NewBuildActivity.class);
             intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getBaseContext().toString())
+                    .putExtra("prevActivity", getClass())
                     .putExtra("type", Actions.CREATE);
             startActivity(intent);
         } else {
@@ -78,6 +79,7 @@ public class BaseActivity extends AppCompatActivity {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(BaseActivity.this, SetupSettingsActivity.class);
             intent.putExtra("userId", userId.get())
+                    .putExtra("prevActivity", getClass())
                     .putExtra("type", Actions.SELECT);
             startActivity(intent);
         } else {
@@ -88,7 +90,8 @@ public class BaseActivity extends AppCompatActivity {
     public void manageSettings(View view) {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
-            intent.putExtra("userId", userId.get());
+            intent.putExtra("userId", userId.get())
+                    .putExtra("prevActivity", getClass());
             startActivity(intent);
         } else {
             Log.e(TAG, LogMessages.USER_FETCH_ERROR.label);
@@ -107,10 +110,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void backSingle(View view) {
-        //TODO test this approach
         Class<?> cls = prevActivity.get();
         Intent intent = new Intent(BaseActivity.this, cls);
-        //TODO logic here
         startActivity(intent);
     }
 
