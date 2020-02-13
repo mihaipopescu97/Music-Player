@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.mplayer.R;
 import com.example.mplayer.structure.login.MainActivity;
 import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +37,8 @@ public class SelectActivity extends AppCompatActivity {
     private AtomicReference<String> userId;
     private AtomicReference<String> email;
 
+    private SharedResources resources;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,8 @@ public class SelectActivity extends AppCompatActivity {
 
         userId = new AtomicReference<>();
         email = new AtomicReference<>();
+
+        resources = SharedResources.getInstance();
 
         new BackgroundTask(this).execute();
     }
@@ -122,7 +127,6 @@ public class SelectActivity extends AppCompatActivity {
                 }
             } else  {
                 activity.userId.set(intent.getStringExtra("userId"));
-
             }
             return null;
         }
@@ -139,6 +143,7 @@ public class SelectActivity extends AppCompatActivity {
                     activity.singleBtn,
                     activity.familyBtn);
             list.forEach(button -> button.setVisibility(View.VISIBLE));
+            activity.resources.setUserId(activity.userId.get());
         }
     }
 }
