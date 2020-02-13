@@ -31,12 +31,12 @@ public class NewBuildActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     private AtomicReference<String> userId;
-    private AtomicReference<String> prevActivity;
+    private AtomicReference<Class> prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_setup);
+        setContentView(R.layout.activity_new_build);
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
@@ -94,11 +94,11 @@ public class NewBuildActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
             activity.userId.set(intent.getStringExtra("userId"));
-            activity.prevActivity.set(intent.getStringExtra("prevActivity"));
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", activity.userId.get());
-            bundle.putString("prevActivity", activity.prevActivity.get());
+            bundle.putString("prevActivity", activity.prevActivity.get().toString());
 
             List<Fragment> list = Arrays.asList(
                     new DeviceAddFragment(),

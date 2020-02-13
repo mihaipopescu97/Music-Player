@@ -122,6 +122,7 @@ public class SelectActivity extends AppCompatActivity {
                 }
             } else  {
                 activity.userId.set(intent.getStringExtra("userId"));
+
             }
             return null;
         }
