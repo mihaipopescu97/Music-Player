@@ -1,25 +1,23 @@
 package com.example.mplayer.structure.body.management.fragments.devices;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
 import com.example.mplayer.entities.Device;
+import com.example.mplayer.structure.body.management.activities.BaseActivity;
 import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
@@ -29,14 +27,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 //TODO test then freeze
-public class DeviceAddFragment extends Fragment {
+public class DeviceAddActivity extends AppCompatActivity {
 
-    private final String TAG = "DeviceAddFragment";
+    private final String TAG = "DeviceAddActivity";
 
     private FirebaseHandler firebaseHandler;
 
     private EditText deviceIdEt;
 
+    private SharedResources resources;
+
+    private AtomicReference<Class> prevActivity;
     private AtomicReference<String> userId;
     private AtomicReference<String> deviceId;
     private List<Device> devices;
@@ -47,20 +48,23 @@ public class DeviceAddFragment extends Fragment {
     private Boolean isDuplicate;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_device_add, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_device_add);
 
-        Log.i(TAG, LogMessages.FRAGMENT_START.label);
+        Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         firebaseHandler = FirebaseHandler.getInstance();
-        deviceIdEt = view.findViewById(R.id.deviceAddId);
-        final Button addDeviceBtn = view.findViewById(R.id.deviceAddBtn);
-        final Button backBtn = view.findViewById(R.id.deviceAddBackBtn);
+        deviceIdEt = findViewById(R.id.deviceAddId);
+        final Button addDeviceBtn = findViewById(R.id.deviceAddBtn);
+        final Button backBtn = findViewById(R.id.deviceAddBackBtn);
 
-        userId = new AtomicReference<>();
+        resources = SharedResources.getInstance();
+
         deviceId = new AtomicReference<>();
+        prevActivity = new AtomicReference<>();
+        userId = new AtomicReference<>();
         devices = Collections.synchronizedList(new ArrayList<>());
         userDevices = Collections.synchronizedList(new ArrayList<>());
 
@@ -83,46 +87,56 @@ public class DeviceAddFragment extends Fragment {
         addDeviceBtn.setOnClickListener(v -> {
             if(isEmpty) {
                 Log.e(TAG, "Empty device id");
-                Toast.makeText(getActivity(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
             } else if (!isAvailable) {
                 Log.e(TAG, "Device not registered");
-                Toast.makeText(getActivity(), "Serial incorrect!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Serial incorrect!", Toast.LENGTH_SHORT).show();
             } else if(isDuplicate) {
                 Log.e(TAG, "Device already registered for your user!");
-                Toast.makeText(getActivity(), "Device already registered for your user!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Device already registered for your user!", Toast.LENGTH_SHORT).show();
             } else {
                 Device device = new Device(finalUserId);
                 device.setId(deviceIdEt.getText().toString());
 
                 Log.d(TAG, "Adding device with id:" + device.getId());
                 firebaseHandler.addDevice(device);
-
-                if(getActivity() != null) {
-                    Log.d(TAG, "Changing to device home fragment");
-                    ((DeviceSettingsActivity)getActivity()).setViewPager(0);
-                } else {
-                    Log.e(TAG, LogMessages.ACTIVITY_NULL.label);
-                }
-
             }
         });
 
         backBtn.setOnClickListener(v -> {
-            if(getActivity() != null) {
-                Log.d(TAG, LogMessages.CHANGE_HOME.label);
-                ((DeviceSettingsActivity)getActivity()).setViewPager(0);
-            } else {
-                Log.e(TAG, LogMessages.ACTIVITY_NULL.label);
-            }
-        });
 
-        return view;
+        });
+    }
+
+    public void addDevice(View view) {
+        if(isEmpty) {
+            Log.e(TAG, "Empty device id");
+            Toast.makeText(getBaseContext(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
+        } else if (!isAvailable) {
+            Log.e(TAG, "Device not registered");
+            Toast.makeText(getBaseContext(), "Serial incorrect!", Toast.LENGTH_SHORT).show();
+        } else if(isDuplicate) {
+            Log.e(TAG, "Device already registered for your user!");
+            Toast.makeText(getBaseContext(), "Device already registered for your user!", Toast.LENGTH_SHORT).show();
+        } else {
+            Device device = new Device(userId.get());
+            device.setId(deviceIdEt.getText().toString());
+
+            Log.d(TAG, "Adding device with id:" + device.getId());
+            firebaseHandler.addDevice(device);
+        }
+    }
+
+    public void backDeviceAddActivity(View view) {
+        Class<?> cls = prevActivity.get();
+        Intent intent = new Intent(BaseActivity.this, cls);
+        startActivity(intent);
     }
 
     private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
-        WeakReference<DeviceAddFragment> weakReference;
+        WeakReference<DeviceAddActivity> weakReference;
 
-        BackgroundTasks(DeviceAddFragment fragment) {
+        BackgroundTasks(DeviceAddActivity fragment) {
             weakReference = new WeakReference<>(fragment);
         }
 
@@ -130,24 +144,22 @@ public class DeviceAddFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            DeviceAddFragment fragment = weakReference.get();
+            DeviceAddActivity fragment = weakReference.get();
             Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-            DeviceAddFragment fragment = weakReference.get();
+            DeviceAddActivity activity = weakReference.get();
 
-            Log.d(fragment.TAG, LogMessages.ASYNC_WORKING.label);
-            Bundle bundle = fragment.getArguments();
-            if (bundle != null) {
-                fragment.userId.set(bundle.getString("userId"));
-                //TODO update firebase handler
-                fragment.firebaseHandler.getUserDevices(fragment.userId.get());
-            } else {
-                Log.e(fragment.TAG, LogMessages.USER_FETCH_ERROR.label);
-            }
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
+
+            Intent intent = activity.getIntent();
+            prevActivity = ((Class) intent.getExtras().get("prevActivity"));
+            //TODO update firebase handler
+            activity.userId = activity.resources.getUserId();
+            activity.firebaseHandler.getUserDevices(activity.userId);
 
             return null;
         }
@@ -155,50 +167,48 @@ public class DeviceAddFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            DeviceAddFragment fragment = weakReference.get();
+            DeviceAddActivity fragment = weakReference.get();
             Log.d(fragment.TAG, LogMessages.ASYNC_END.label);
         }
     }
 
     private static class CheckTask extends AsyncTask<Void, Void, Void> {
-        WeakReference<DeviceAddFragment> weakReference;
+        WeakReference<DeviceAddActivity> weakReference;
 
-        CheckTask(DeviceAddFragment fragment) {
+        CheckTask(DeviceAddActivity fragment) {
             weakReference = new WeakReference<>(fragment);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
-            DeviceAddFragment fragment = weakReference.get();
+            DeviceAddActivity fragment = weakReference.get();
             Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Void doInBackground(Void... voids) {
-            DeviceAddFragment fragment = weakReference.get();
+            DeviceAddActivity activity = weakReference.get();
 
             //noinspection InfiniteLoopStatement
             while(true) {
-                fragment.isEmpty = true;
-                fragment.isAvailable = false;
-                fragment.isDuplicate = false;
+                activity.isEmpty = true;
+                activity.isAvailable = false;
+                activity.isDuplicate = false;
 
-                if(!fragment.deviceId.get().isEmpty()) {
-                    fragment.isEmpty = false;
+                if(!activity.deviceId.get().isEmpty()) {
+                    activity.isEmpty = false;
 
-                    fragment.userDevices.forEach(userDevice -> {
-                        if (userDevice.getId().equals(fragment.deviceId.get())) {
-                            fragment.isDuplicate = true;
+                    activity.userDevices.forEach(userDevice -> {
+                        if (userDevice.getId().equals(activity.deviceId.get())) {
+                            activity.isDuplicate = true;
                         }
                     });
 
-                    fragment.devices.forEach(device -> {
-                        if (device.getId().equals(fragment.deviceId.get())) {
-                            fragment.isAvailable = true;
+                    activity.devices.forEach(device -> {
+                        if (device.getId().equals(activity.deviceId.get())) {
+                            activity.isAvailable = true;
                         }
                     });
 
@@ -208,7 +218,7 @@ public class DeviceAddFragment extends Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                    fragment.isEmpty = false;
+                    activity.isEmpty = false;
                 }
             }
         }

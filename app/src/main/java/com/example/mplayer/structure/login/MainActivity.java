@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.SelectActivity;
+import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText emailId, password;
     private FirebaseAuth firebaseAuth;
+    private SharedResources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +32,17 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        resources = SharedResources.getInstance();
         emailId = findViewById(R.id.signUpEmail);
         password = findViewById(R.id.signUpPass);
     }
 
+    //Reset user when logged out or fresh start
+    @Override
+    protected void onStart() {
+        super.onStart();
+        resources.resetUserId();
+    }
 
     //Login button functionality
     public void login(View view) {

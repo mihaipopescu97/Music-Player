@@ -6,9 +6,11 @@ public class SharedResources {
 
     private static SharedResources instance = null;
     private static AtomicReference<String> userId;
+    private static AtomicReference<String> setupId;
 
     private SharedResources(){
         userId = new AtomicReference<>();
+        setupId = new AtomicReference<>();
     }
 
     public static SharedResources getInstance() {
@@ -29,5 +31,17 @@ public class SharedResources {
 
     public void resetUserId() {
         userId.set(null);
+    }
+
+    public void setSetupId(String setup) {
+        setupId.set(setup);
+    }
+
+    public String getSetupId() {
+        return setupId.get();
+    }
+
+    public void resetSetupId() {
+        setupId.set(null);
     }
 }

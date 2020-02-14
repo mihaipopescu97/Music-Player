@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddFragment;
+import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupAddFragment;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -43,9 +43,7 @@ public class NewBuildActivity extends AppCompatActivity {
         userId = new AtomicReference<>();
         prevActivity = new AtomicReference<>();
 
-        viewPager = findViewById(R.id.setupsContainer);
-        setupViewPager(viewPager);
-        viewPager.setCurrentItem(0);
+
 
         new BackgroundTask(this).execute();
     }
@@ -54,13 +52,13 @@ public class NewBuildActivity extends AppCompatActivity {
         FragmentSectionAdapter adapter = new FragmentSectionAdapter(getSupportFragmentManager());
 
         Log.d(TAG, "Device create -> 0");
-        adapter.addFragment(new DeviceAddFragment(), "DeviceAddFragment");
+        adapter.addFragment(new DeviceAddActivity(), "DeviceAddActivity");
 
         Log.d(TAG, "Setup create -> 1");
         adapter.addFragment(new SetupAddFragment(), "DeviceSelectFragment");
 
         Log.d(TAG, "Playlist create -> 2");
-        adapter.addFragment(new PlaylistAddFragment(), "DeviceAddFragment");
+        adapter.addFragment(new PlaylistAddFragment(), "DeviceAddActivity");
 
         viewPager.setAdapter(adapter);
     }
@@ -101,7 +99,7 @@ public class NewBuildActivity extends AppCompatActivity {
             bundle.putString("prevActivity", activity.prevActivity.get().toString());
 
             List<Fragment> list = Arrays.asList(
-                    new DeviceAddFragment(),
+                    new DeviceAddActivity(),
                     new SetupAddFragment(),
                     new PlaylistAddFragment());
             list.forEach(fragment -> fragment.setArguments(bundle));

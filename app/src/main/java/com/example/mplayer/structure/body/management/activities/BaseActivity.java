@@ -12,10 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
-import com.example.mplayer.structure.body.management.activities.settings.SetupSettingsActivity;
 import com.example.mplayer.structure.body.management.activities.settings.SettingsActivity;
 import com.example.mplayer.structure.player.PlayerActivity;
+import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.Actions;
 import com.example.mplayer.utils.enums.LogMessages;
 
@@ -30,8 +29,8 @@ public class BaseActivity extends AppCompatActivity {
 
     private final String TAG = "BaseActivity";
 
-    private AtomicReference<String> userId;
-    private AtomicReference<String> setupId;
+    private SharedResources resources;
+
     private AtomicReference<Class> prevActivity;
     private AtomicReference<String> playType;
 
@@ -54,8 +53,8 @@ public class BaseActivity extends AppCompatActivity {
         manageSettingsBtn = findViewById(R.id.manageSettingsBtn);
         playBtn = findViewById(R.id.playBtn);
 
-        userId = new AtomicReference<>();
-        setupId = new AtomicReference<>();
+        resources = SharedResources.getInstance();
+
         prevActivity = new AtomicReference<>();
         playType = new AtomicReference<>();
 
@@ -63,50 +62,29 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void createNewSetup(View view) {
-        if(!userId.get().isEmpty()) {
-            Log.i(TAG, "Sending user:" + userId.get());
             Intent intent = new Intent(BaseActivity.this, NewBuildActivity.class);
-            intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getClass())
+            intent.putExtra("prevActivity", getClass())
                     .putExtra("type", Actions.CREATE);
             startActivity(intent);
-        } else {
-            Log.e(TAG, LogMessages.USER_FETCH_ERROR.label);
-        }
     }
 
     public void useSetup(View view) {
-        if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(BaseActivity.this, SetupSettingsActivity.class);
-            intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getClass())
+            Intent intent = new Intent(BaseActivity.this, SelectBuildActivity.class);
+            intent.putExtra("prevActivity", getClass())
                     .putExtra("type", Actions.SELECT);
             startActivity(intent);
-        } else {
-            Log.e(TAG, LogMessages.USER_FETCH_ERROR.label);
-        }
     }
 
     public void manageSettings(View view) {
-        if(!userId.get().isEmpty()) {
             Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
-            intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getClass());
+            intent.putExtra("prevActivity", getClass());
             startActivity(intent);
-        } else {
-            Log.e(TAG, LogMessages.USER_FETCH_ERROR.label);
-        }
     }
 
     public void play(View view) {
-        if(!setupId.get().isEmpty()) {
             Intent intent = new Intent(BaseActivity.this, PlayerActivity.class);
-            intent.putExtra("setupId", setupId.get())
-                    .putExtra("playType", playType);
+            intent.putExtra("playType", playType);
             startActivity(intent);
-        } else {
-            Log.e(TAG, LogMessages.SETUP_FETCH_ERROR.label);
-        }
     }
 
     public void backSingle(View view) {
@@ -145,8 +123,6 @@ public class BaseActivity extends AppCompatActivity {
 
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
             Intent intent = activity.getIntent();
-            activity.userId.set(intent.getStringExtra("userId"));
-            activity.setupId.set(intent.getStringExtra("setupId"));
             activity.playType.set(intent.getStringExtra("playType"));
             activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
 
@@ -166,7 +142,7 @@ public class BaseActivity extends AppCompatActivity {
                     activity.manageSettingsBtn);
             list.forEach(button -> button.setVisibility(View.VISIBLE));
 
-            if(activity.setupId.get() != null) {
+            if(activity.resources.getSetupId() != null) {
                 activity.playBtn.setVisibility(View.VISIBLE);
             }
         }

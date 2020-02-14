@@ -31,13 +31,13 @@ public class SelectActivity extends AppCompatActivity {
 
     private FirebaseHandler firebaseHandler;
     private FirebaseAuth firebaseAuth;
+    private SharedResources resources;
 
     private Button singleBtn;
     private Button familyBtn;
+
     private AtomicReference<String> userId;
     private AtomicReference<String> email;
-
-    private SharedResources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +51,10 @@ public class SelectActivity extends AppCompatActivity {
 
         firebaseHandler = FirebaseHandler.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        resources = SharedResources.getInstance();
 
         userId = new AtomicReference<>();
         email = new AtomicReference<>();
-
-        resources = SharedResources.getInstance();
 
         new BackgroundTask(this).execute();
     }
@@ -63,8 +62,7 @@ public class SelectActivity extends AppCompatActivity {
     public void single(View view) {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(getBaseContext(), BaseActivity.class);
-            intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getClass())
+            intent.putExtra("prevActivity", getClass())
                     .putExtra("playType", PlayType.SINGLE.toString());
             startActivity(intent);
         } else {
@@ -75,8 +73,7 @@ public class SelectActivity extends AppCompatActivity {
     public void family(View view) {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(getBaseContext(), BaseActivity.class);
-            intent.putExtra("userId", userId.get())
-                    .putExtra("prevActivity", getBaseContext().toString())
+            intent.putExtra("prevActivity", getBaseContext().toString())
                     .putExtra("playType", PlayType.FAMILY.label);
             startActivity(intent);
         } else {
@@ -126,7 +123,7 @@ public class SelectActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else  {
-                activity.userId.set(intent.getStringExtra("userId"));
+                Log.e(activity.TAG, "Email pass error");
             }
             return null;
         }

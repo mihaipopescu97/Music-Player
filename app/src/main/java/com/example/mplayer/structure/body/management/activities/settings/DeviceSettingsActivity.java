@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddFragment;
+import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceSelectFragment;
@@ -61,7 +61,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         adapter.addFragment(new DeviceSelectFragment(), "DeviceSelectFragment");
 
         Log.d(TAG, "Device add -> 2");
-        adapter.addFragment(new DeviceAddFragment(), "DeviceAddFragment");
+        adapter.addFragment(new DeviceAddActivity(), "DeviceAddActivity");
 
         Log.d(TAG, "Device delete -> 3");
         adapter.addFragment(new DeviceDeleteFragment(), "DeviceDeleteFragment");
@@ -106,7 +106,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             activityBundle.putString("prevActivity", activity.prevActivity.get().toString());
 
             List<Fragment> fragments = Arrays.asList(
-                    new DeviceAddFragment(),
+                    new DeviceAddActivity(),
                     new DeviceDeleteFragment());
             fragments.forEach(fragment -> fragment.setArguments(userBundle));
 

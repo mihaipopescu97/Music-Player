@@ -51,7 +51,7 @@ public class SelectBuildActivity extends AppCompatActivity {
         FragmentSectionAdapter adapter = new FragmentSectionAdapter(getSupportFragmentManager());
 
         Log.d(TAG, "Setup select -> 0");
-        adapter.addFragment(new SetupSelectFragment(), "DeviceAddFragment");
+        adapter.addFragment(new SetupSelectFragment(), "DeviceAddActivity");
 
         viewPager.setAdapter(adapter);
     }
