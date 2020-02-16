@@ -18,8 +18,8 @@ public class Setup {
 
     public Setup() {}
 
-    public Setup(String deviceId) {
-        this.userId = deviceId;
+    public Setup(String userId) {
+        this.userId = userId;
         id = UUID.randomUUID().toString();
     }
 }

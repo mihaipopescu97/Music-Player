@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".structure.body.management.fragments.devices.DeviceAddActivity" />
+        <activity android:name=".structure.body.management.fragments.setups.SetupAddActivity" />
     </application>
 
 </manifest>

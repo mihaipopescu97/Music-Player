@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
-import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddFragment;
+import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddActivity;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistSelectFragment;
@@ -65,7 +65,7 @@ public class PlaylistSettingsActivity extends AppCompatActivity {
         adapter.addFragment(new PlaylistSelectFragment(), "PlaylistSelectFragment");
 
         Log.d(TAG, "Playlist add -> 2");
-        adapter.addFragment(new PlaylistAddFragment(), "PlaylistAddFragment");
+        adapter.addFragment(new PlaylistAddActivity(), "PlaylistAddActivity");
 
         Log.d(TAG, "Playlist delete -> 3");
         adapter.addFragment(new PlaylistDeleteFragment(), "PlaylistDeleteFragment");
@@ -109,7 +109,7 @@ public class PlaylistSettingsActivity extends AppCompatActivity {
 
             List<Fragment> fragments = Arrays.asList(
                     new PlaylistHomeFragment(),
-                    new PlaylistAddFragment(),
+                    new PlaylistAddActivity(),
                     new PlaylistDeleteFragment());
             fragments.forEach(fragment -> fragment.setArguments(bundle));
 

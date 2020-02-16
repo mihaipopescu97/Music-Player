@@ -9,7 +9,8 @@ import android.util.Log;
 import android.view.View;
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddActivity;
-import com.example.mplayer.structure.body.management.fragments.setups.SetupAddFragment;
+import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddActivity;
+import com.example.mplayer.structure.body.management.fragments.setups.SetupAddActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
@@ -39,9 +40,15 @@ public class NewBuildActivity extends AppCompatActivity {
     }
 
     public void addNewSetup(View view) {
-            Intent intent = new Intent(getBaseContext(), SetupAddFragment.class);
+            Intent intent = new Intent(getBaseContext(), SetupAddActivity.class);
             intent.putExtra("prevActivity", getBaseContext().toString());
             startActivity(intent);
+    }
+
+    public void addNewPlaylist(View view) {
+        Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
+        intent.putExtra("prevActivity", getBaseContext().toString());
+        startActivity(intent);
     }
 
     //Get previous activity and play type

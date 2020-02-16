@@ -117,8 +117,8 @@ public class DeviceAddActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            DeviceAddActivity fragment = weakReference.get();
-            Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
+            DeviceAddActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
         @Override
@@ -137,8 +137,8 @@ public class DeviceAddActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            DeviceAddActivity fragment = weakReference.get();
-            Log.d(fragment.TAG, LogMessages.ASYNC_END.label);
+            DeviceAddActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 
@@ -152,8 +152,8 @@ public class DeviceAddActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            DeviceAddActivity fragment = weakReference.get();
-            Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
+            DeviceAddActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -190,6 +190,13 @@ public class DeviceAddActivity extends AppCompatActivity {
                     activity.isEmpty = true;
                 }
             }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            DeviceAddActivity activity = weakReference.get();
+            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 }

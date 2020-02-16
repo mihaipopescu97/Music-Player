@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.fragments.setups.SetupAddFragment;
+import com.example.mplayer.structure.body.management.fragments.setups.SetupAddActivity;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupSelectFragment;
@@ -63,7 +63,7 @@ public class SetupSettingsActivity extends AppCompatActivity {
         adapter.addFragment(new SetupSelectFragment(), "SetupSelectFragment");
 
         Log.d(TAG, "Setup add -> 2");
-        adapter.addFragment(new SetupAddFragment(), "SetupAddFragment");
+        adapter.addFragment(new SetupAddActivity(), "SetupAddActivity");
 
         Log.d(TAG, "Setup delete -> 3");
         adapter.addFragment(new SetupDeleteFragment(), "SetupDeleteFragment");
@@ -106,7 +106,7 @@ public class SetupSettingsActivity extends AppCompatActivity {
             bundle.putString("prevActivity", activity.prevActivity.get());
 
             List<Fragment> list = Arrays.asList(
-                    new SetupAddFragment(),
+                    new SetupAddActivity(),
                     new SetupDeleteFragment(),
                     new SetupHomeFragment());
             list.forEach(fragment -> fragment.setArguments(bundle));

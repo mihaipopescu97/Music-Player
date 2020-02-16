@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/addNewSetup"
+        android:id="@+id/addNewSetupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
@@ -29,4 +29,13 @@
         android:text="Add new setup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/addNewPlaylistBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addNewPlaylist"
+        android:text="Add ne playlist"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="411dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
