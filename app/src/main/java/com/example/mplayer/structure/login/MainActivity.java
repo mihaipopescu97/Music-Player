@@ -1,12 +1,14 @@
 package com.example.mplayer.structure.login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
@@ -38,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Reset user when logged out or fresh start
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onStart() {
         super.onStart();
-        resources.resetUserId();
+        resources.resetAll();
     }
 
     //Login button functionality

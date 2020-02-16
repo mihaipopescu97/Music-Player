@@ -59,6 +59,12 @@ public class SelectActivity extends AppCompatActivity {
         new BackgroundTask(this).execute();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        resources.resetPlayType();
+    }
+
     public void single(View view) {
         if(!userId.get().isEmpty()) {
             Intent intent = new Intent(getBaseContext(), BaseActivity.class);
@@ -116,7 +122,7 @@ public class SelectActivity extends AppCompatActivity {
             Intent intent = activity.getIntent();
             activity.email.set(intent.getStringExtra("email"));
             if(activity.email.get() != null) {
-                activity.firebaseHandler.getUserId(activity.email.get(), activity.userId);
+                activity.firebaseHandler.getUserIdFromEmail(activity.email.get(), activity.userId);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

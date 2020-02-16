@@ -5,9 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mplayer.entities.Device;
-import com.example.mplayer.entities.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,13 +12,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class DeviceHelper {
 
     private final static String TAG = "DeviceHelper";
 
     private static DeviceHelper instance = null;
-    private DatabaseReference deviceRef;
+    private final DatabaseReference deviceRef;
 
     private DeviceHelper(DatabaseReference deviceRef) {
         this.deviceRef = deviceRef;
@@ -37,24 +36,11 @@ public class DeviceHelper {
 
     public void addDevice(final Device device) {
         deviceRef.child(device.getId()).setValue(device)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Post device successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Post device failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Post device successful"))
+                .addOnFailureListener(e -> Log.e(TAG, "Post device failed"));
     }
 
-    public List<Device> getDevices() {
-
-        final List<Device> devices = new ArrayList<>();
-
+    public void getDevices(final List<Device> devices) {
         deviceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -64,7 +50,6 @@ public class DeviceHelper {
                     Device device = keyNode.getValue(Device.class);
                     devices.add(device);
                 }
-
             }
 
             @Override
@@ -72,13 +57,9 @@ public class DeviceHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return devices;
     }
 
-    public List<Device> getUserDevices(final String userId) {
-        final List<Device> devices = new ArrayList<>();
-
+    public void getUserDevices(final String userId, final List<Device> devices) {
         deviceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -90,7 +71,6 @@ public class DeviceHelper {
                         devices.add(device);
                     }
                 }
-
             }
 
             @Override
@@ -102,12 +82,9 @@ public class DeviceHelper {
         if(devices.isEmpty()) {
             Log.w(TAG, "No devices for user:" + userId);
         }
-        return devices;
     }
 
-    public Device getDevice(final String id) {
-
-        final Device[] searchedDevice = new Device[1];
+    public void getDevice(final String id, final AtomicReference<Device> searchedDevice) {
         deviceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -116,7 +93,7 @@ public class DeviceHelper {
                     keys.add(keyNode.getKey());
                     Device device = keyNode.getValue(Device.class);
                     if (device.getId().equals(id)) {
-                        searchedDevice[0] = device;
+                         searchedDevice.set(device);
                     }
                 }
 
@@ -127,40 +104,18 @@ public class DeviceHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return searchedDevice[0];
     }
 
     public void updateDevice(final String id, final Device device) {
         deviceRef.child(id).setValue(device)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Device :" + id + " updated");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Update device failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Device :" + id + " updated"))
+                .addOnFailureListener(e -> Log.e(TAG, "Update device failed"));
 
     }
 
     public void deleteDevice(final String id) {
         deviceRef.child(id).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Device :" + id + " deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Delete device failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Device :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete device failed"));
     }
 }

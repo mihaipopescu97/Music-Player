@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Device;
-import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.structure.body.management.activities.NewBuildActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -36,9 +35,9 @@ public class DeviceAddActivity extends AppCompatActivity {
     private EditText deviceIdEt;
 
     private SharedResources resources;
+    private Thread thread;
 
     private AtomicReference<Class> prevActivity;
-    private AtomicReference<String> userId;
     private AtomicReference<String> deviceId;
     private List<Device> devices;
     private List<Device> userDevices;
@@ -51,24 +50,20 @@ public class DeviceAddActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_device_add);
+        setContentView(R.layout.activity_device_add);
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         firebaseHandler = FirebaseHandler.getInstance();
         deviceIdEt = findViewById(R.id.deviceAddId);
-        final Button addDeviceBtn = findViewById(R.id.deviceAddBtn);
-        final Button backBtn = findViewById(R.id.deviceAddBackBtn);
-
         resources = SharedResources.getInstance();
-
-        deviceId = new AtomicReference<>();
         prevActivity = new AtomicReference<>();
-        userId = new AtomicReference<>();
+        deviceId = new AtomicReference<>();
         devices = Collections.synchronizedList(new ArrayList<>());
         userDevices = Collections.synchronizedList(new ArrayList<>());
 
-        Thread thread = new Thread(() -> {
+        //Update the device id once per sec with the user input
+        thread = new Thread(() -> {
             while (true) {
                 deviceId.set(deviceIdEt.getText().toString());
                 try {
@@ -82,30 +77,6 @@ public class DeviceAddActivity extends AppCompatActivity {
 
         new BackgroundTasks(this).execute();
         new CheckTask(this).execute();
-
-        final String finalUserId = userId.get();
-        addDeviceBtn.setOnClickListener(v -> {
-            if(isEmpty) {
-                Log.e(TAG, "Empty device id");
-                Toast.makeText(getBaseContext(), "Please enter a device id!", Toast.LENGTH_SHORT).show();
-            } else if (!isAvailable) {
-                Log.e(TAG, "Device not registered");
-                Toast.makeText(getBaseContext(), "Serial incorrect!", Toast.LENGTH_SHORT).show();
-            } else if(isDuplicate) {
-                Log.e(TAG, "Device already registered for your user!");
-                Toast.makeText(getBaseContext(), "Device already registered for your user!", Toast.LENGTH_SHORT).show();
-            } else {
-                Device device = new Device(finalUserId);
-                device.setId(deviceIdEt.getText().toString());
-
-                Log.d(TAG, "Adding device with id:" + device.getId());
-                firebaseHandler.addDevice(device);
-            }
-        });
-
-        backBtn.setOnClickListener(v -> {
-
-        });
     }
 
     public void addDevice(View view) {
@@ -119,17 +90,20 @@ public class DeviceAddActivity extends AppCompatActivity {
             Log.e(TAG, "Device already registered for your user!");
             Toast.makeText(getBaseContext(), "Device already registered for your user!", Toast.LENGTH_SHORT).show();
         } else {
-            Device device = new Device(userId.get());
-            device.setId(deviceIdEt.getText().toString());
+            Device device = new Device(resources.getUserId());
+            device.setId(deviceId.get());
 
             Log.d(TAG, "Adding device with id:" + device.getId());
-            firebaseHandler.addDevice(device);
+            firebaseHandler.updateDevice(device.getId(), device);
+            thread.interrupt();
+            startActivity(new Intent(getBaseContext(), NewBuildActivity.class));
         }
     }
 
     public void backDeviceAddActivity(View view) {
+        thread.interrupt();
         Class<?> cls = prevActivity.get();
-        Intent intent = new Intent(BaseActivity.this, cls);
+        Intent intent = new Intent(DeviceAddActivity.this, cls);
         startActivity(intent);
     }
 
@@ -143,7 +117,6 @@ public class DeviceAddActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             DeviceAddActivity fragment = weakReference.get();
             Log.d(fragment.TAG, LogMessages.ASYNC_START.label);
         }
@@ -156,11 +129,8 @@ public class DeviceAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             Intent intent = activity.getIntent();
-            prevActivity = ((Class) intent.getExtras().get("prevActivity"));
-            //TODO update firebase handler
-            activity.userId = activity.resources.getUserId();
-            activity.firebaseHandler.getUserDevices(activity.userId);
-
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
+            activity.firebaseHandler.getUserDevices(activity.resources.getUserId(), activity.userDevices);
             return null;
         }
 
@@ -199,7 +169,6 @@ public class DeviceAddActivity extends AppCompatActivity {
 
                 if(!activity.deviceId.get().isEmpty()) {
                     activity.isEmpty = false;
-
                     activity.userDevices.forEach(userDevice -> {
                         if (userDevice.getId().equals(activity.deviceId.get())) {
                             activity.isDuplicate = true;
@@ -218,7 +187,7 @@ public class DeviceAddActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    activity.isEmpty = false;
+                    activity.isEmpty = true;
                 }
             }
         }

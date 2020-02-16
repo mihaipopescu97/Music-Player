@@ -5,8 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mplayer.entities.Playlist;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.mplayer.entities.Song;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,7 +13,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class PlaylistHelper {
 
     private final static String TAG = "PlaylistHelper";
@@ -34,26 +35,13 @@ public class PlaylistHelper {
         return instance;
     }
 
-    public void addPlaylist(Playlist playlist) {
+    public void addPlaylist(final Playlist playlist) {
         playlistRef.child(playlist.getId()).setValue(playlist)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Post playlist successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Post playlist failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Post playlist successful"))
+                .addOnFailureListener(e -> Log.e(TAG, "Post playlist failed"));
     }
 
-    public List<Playlist> getPlaylists() {
-
-        final List<Playlist> playlists = new ArrayList<>();
-
+    public void getPlaylists(List<Playlist> playlists) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -63,7 +51,6 @@ public class PlaylistHelper {
                     Playlist playlist = keyNode.getValue(Playlist.class);
                     playlists.add(playlist);
                 }
-
             }
 
             @Override
@@ -71,14 +58,9 @@ public class PlaylistHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return playlists;
     }
 
-    public List<Playlist> getRoomPlaylist(final String roomId) {
-
-        final List<Playlist> playlists = new ArrayList<>();
-
+    public void getRoomPlaylist(final String roomId, final List<Playlist> playlists) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -90,7 +72,6 @@ public class PlaylistHelper {
                         playlists.add(playlist);
                     }
                 }
-
             }
 
             @Override
@@ -102,13 +83,9 @@ public class PlaylistHelper {
         if(playlists.isEmpty()) {
             Log.w(TAG, "No playlists for room:" + roomId);
         }
-
-        return playlists;
     }
 
-    public Playlist getPlaylist(final String id) {
-
-        final Playlist[] searchedPlaylist = new Playlist[1];
+    public void getPlaylist(final String id, final AtomicReference<Playlist> searchedPlaylist) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,10 +94,9 @@ public class PlaylistHelper {
                     keys.add(keyNode.getKey());
                     Playlist playlist = keyNode.getValue(Playlist.class);
                     if (playlist.getId().equals(id)) {
-                        searchedPlaylist[0] = playlist;
+                        searchedPlaylist.set(playlist);
                     }
                 }
-
             }
 
             @Override
@@ -128,42 +104,23 @@ public class PlaylistHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
+    }
 
-        return searchedPlaylist[0];
+    public void getPlaylistSongsNames(final String id, List<String> songs) {
+        AtomicReference<Playlist> playlist = new AtomicReference<>();
+        getPlaylist(id, playlist);
+        songs = playlist.get().getSongs();
     }
 
     public void updatePlaylist(final String id, Playlist playlist) {
         playlistRef.child(id).setValue(playlist)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Playlist :" + id + " updated");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Update playlist failed");
-                    }
-                });
-
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Playlist :" + id + " updated"))
+                .addOnFailureListener(e -> Log.e(TAG, "Update playlist failed"));
     }
 
     public void deletePlaylist(final String id) {
         playlistRef.child(id).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Playlist :" + id + " deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Delete playlist failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Playlist :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete playlist failed"));
     }
-
-
 }

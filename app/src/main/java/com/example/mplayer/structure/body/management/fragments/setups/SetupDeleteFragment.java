@@ -44,7 +44,7 @@ public class SetupDeleteFragment extends Fragment {
 
         String deviceId = null;
         if(getArguments() != null) {
-            deviceId = getArguments().getString("deviceId");
+            deviceId = getArguments().getString("userId");
         } else {
             Log.e(TAG, "Device id not received");
             startActivity(new Intent(getActivity(), BaseActivity.class));
@@ -57,7 +57,7 @@ public class SetupDeleteFragment extends Fragment {
         final Thread spinnerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Setup> setups = firebaseHandler.getDeviceSetups(finalDeviceId);
+                List<Setup> setups = firebaseHandler.getUserSetups(finalDeviceId);
                 setupsId.clear();
 
                 for(Setup setup : setups) {
@@ -84,7 +84,7 @@ public class SetupDeleteFragment extends Fragment {
         final Thread checkThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Setup> devices = firebaseHandler.getDeviceSetups(finalDeviceId);
+                List<Setup> devices = firebaseHandler.getUserSetups(finalDeviceId);
 
                 if(devices.isEmpty()) {
                     Log.w(TAG, "User:" + finalDeviceId + " has no more devices");

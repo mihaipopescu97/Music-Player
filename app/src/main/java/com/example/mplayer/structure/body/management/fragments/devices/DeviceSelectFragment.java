@@ -69,7 +69,7 @@ public class DeviceSelectFragment extends Fragment {
                 Log.d(TAG, LogMessages.CHANGE_HOME.label);
                 try {
                     Intent intent = new Intent(getActivity(), Class.forName(prevActivity.get()));
-                    intent.putExtra("deviceId", String.valueOf(devicesSpinner.getSelectedItem()));
+                    intent.putExtra("userId", String.valueOf(devicesSpinner.getSelectedItem()));
                     startActivity(intent);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();

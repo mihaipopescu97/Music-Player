@@ -22,7 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText emailId;
     private EditText password;
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     private FirebaseHandler firebaseHandler;
 
     @Override

@@ -5,8 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mplayer.entities.Song;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,7 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class SongHelper {
 
     private final static String TAG = "SongHelper";
@@ -36,24 +36,11 @@ public class SongHelper {
 
     public void addSong(Song song) {
         songRef.child(song.getId()).setValue(song)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Post song successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Post song failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Post song successful"))
+                .addOnFailureListener(e -> Log.e(TAG, "Post song failed"));
     }
 
-    public List<Song> getSongs() {
-
-        final List<Song> songs = new ArrayList<>();
-
+    public void getSongs(final List<Song> songs) {
         songRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -63,7 +50,6 @@ public class SongHelper {
                     Song song = keyNode.getValue(Song.class);
                     songs.add(song);
                 }
-
             }
 
             @Override
@@ -71,13 +57,9 @@ public class SongHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return songs;
     }
 
-    public Song getSong(final String id) {
-
-        final Song[] searchedSong = new Song[1];
+    public void getSong(final String id, final AtomicReference<Song> searchedSong) {
         songRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -86,10 +68,9 @@ public class SongHelper {
                     keys.add(keyNode.getKey());
                     Song song = keyNode.getValue(Song.class);
                     if (song.getId().equals(id)) {
-                        searchedSong[0] = song;
+                        searchedSong.set(song);
                     }
                 }
-
             }
 
             @Override
@@ -97,40 +78,18 @@ public class SongHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return searchedSong[0];
     }
 
     public void updateSong(final String id, Song song) {
         songRef.child(id).setValue(song)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Song :" + id + " updated");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Update song failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Song :" + id + " updated"))
+                .addOnFailureListener(e -> Log.e(TAG, "Update song failed"));
 
     }
 
     public void deleteSong(final String id) {
         songRef.child(id).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Song :" + id + " deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Delete song failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Song :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete song failed"));
     }
 }

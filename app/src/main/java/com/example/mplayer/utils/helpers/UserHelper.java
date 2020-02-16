@@ -5,8 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mplayer.entities.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,9 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class UserHelper {
 
     private final static String TAG = "UserHelper";
@@ -38,23 +36,11 @@ public class UserHelper {
 
     public void addUser(final User user) {
         userRef.child(user.getId()).setValue(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "User post successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "User post failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "User post successful"))
+                .addOnFailureListener(e -> Log.e(TAG, "User post failed"));
     }
 
-    public List<User> getUsers() {
-        final List<User> users = new ArrayList<>();
-
+    public void getUsers(List<User> users) {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -64,7 +50,6 @@ public class UserHelper {
                     User user = keyNode.getValue(User.class);
                     users.add(user);
                 }
-
             }
 
             @Override
@@ -72,13 +57,9 @@ public class UserHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return users;
     }
 
-    public User getUser(final String id) {
-
-        final User[] searchedUser = new User[1];
+    public void getUser(final String id,final AtomicReference<User> searchedUser) {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -87,10 +68,9 @@ public class UserHelper {
                     keys.add(keyNode.getKey());
                     User user = keyNode.getValue(User.class);
                     if (user.getId().equals(id)) {
-                        searchedUser[0] = user;
+                        searchedUser.set(user);
                     }
                 }
-
             }
 
             @Override
@@ -98,13 +78,9 @@ public class UserHelper {
                 Log.e(TAG, "onCanceled", databaseError.toException());
             }
         });
-
-        return searchedUser[0];
     }
 
-    public synchronized void getUserId(final String email, final AtomicReference<String> userId) {
-
-        final AtomicReference<String> id = new AtomicReference<>();
+    public synchronized void getUserIdFromEmail(final String email, final AtomicReference<String> userId) {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,7 +91,6 @@ public class UserHelper {
                         userId.set(user.getId());
                     }
                 }
-
             }
 
             @Override
@@ -127,34 +102,13 @@ public class UserHelper {
 
     public void updateUser(final String id, final User user) {
         userRef.child(id).setValue(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "User :" + id + " updated");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Update user failed");
-                    }
-                });
-
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "User :" + id + " updated"))
+                .addOnFailureListener(e -> Log.e(TAG, "Update user failed"));
     }
 
     public void deleteUser(final String id) {
         userRef.child(id).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "User :" + id + " deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Delete user failed");
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "User :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete user failed"));
     }
 }

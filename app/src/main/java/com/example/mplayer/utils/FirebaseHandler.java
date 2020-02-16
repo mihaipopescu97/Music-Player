@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class FirebaseHandler {
 
-    private static final String TAG = "FirebaseHandler";
-
     private static DatabaseReference userRef;
     private static DatabaseReference deviceRef;
     private static DatabaseReference setupRef;
@@ -78,15 +76,15 @@ public class FirebaseHandler {
         userHelper.addUser(user);
     }
 
-    public List<User> getUsers() {
-        return userHelper.getUsers();
+    public void getUsers(List<User> users) {
+        userHelper.getUsers(users);
     }
 
-    public User getUser(final String id) {
-        return userHelper.getUser(id);
+    public void getUser(final String id, final AtomicReference<User> user) {
+        userHelper.getUser(id, user);
     }
 
-    public void getUserId(final String email, final AtomicReference<String> userId) { userHelper.getUserId(email, userId);}
+    public void getUserIdFromEmail(final String email, final AtomicReference<String> userId) { userHelper.getUserIdFromEmail(email, userId);}
 
     public void updateUser(final String id, User user) {
         userHelper.updateUser(id, user);
@@ -103,16 +101,16 @@ public class FirebaseHandler {
        deviceHelper.addDevice(device);
     }
 
-    public List<Device> getDevices() {
-        return deviceHelper.getDevices();
+    public void getDevices(final List<Device> devices) {
+        deviceHelper.getDevices(devices);
     }
 
-    public List<Device> getUserDevices(final String userId) {
-        return deviceHelper.getUserDevices(userId);
+    public void getUserDevices(final String userId, final List<Device> devices) {
+        deviceHelper.getUserDevices(userId, devices);
     }
 
-    public Device getDevice(final String id) {
-        return deviceHelper.getDevice(id);
+    public void getDevice(final String id, final AtomicReference<Device> device) {
+        deviceHelper.getDevice(id, device);
     }
 
     public void updateDevice(final String id, Device device) {
@@ -130,16 +128,16 @@ public class FirebaseHandler {
         setupHelper.addSetup(setup);
     }
 
-    public List<Setup> getSetups() {
-        return setupHelper.getSetups();
+    public void getSetups(final List<Setup> setups) {
+        setupHelper.getSetups(setups);
     }
 
-    public List<Setup> getDeviceSetups(final String deviceId) {
-        return setupHelper.getDeviceSetups(deviceId);
+    public void getUserSetups(final String deviceId, final List<Setup> setups) {
+        setupHelper.getUserSetups(deviceId, setups);
     }
 
-    public Setup getSetup(final String id) {
-        return setupHelper.getSetup(id);
+    public void getSetup(final String id, final AtomicReference<Setup> setup) {
+        setupHelper.getSetup(id, setup);
     }
 
     public void updateSetup(final String id, Setup setup) {
@@ -157,16 +155,16 @@ public class FirebaseHandler {
        roomHelper.addRoom(room);
     }
 
-    public List<Room> getRooms() {
-        return  roomHelper.getRooms();
+    public void getRooms(final List<Room> rooms) {
+        roomHelper.getRooms(rooms);
     }
 
-    public List<Room> getSetupRooms(final String setupId) {
-        return roomHelper.getSetupRooms(setupId);
+    public void getSetupRooms(final String setupId, final List<Room> rooms) {
+        roomHelper.getSetupRooms(setupId, rooms);
     }
 
-    public Room getRoom(final String id) {
-        return roomHelper.getRoom(id);
+    public void getRoom(final String id, final AtomicReference<Room> room) {
+        roomHelper.getRoom(id, room);
     }
 
     public void updateRoom(final String id, Room room) {
@@ -184,18 +182,21 @@ public class FirebaseHandler {
        playlistHelper.addPlaylist(playlist);
     }
 
-    public List<Playlist> getPlaylists() {
-        return playlistHelper.getPlaylists();
+    public void getPlaylists(final List<Playlist> playlists) {
+        playlistHelper.getPlaylists(playlists);
     }
 
-    public List<Playlist> getRoomPlaylists(final String roomId) {
-        return playlistHelper.getRoomPlaylist(roomId);
+    public void getRoomPlaylists(final String roomId, final List<Playlist> playlists) {
+        playlistHelper.getRoomPlaylist(roomId, playlists);
     }
 
-    public Playlist getPlaylist(final String id) {
-        return playlistHelper.getPlaylist(id);
+    public void getPlaylist(final String id, final AtomicReference<Playlist> playlist) {
+        playlistHelper.getPlaylist(id, playlist);
     }
 
+    public void getPlaylistSongsNames(final String id, final List<String> names) {
+        playlistHelper.getPlaylistSongsNames(id, names);
+    }
     public void updatePlaylist(final String id, Playlist playlist) {
         playlistHelper.updatePlaylist(id, playlist);
     }
@@ -211,12 +212,12 @@ public class FirebaseHandler {
        songHelper.addSong(song);
     }
 
-    public List<Song> getSongs() {
-        return songHelper.getSongs();
+    public void getSongs(List<Song> songs) {
+        songHelper.getSongs(songs);
     }
 
-    public Song getSong(final String id) {
-        return songHelper.getSong(id);
+    public void getSong(final String id, final AtomicReference<Song> song) {
+        songHelper.getSong(id, song);
     }
 
     public void updateSong(final String id, Song song) {

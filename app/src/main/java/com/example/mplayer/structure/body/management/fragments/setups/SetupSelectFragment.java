@@ -47,7 +47,7 @@ public class SetupSelectFragment extends Fragment {
 
         String deviceId = null;
         if(getArguments() != null) {
-            deviceId = getArguments().getString("deviceId");
+            deviceId = getArguments().getString("userId");
         } else {
             Log.e(TAG, "Device id not received");
             startActivity(new Intent(getActivity(), BaseActivity.class));

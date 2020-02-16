@@ -60,8 +60,8 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         Log.d(TAG, "Device select -> 1");
         adapter.addFragment(new DeviceSelectFragment(), "DeviceSelectFragment");
 
-        Log.d(TAG, "Device add -> 2");
-        adapter.addFragment(new DeviceAddActivity(), "DeviceAddActivity");
+//        Log.d(TAG, "Device add -> 2");
+//        adapter.addFragment(new DeviceAddActivity(), "DeviceAddActivity");
 
         Log.d(TAG, "Device delete -> 3");
         adapter.addFragment(new DeviceDeleteFragment(), "DeviceDeleteFragment");
@@ -106,7 +106,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             activityBundle.putString("prevActivity", activity.prevActivity.get().toString());
 
             List<Fragment> fragments = Arrays.asList(
-                    new DeviceAddActivity(),
+//                    new DeviceAddActivity(),
                     new DeviceDeleteFragment());
             fragments.forEach(fragment -> fragment.setArguments(userBundle));
 

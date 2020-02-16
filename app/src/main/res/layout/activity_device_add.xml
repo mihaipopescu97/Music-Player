@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SetupFragment">
+    tools:context=".structure.body.management.fragments.devices.DeviceAddActivity">
 
     <Button
         android:id="@+id/deviceAddBackBtn"
@@ -13,6 +13,7 @@
         android:layout_marginStart="164dp"
         android:layout_marginLeft="164dp"
         android:layout_marginTop="436dp"
+        android:onClick="backDeviceAddActivity"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +37,7 @@
         android:layout_marginStart="162dp"
         android:layout_marginLeft="162dp"
         android:layout_marginTop="276dp"
+        android:onClick="addDevice"
         android:text="Add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
