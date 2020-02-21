@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".structure.body.management.fragments.devices.DeviceDeleteActivity">
 
     <Spinner
         android:id="@+id/deviceDeleteSpinner"
@@ -23,6 +24,7 @@
         android:layout_marginStart="163dp"
         android:layout_marginLeft="163dp"
         android:layout_marginTop="195dp"
+        android:onClick="deleteDevice"
         android:text="Delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +36,7 @@
         android:layout_marginStart="159dp"
         android:layout_marginLeft="159dp"
         android:layout_marginTop="395dp"
+        android:onClick="doneDeleteDevice"
         android:text="Done"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

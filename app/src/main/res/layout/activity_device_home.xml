@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".structure.body.management.fragments.devices.DeviceHomeActivity">
 
     <Button
         android:id="@+id/deviceHomeSelectBtn"
@@ -12,6 +13,7 @@
         android:layout_marginStart="65dp"
         android:layout_marginLeft="65dp"
         android:layout_marginTop="155dp"
+        android:onClick="homeSelectDevice"
         android:text="Select device"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +25,7 @@
         android:layout_marginStart="75dp"
         android:layout_marginLeft="75dp"
         android:layout_marginTop="269dp"
+        android:onClick="homeAddDevice"
         android:text="Add device"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +37,7 @@
         android:layout_marginStart="81dp"
         android:layout_marginLeft="81dp"
         android:layout_marginTop="60dp"
+        android:onClick="homeDeviceBack"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +49,7 @@
         android:layout_marginStart="84dp"
         android:layout_marginLeft="84dp"
         android:layout_marginTop="413dp"
+        android:onClick="homeDeleteDevice"
         android:text="delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
