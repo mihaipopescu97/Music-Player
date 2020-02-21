@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".structure.body.management.fragments.devices.DeviceDeleteActivity"></activity>
+        <activity android:name=".structure.body.management.fragments.devices.DeviceSelectActivity"></activity>
+        <activity android:name=".structure.body.management.fragments.devices.DeviceHomeActivity" />
+        <activity android:name=".structure.body.management.fragments.devices.DeviceDeleteActivity" />
         <activity android:name=".structure.body.management.activities.SelectBuildActivity" />
         <activity android:name=".structure.body.management.activities.NewBuildActivity" />
         <activity android:name=".structure.body.management.activities.SelectActivity" />
