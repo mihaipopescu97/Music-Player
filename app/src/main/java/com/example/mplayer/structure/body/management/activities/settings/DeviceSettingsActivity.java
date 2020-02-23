@@ -13,7 +13,6 @@ import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.devices.DeviceSelectFragment;

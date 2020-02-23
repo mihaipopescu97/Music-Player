@@ -15,12 +15,16 @@ public class SharedResources {
     private static AtomicReference<String> setupId;
     private static AtomicReference<String> deviceId;
     private static AtomicReference<String> playlistId;
+    private static AtomicReference<String> roomId;
     private static AtomicReference<String> playType;
 
     private SharedResources(){
         userId = new AtomicReference<>();
         setupId = new AtomicReference<>();
         deviceId = new AtomicReference<>();
+        playlistId = new AtomicReference<>();
+        roomId = new AtomicReference<>();
+        playType = new AtomicReference<>();
     }
 
     public static SharedResources getInstance() {
@@ -38,7 +42,6 @@ public class SharedResources {
     public String getUserId() {
         return userId.get();
     }
-
 
     public void setSetupId(String setup) {
         setupId.set(setup);
@@ -65,6 +68,14 @@ public class SharedResources {
         return playlistId.get();
     }
 
+    public void setRoomId(String room) {
+        roomId.set(room);
+    }
+
+    public String getRoomID() {
+        return roomId.get();
+    }
+
     public void setPlayType(String playT) {
         playType.set(playT);
     }
@@ -77,10 +88,12 @@ public class SharedResources {
         playType.set(null);
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void resetAll() {
-        List<AtomicReference> lst = Arrays.asList(userId, deviceId, playlistId, setupId, playType);
+        List<AtomicReference> lst = Arrays.asList(userId, deviceId, playlistId, setupId, playType, roomId);
         lst.forEach(el -> el.set(null));
-}
+    }
 
 }

@@ -1,5 +1,9 @@
 package com.example.mplayer.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.entities.Room;
@@ -132,8 +136,8 @@ public class FirebaseHandler {
         setupHelper.getSetups(setups);
     }
 
-    public void getUserSetups(final String deviceId, final List<Setup> setups) {
-        setupHelper.getUserSetups(deviceId, setups);
+    public void getUserSetups(final String userId, final List<Setup> setups) {
+        setupHelper.getUserSetups(userId, setups);
     }
 
     public void getSetup(final String id, final AtomicReference<Setup> setup) {
@@ -186,14 +190,19 @@ public class FirebaseHandler {
         playlistHelper.getPlaylists(playlists);
     }
 
-    public void getRoomPlaylists(final String roomId, final List<Playlist> playlists) {
+    public void getRoomPlaylists(final String roomId, final AtomicReference<Playlist> playlists) {
         playlistHelper.getRoomPlaylist(roomId, playlists);
+    }
+
+    public void getUserPlaylists(final String userId, final List<Playlist> playlists) {
+        playlistHelper.getUserPlaylist(userId, playlists);
     }
 
     public void getPlaylist(final String id, final AtomicReference<Playlist> playlist) {
         playlistHelper.getPlaylist(id, playlist);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void getPlaylistSongsNames(final String id, final List<String> names) {
         playlistHelper.getPlaylistSongsNames(id, names);
     }

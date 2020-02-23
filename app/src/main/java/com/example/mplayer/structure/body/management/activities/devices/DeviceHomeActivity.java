@@ -1,4 +1,4 @@
-package com.example.mplayer.structure.body.management.fragments.devices;
+package com.example.mplayer.structure.body.management.activities.devices;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import com.example.mplayer.utils.enums.LogMessages;
 
 public class DeviceHomeActivity extends AppCompatActivity {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "DeviceHomeActivity";
 
     @Override

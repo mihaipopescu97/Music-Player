@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.example.mplayer.R;
 import com.example.mplayer.adapters.fragments.FragmentSectionAdapter;
-import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddActivity;
+import com.example.mplayer.structure.body.management.activities.playlists.PlaylistAddActivity;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistSelectFragment;

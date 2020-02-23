@@ -12,9 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".structure.body.management.fragments.devices.DeviceSelectActivity"></activity>
-        <activity android:name=".structure.body.management.fragments.devices.DeviceHomeActivity" />
-        <activity android:name=".structure.body.management.fragments.devices.DeviceDeleteActivity" />
+        <activity android:name=".structure.body.management.activities.setups.SetupSelectActivity"></activity>
+        <activity android:name=".structure.body.management.activities.setups.SetupDeleteActivity" />
+        <activity android:name=".structure.body.management.activities.setups.SetupHomeActivity" />
+        <activity android:name=".structure.body.management.activities.playlists.RoomSelectActivity" />
+        <activity android:name=".structure.body.management.activities.playlists.PlaylistSelectActivity" />
+        <activity android:name=".structure.body.management.activities.playlists.PlaylistHomeActivity" />
+        <activity android:name=".structure.body.management.activities.playlists.PlaylistDeleteActivity" />
+        <activity android:name=".structure.body.management.activities.devices.DeviceSelectActivity" />
+        <activity android:name=".structure.body.management.activities.devices.DeviceHomeActivity" />
+        <activity android:name=".structure.body.management.activities.devices.DeviceDeleteActivity" />
         <activity android:name=".structure.body.management.activities.SelectBuildActivity" />
         <activity android:name=".structure.body.management.activities.NewBuildActivity" />
         <activity android:name=".structure.body.management.activities.SelectActivity" />
@@ -32,8 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".structure.body.management.fragments.devices.DeviceAddActivity" />
-        <activity android:name=".structure.body.management.fragments.setups.SetupAddActivity" />
+        <activity android:name=".structure.body.management.activities.devices.DeviceAddActivity" />
+        <activity android:name=".structure.body.management.activities.setups.SetupAddActivity" />
+        <activity android:name=".structure.body.management.activities.playlists.PlaylistAddActivity" />
     </application>
 
 </manifest>

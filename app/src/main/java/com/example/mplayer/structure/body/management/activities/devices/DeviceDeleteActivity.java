@@ -1,4 +1,4 @@
-package com.example.mplayer.structure.body.management.fragments.devices;
+package com.example.mplayer.structure.body.management.activities.devices;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,11 +120,9 @@ public class DeviceDeleteActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             DeviceDeleteActivity activity = weakReference.get();
-
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             List<String> devicesId = new ArrayList<>();
-
             //noinspection InfiniteLoopStatement
             while(true) {
                 devicesId.clear();

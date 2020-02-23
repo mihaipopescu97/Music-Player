@@ -1,15 +1,12 @@
 package com.example.mplayer.structure.body.management.activities;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.login.MainActivity;
@@ -20,8 +17,6 @@ import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 //FROZEN
@@ -33,9 +28,6 @@ public class SelectActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private SharedResources resources;
 
-    private Button singleBtn;
-    private Button familyBtn;
-
     private AtomicReference<String> userId;
     private AtomicReference<String> email;
 
@@ -46,9 +38,6 @@ public class SelectActivity extends AppCompatActivity {
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
-        singleBtn = findViewById(R.id.singleBtn);
-        familyBtn = findViewById(R.id.familyBtn);
-
         firebaseHandler = FirebaseHandler.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         resources = SharedResources.getInstance();
@@ -57,6 +46,12 @@ public class SelectActivity extends AppCompatActivity {
         email = new AtomicReference<>();
 
         new BackgroundTask(this).execute();
+
+        while(userId.get().isEmpty()) {
+            Log.i(TAG, "Waiting for user fetch..");
+        }
+
+        resources.setUserId(userId.get());
     }
 
     @Override
@@ -67,10 +62,8 @@ public class SelectActivity extends AppCompatActivity {
 
     public void single(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(getBaseContext(), BaseActivity.class);
-            intent.putExtra("prevActivity", getClass())
-                    .putExtra("playType", PlayType.SINGLE.toString());
-            startActivity(intent);
+            resources.setPlayType(PlayType.SINGLE.label);
+            startActivity(new Intent(getBaseContext(), BaseActivity.class));
         } else {
            Log.e(TAG, LogMessages.EMAIL_FETCH_ERROR.label);
         }
@@ -78,10 +71,8 @@ public class SelectActivity extends AppCompatActivity {
 
     public void family(View view) {
         if(!userId.get().isEmpty()) {
-            Intent intent = new Intent(getBaseContext(), BaseActivity.class);
-            intent.putExtra("prevActivity", getBaseContext().toString())
-                    .putExtra("playType", PlayType.FAMILY.label);
-            startActivity(intent);
+            resources.setPlayType(PlayType.FAMILY.label);
+            startActivity(new Intent(getBaseContext(), BaseActivity.class));
         } else {
             Log.e(TAG, LogMessages.EMAIL_FETCH_ERROR.label);
         }
@@ -99,20 +90,6 @@ public class SelectActivity extends AppCompatActivity {
             weakReference = new WeakReference<>(activity);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            SelectActivity activity = weakReference.get();
-
-            Log.i(activity.TAG, LogMessages.ASYNC_START.label);
-            List<Button> list = Arrays.asList(
-                    activity.singleBtn,
-                    activity.familyBtn);
-            list.forEach(button -> button.setVisibility(View.GONE));
-        }
-
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -123,30 +100,10 @@ public class SelectActivity extends AppCompatActivity {
             activity.email.set(intent.getStringExtra("email"));
             if(activity.email.get() != null) {
                 activity.firebaseHandler.getUserIdFromEmail(activity.email.get(), activity.userId);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             } else  {
                 Log.e(activity.TAG, "Email pass error");
             }
             return null;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            SelectActivity activity = weakReference.get();
-            Log.i(activity.TAG, LogMessages.ASYNC_END.label);
-            Log.i(activity.TAG, "Got user:" + activity.userId.get());
-            List<Button> list = Arrays.asList(
-                    activity.singleBtn,
-                    activity.familyBtn);
-            list.forEach(button -> button.setVisibility(View.VISIBLE));
-            activity.resources.setUserId(activity.userId.get());
         }
     }
 }

@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.fragments.setups.SetupAddActivity;
+import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupDeleteFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupHomeFragment;
 import com.example.mplayer.structure.body.management.fragments.setups.SetupSelectFragment;

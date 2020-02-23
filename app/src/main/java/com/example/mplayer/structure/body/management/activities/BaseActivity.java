@@ -19,9 +19,6 @@ import com.example.mplayer.utils.enums.Actions;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 //TODO needs testing then can freeze
 //Back - OK
@@ -31,14 +28,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private SharedResources resources;
 
-    private AtomicReference<Class> prevActivity;
-    private AtomicReference<String> playType;
-
-    private Button createNewSetupBtn;
-    private Button useSetupBtn;
-    private Button manageSettingsBtn;
     private Button playBtn;
 
+    private BackgroundTasks backgroundTasks;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -48,49 +40,41 @@ public class BaseActivity extends AppCompatActivity {
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
-        createNewSetupBtn = findViewById(R.id.createNewSetupBtn);
-        useSetupBtn = findViewById(R.id.useSetupBtn);
-        manageSettingsBtn = findViewById(R.id.manageSettingsBtn);
         playBtn = findViewById(R.id.playBtn);
 
         resources = SharedResources.getInstance();
 
-        prevActivity = new AtomicReference<>();
-        playType = new AtomicReference<>();
-
-        new BackgroundTasks(this).execute();
+         backgroundTasks = new BackgroundTasks(this);
+         backgroundTasks.execute();
     }
 
     public void createNewSetup(View view) {
-            Intent intent = new Intent(BaseActivity.this, NewBuildActivity.class);
-            intent.putExtra("prevActivity", getClass())
-                    .putExtra("type", Actions.CREATE);
-            startActivity(intent);
+        backgroundTasks.cancel(true);
+        Intent intent = new Intent(BaseActivity.this, NewBuildActivity.class);
+        intent.putExtra("type", Actions.CREATE);
+        startActivity(intent);
     }
 
     public void useSetup(View view) {
-            Intent intent = new Intent(BaseActivity.this, SelectBuildActivity.class);
-            intent.putExtra("prevActivity", getClass())
-                    .putExtra("type", Actions.SELECT);
-            startActivity(intent);
+        backgroundTasks.cancel(true);
+        Intent intent = new Intent(BaseActivity.this, SelectBuildActivity.class);
+        intent.putExtra("type", Actions.SELECT);
+        startActivity(intent);
     }
 
     public void manageSettings(View view) {
-            Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
-            intent.putExtra("prevActivity", getClass());
-            startActivity(intent);
+        backgroundTasks.cancel(true);
+        startActivity(new Intent(BaseActivity.this, SettingsActivity.class));
     }
 
     public void play(View view) {
-            Intent intent = new Intent(BaseActivity.this, PlayerActivity.class);
-            intent.putExtra("playType", playType);
-            startActivity(intent);
+        backgroundTasks.cancel(true);
+        startActivity(new Intent(BaseActivity.this, PlayerActivity.class));
     }
 
     public void backSingle(View view) {
-        Class<?> cls = prevActivity.get();
-        Intent intent = new Intent(BaseActivity.this, cls);
-        startActivity(intent);
+        backgroundTasks.cancel(true);
+        startActivity( new Intent(BaseActivity.this, SelectActivity.class));
     }
 
 
@@ -108,12 +92,7 @@ public class BaseActivity extends AppCompatActivity {
             BaseActivity activity = weakReference.get();
 
             Log.i(activity.TAG, LogMessages.ASYNC_START.label);
-            List<Button> list = Arrays.asList(
-                    activity.createNewSetupBtn,
-                    activity.useSetupBtn,
-                    activity.manageSettingsBtn,
-                    activity.playBtn);
-            list.forEach(button -> button.setVisibility(View.GONE));
+            activity.playBtn.setVisibility(View.GONE);
         }
 
         @Override
@@ -122,10 +101,10 @@ public class BaseActivity extends AppCompatActivity {
             BaseActivity activity = weakReference.get();
 
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
-            Intent intent = activity.getIntent();
-            activity.playType.set(intent.getStringExtra("playType"));
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
+            //noinspection StatementWithEmptyBody
+            while (activity.resources.getSetupId().equals(null)) {
 
+            }
             return null;
         }
 
@@ -134,17 +113,10 @@ public class BaseActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            //TODO check if setup is not null
             BaseActivity activity = weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_END.label);
-            List<Button> list = Arrays.asList(
-                    activity.createNewSetupBtn,
-                    activity.useSetupBtn,
-                    activity.manageSettingsBtn);
-            list.forEach(button -> button.setVisibility(View.VISIBLE));
-
-            if(activity.resources.getSetupId() != null) {
-                activity.playBtn.setVisibility(View.VISIBLE);
-            }
+            activity.playBtn.setVisibility(View.VISIBLE);
         }
     }
 }

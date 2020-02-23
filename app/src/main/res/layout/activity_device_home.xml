@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".structure.body.management.fragments.devices.DeviceHomeActivity">
+    tools:context=".structure.body.management.activities.devices.DeviceHomeActivity">
 
     <Button
         android:id="@+id/deviceHomeSelectBtn"

@@ -1,11 +1,12 @@
 package com.example.mplayer.utils.helpers;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.mplayer.entities.Playlist;
-import com.example.mplayer.entities.Song;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,7 +61,7 @@ public class PlaylistHelper {
         });
     }
 
-    public void getRoomPlaylist(final String roomId, final List<Playlist> playlists) {
+    public void getRoomPlaylist(final String roomId, final AtomicReference<Playlist> playlists) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,6 +70,31 @@ public class PlaylistHelper {
                     keys.add(keyNode.getKey());
                     Playlist playlist = keyNode.getValue(Playlist.class);
                     if(playlist.getRoomId().equals(roomId)) {
+                        playlists.set(playlist);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(playlists.get().equals(null)) {
+            Log.w(TAG, "No playlists for room:" + roomId);
+        }
+    }
+
+    public void getUserPlaylist(final String userId, final List<Playlist> playlists) {
+        playlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Playlist playlist = keyNode.getValue(Playlist.class);
+                    if(playlist.getUserId().equals(userId)) {
                         playlists.add(playlist);
                     }
                 }
@@ -81,7 +107,7 @@ public class PlaylistHelper {
         });
 
         if(playlists.isEmpty()) {
-            Log.w(TAG, "No playlists for room:" + roomId);
+            Log.w(TAG, "No playlists for user:" + userId);
         }
     }
 
@@ -106,10 +132,11 @@ public class PlaylistHelper {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void getPlaylistSongsNames(final String id, List<String> songs) {
         AtomicReference<Playlist> playlist = new AtomicReference<>();
         getPlaylist(id, playlist);
-        songs = playlist.get().getSongs();
+        songs.addAll(playlist.get().getSongs());
     }
 
     public void updatePlaylist(final String id, Playlist playlist) {

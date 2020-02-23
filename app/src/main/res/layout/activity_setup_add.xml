@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".structure.body.management.fragments.setups.SetupAddActivity">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/setupAddId"
@@ -22,9 +21,9 @@
         android:id="@+id/setupAddBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginLeft="159dp"
-        android:layout_marginTop="255dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="436dp"
         android:onClick="addSetup"
         android:text="add"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +33,9 @@
         android:id="@+id/setupAddBackBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="163dp"
-        android:layout_marginLeft="163dp"
-        android:layout_marginTop="418dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="244dp"
         android:onClick="backNewSetup"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"

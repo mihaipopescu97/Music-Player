@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.fragments.devices.DeviceAddActivity;
-import com.example.mplayer.structure.body.management.fragments.playlists.PlaylistAddActivity;
-import com.example.mplayer.structure.body.management.fragments.setups.SetupAddActivity;
+import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
+import com.example.mplayer.structure.body.management.activities.playlists.PlaylistAddActivity;
+import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;

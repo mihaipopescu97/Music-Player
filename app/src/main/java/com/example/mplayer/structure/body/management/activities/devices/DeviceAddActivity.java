@@ -1,4 +1,4 @@
-package com.example.mplayer.structure.body.management.fragments.devices;
+package com.example.mplayer.structure.body.management.activities.devices;
 
 import android.content.Intent;
 import android.os.AsyncTask;

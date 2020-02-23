@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".structure.body.management.activities.playlists.PlaylistSelectActivity">
 
     <Spinner
         android:id="@+id/playlistSelectSpinner"
@@ -22,6 +23,7 @@
         android:layout_marginStart="158dp"
         android:layout_marginLeft="158dp"
         android:layout_marginTop="210dp"
+        android:onClick="playlistSelect"
         android:text="select"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +35,7 @@
         android:layout_marginStart="153dp"
         android:layout_marginLeft="153dp"
         android:layout_marginTop="363dp"
+        android:onClick="playlistSelectBack"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
