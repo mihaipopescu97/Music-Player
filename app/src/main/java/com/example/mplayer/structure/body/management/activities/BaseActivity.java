@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.setups.SetupSelectActivity;
@@ -17,10 +16,7 @@ import com.example.mplayer.structure.player.PlayerActivity;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
-import java.lang.ref.WeakReference;
-
-//TODO needs testing then can freeze
-//Back - OK
+//FROZEN
 public class BaseActivity extends AppCompatActivity {
 
     private final String TAG = "BaseActivity";

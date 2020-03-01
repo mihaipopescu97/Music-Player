@@ -13,7 +13,7 @@ import com.example.mplayer.structure.body.management.activities.playlists.Playli
 import com.example.mplayer.structure.body.management.activities.setups.SetupHomeActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 
-//TODO test then freeze
+//FROZEN
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

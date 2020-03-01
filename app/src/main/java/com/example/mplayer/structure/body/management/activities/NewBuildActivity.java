@@ -14,7 +14,7 @@ import com.example.mplayer.structure.body.management.activities.setups.SetupAddA
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.enums.LogMessages;
 
-//TODO needs testing before freeze
+//REMOVE ADD DEVICE AFTER
 public class NewBuildActivity extends AppCompatActivity {
 
     @Override

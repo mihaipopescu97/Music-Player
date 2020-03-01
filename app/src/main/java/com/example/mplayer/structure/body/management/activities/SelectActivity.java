@@ -17,9 +17,6 @@ import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 //FROZEN

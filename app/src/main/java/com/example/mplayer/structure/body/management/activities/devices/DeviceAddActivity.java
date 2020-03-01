@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-//TODO test then freeze
+//OK BUT CHECK IF THREADS NEED TO BE ON START?
 public class DeviceAddActivity extends AppCompatActivity {
 
     private final String TAG = "DeviceAddActivity";
@@ -62,10 +62,14 @@ public class DeviceAddActivity extends AppCompatActivity {
         devices = Collections.synchronizedList(new ArrayList<>());
         userDevices = Collections.synchronizedList(new ArrayList<>());
 
+        isEmpty = true;
+        isAvailable = false;
+        isDuplicate = false;
+
         //Update the device id once per sec with the user input
         thread = new Thread(() -> {
             while (true) {
-                deviceId.set(deviceIdEt.getText().toString());
+                deviceId.set(deviceIdEt.getText().toString().trim());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

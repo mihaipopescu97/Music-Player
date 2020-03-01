@@ -11,6 +11,7 @@ import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.SettingsActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 
+//FROZEN
 public class DeviceHomeActivity extends AppCompatActivity {
 
     @SuppressWarnings("FieldCanBeLocal")
