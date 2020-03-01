@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.activities.settings.SettingsActivity;
+import com.example.mplayer.structure.body.management.activities.SettingsActivity;
 import com.example.mplayer.utils.enums.LogMessages;
 
 public class SetupHomeActivity extends AppCompatActivity {
@@ -24,7 +24,9 @@ public class SetupHomeActivity extends AppCompatActivity {
     }
 
     public void homeAddSetup(View view) {
-        startActivity(new Intent(getBaseContext(), SetupAddActivity.class));
+        Intent intent = new Intent(getBaseContext(), SetupAddActivity.class);
+        intent.putExtra("prevActivity", getBaseContext().toString());
+        startActivity(intent);
     }
 
     public void homeDeleteSetup(View view) {

@@ -3,83 +3,52 @@ package com.example.mplayer.structure.body.management.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import com.example.mplayer.R;
+import com.example.mplayer.entities.Device;
 import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.activities.playlists.PlaylistAddActivity;
 import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
+import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.enums.LogMessages;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.atomic.AtomicReference;
 
 //TODO needs testing before freeze
 public class NewBuildActivity extends AppCompatActivity {
-
-    private final String TAG = "NewBuildActivity";
-    private AtomicReference<Class> prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_build);
 
+        String TAG = "NewBuildActivity";
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
-
-        prevActivity = new AtomicReference<>();
-        new BackgroundTask(this).execute();
     }
 
     public void addNewDevice(View view) {
         Intent intent = new Intent(getBaseContext(), DeviceAddActivity.class);
-        intent.putExtra("prevActivity", getBaseContext().toString());
+        intent.putExtra("prevActivity", this.getClass());
         startActivity(intent);
     }
 
     public void addNewSetup(View view) {
-            Intent intent = new Intent(getBaseContext(), SetupAddActivity.class);
-            intent.putExtra("prevActivity", getBaseContext().toString());
-            startActivity(intent);
+        Intent intent = new Intent(getBaseContext(), SetupAddActivity.class);
+        intent.putExtra("prevActivity", this.getClass());
+        startActivity(intent);
     }
 
     public void addNewPlaylist(View view) {
         Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
-        intent.putExtra("prevActivity", getBaseContext().toString());
+        intent.putExtra("prevActivity",this.getClass());
         startActivity(intent);
     }
 
-    //Get previous activity and play type
-    private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<NewBuildActivity> weakReference;
+    public void backNewBuild(View view) {
+        startActivity(new Intent(getBaseContext(), BaseActivity.class));
+    }
 
-        BackgroundTask(NewBuildActivity activity) {
-            weakReference = new WeakReference<>(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            NewBuildActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            NewBuildActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
-            Intent intent = activity.getIntent();
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            NewBuildActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
-        }
+    public void addDeviceKms(View view) {
+        FirebaseHandler.getInstance().addDevice(new Device("0"));
     }
 }

@@ -63,9 +63,7 @@ public class DeviceHelper {
         deviceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> keys = new ArrayList<>();
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                    keys.add(keyNode.getKey());
                     Device device = keyNode.getValue(Device.class);
                     if(device.getUserId().equals(userId)) {
                         devices.add(device);

@@ -19,6 +19,7 @@ import com.example.mplayer.utils.enums.LogMessages;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SetupAddActivity extends AppCompatActivity {
 
@@ -27,6 +28,7 @@ public class SetupAddActivity extends AppCompatActivity {
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
+    private AtomicReference<Class> prevActivity;
     private List<Room> rooms;
 
     private EditText nrOfRooms;
@@ -40,6 +42,7 @@ public class SetupAddActivity extends AppCompatActivity {
 
         nrOfRooms = findViewById(R.id.setupAddId);
 
+        prevActivity = new AtomicReference<>();
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
         rooms = new ArrayList<>();
@@ -61,8 +64,9 @@ public class SetupAddActivity extends AppCompatActivity {
             setup.setRooms(rooms);
             Log.d(TAG, "Setup added with id:" + setup.getId());
             new AddSetupAsync(this, setup).execute();
-            Log.i(TAG, "Changing to new build activity");
-            startActivity(new Intent(getBaseContext(), SetupHomeActivity.class));
+            Class<?> cls = prevActivity.get();
+            Intent intent = new Intent(getBaseContext(), cls);
+            startActivity(intent);
         } catch (NumberFormatException e) {
             Log.w(TAG, "Invalid number");
             e.printStackTrace();
@@ -70,7 +74,9 @@ public class SetupAddActivity extends AppCompatActivity {
     }
 
     public void backNewSetup(View view) {
-        startActivity(new Intent(getBaseContext(), SetupHomeActivity.class));
+        Class<?> cls = prevActivity.get();
+        Intent intent = new Intent(getBaseContext(), cls);
+        startActivity(intent);
     }
 
     private static class AddSetupAsync extends AsyncTask<Void, Void, Void> {
@@ -90,6 +96,8 @@ public class SetupAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.addSetup(setup);
+            Intent intent = activity.getIntent();
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }

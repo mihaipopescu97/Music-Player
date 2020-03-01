@@ -12,10 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.mplayer.R;
-import com.example.mplayer.structure.body.management.activities.settings.SettingsActivity;
+import com.example.mplayer.structure.body.management.activities.setups.SetupSelectActivity;
 import com.example.mplayer.structure.player.PlayerActivity;
 import com.example.mplayer.utils.SharedResources;
-import com.example.mplayer.utils.enums.Actions;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
@@ -28,10 +27,6 @@ public class BaseActivity extends AppCompatActivity {
 
     private SharedResources resources;
 
-    private Button playBtn;
-
-    private BackgroundTasks backgroundTasks;
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,83 +35,35 @@ public class BaseActivity extends AppCompatActivity {
 
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
-        playBtn = findViewById(R.id.playBtn);
-
         resources = SharedResources.getInstance();
+    }
 
-         backgroundTasks = new BackgroundTasks(this);
-         backgroundTasks.execute();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        resources.resetPlayType();
     }
 
     public void createNewSetup(View view) {
-        backgroundTasks.cancel(true);
-        Intent intent = new Intent(BaseActivity.this, NewBuildActivity.class);
-        intent.putExtra("type", Actions.CREATE);
-        startActivity(intent);
+        startActivity( new Intent(getBaseContext(), NewBuildActivity.class));
     }
 
     public void useSetup(View view) {
-        backgroundTasks.cancel(true);
-        Intent intent = new Intent(BaseActivity.this, SelectBuildActivity.class);
-        intent.putExtra("type", Actions.SELECT);
-        startActivity(intent);
+        startActivity(new Intent(getBaseContext(), SetupSelectActivity.class));
     }
 
     public void manageSettings(View view) {
-        backgroundTasks.cancel(true);
-        startActivity(new Intent(BaseActivity.this, SettingsActivity.class));
+        startActivity(new Intent(getBaseContext(), SettingsActivity.class));
     }
 
     public void play(View view) {
-        backgroundTasks.cancel(true);
-        startActivity(new Intent(BaseActivity.this, PlayerActivity.class));
+        if(resources.getSetupId() != null && resources.getSetupId().isEmpty()) {
+            startActivity(new Intent(BaseActivity.this, PlayerActivity.class));
+        }
     }
 
-    public void backSingle(View view) {
-        backgroundTasks.cancel(true);
+    public void backBase(View view) {
         startActivity( new Intent(BaseActivity.this, SelectActivity.class));
     }
 
-
-    private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {
-        WeakReference<BaseActivity> weakReference;
-
-        BackgroundTasks(BaseActivity activity) {
-            weakReference = new WeakReference<>(activity);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            BaseActivity activity = weakReference.get();
-
-            Log.i(activity.TAG, LogMessages.ASYNC_START.label);
-            activity.playBtn.setVisibility(View.GONE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            BaseActivity activity = weakReference.get();
-
-            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
-            //noinspection StatementWithEmptyBody
-            while (activity.resources.getSetupId().equals(null)) {
-
-            }
-            return null;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            //TODO check if setup is not null
-            BaseActivity activity = weakReference.get();
-            Log.i(activity.TAG, LogMessages.ASYNC_END.label);
-            activity.playBtn.setVisibility(View.VISIBLE);
-        }
-    }
 }

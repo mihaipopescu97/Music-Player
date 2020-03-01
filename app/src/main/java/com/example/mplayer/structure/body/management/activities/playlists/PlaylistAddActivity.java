@@ -37,6 +37,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
     private List<Song> songs;
     private List<String> songNames;
 
+    private AtomicReference<Class> prevActivity;
     private AtomicReference<Playlist> playlist;
     private List<String> playlistSongs;
 
@@ -60,6 +61,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
         songs = Collections.synchronizedList(new ArrayList<>());
         songNames = new ArrayList<>();
 
+        prevActivity = new AtomicReference<>();
         playlist = new AtomicReference<>();
         playlistSongs = new ArrayList<>();
         resources = SharedResources.getInstance();
@@ -118,8 +120,9 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
         new AddPlaylistAsync(this, playlist).execute();
 
-        Log.d(TAG, "Changing to new build activity");
-        startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
+        Class<?> cls = prevActivity.get();
+        Intent intent = new Intent(getBaseContext(),cls);
+        startActivity(intent);
     }
 
     public void backPlaylistSelect(View view) {
@@ -161,7 +164,8 @@ public class PlaylistAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.addPlaylist(playlist);
-
+            Intent intent = activity.getIntent();
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }

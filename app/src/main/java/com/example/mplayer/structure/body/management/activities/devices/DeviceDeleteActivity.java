@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Device;
-import com.example.mplayer.structure.body.management.activities.settings.DeviceSettingsActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -87,7 +86,7 @@ public class DeviceDeleteActivity extends AppCompatActivity {
     public void doneDeleteDevice(View view) {
         thread.interrupt();
         updateSpinner.cancel(true);
-        startActivity(new Intent(getBaseContext(), DeviceSettingsActivity.class));
+        startActivity(new Intent(getBaseContext(), DeviceHomeActivity.class));
     }
 
     private static class BackgroundTasks extends AsyncTask<Void, Void, Void> {

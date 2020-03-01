@@ -17,6 +17,9 @@ import com.example.mplayer.utils.enums.PlayType;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 //FROZEN
@@ -45,13 +48,8 @@ public class SelectActivity extends AppCompatActivity {
         userId = new AtomicReference<>();
         email = new AtomicReference<>();
 
-        new BackgroundTask(this).execute();
-
-        while(userId.get().isEmpty()) {
-            Log.i(TAG, "Waiting for user fetch..");
-        }
-
-        resources.setUserId(userId.get());
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        backgroundTask.execute();
     }
 
     @Override
@@ -62,6 +60,7 @@ public class SelectActivity extends AppCompatActivity {
 
     public void single(View view) {
         if(!userId.get().isEmpty()) {
+            resources.setUserId(userId.get());
             resources.setPlayType(PlayType.SINGLE.label);
             startActivity(new Intent(getBaseContext(), BaseActivity.class));
         } else {

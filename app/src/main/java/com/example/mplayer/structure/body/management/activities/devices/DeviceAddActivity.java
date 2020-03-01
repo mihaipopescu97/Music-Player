@@ -100,10 +100,10 @@ public class DeviceAddActivity extends AppCompatActivity {
         }
     }
 
-    public void backDeviceAddActivity(View view) {
+    public void doneDeviceAddActivity(View view) {
         thread.interrupt();
         Class<?> cls = prevActivity.get();
-        Intent intent = new Intent(DeviceAddActivity.this, cls);
+        Intent intent = new Intent(getBaseContext(), cls);
         startActivity(intent);
     }
 
@@ -131,6 +131,7 @@ public class DeviceAddActivity extends AppCompatActivity {
             Intent intent = activity.getIntent();
             activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             activity.firebaseHandler.getUserDevices(activity.resources.getUserId(), activity.userDevices);
+            activity.firebaseHandler.getDevices(activity.devices);
             return null;
         }
 

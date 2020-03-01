@@ -13,7 +13,7 @@
         android:layout_marginStart="164dp"
         android:layout_marginLeft="164dp"
         android:layout_marginTop="436dp"
-        android:onClick="backDeviceAddActivity"
+        android:onClick="doneDeviceAddActivity"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
