@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".structure.body.management.activities.setups.SetupSelectActivity"></activity>
+        <activity android:name=".utils.BluetoothActivity"></activity>
+        <activity android:name=".structure.body.management.activities.setups.SetupSelectActivity" />
         <activity android:name=".structure.body.management.activities.setups.SetupDeleteActivity" />
         <activity android:name=".structure.body.management.activities.setups.SetupHomeActivity" />
         <activity android:name=".structure.body.management.activities.playlists.RoomSelectActivity" />
