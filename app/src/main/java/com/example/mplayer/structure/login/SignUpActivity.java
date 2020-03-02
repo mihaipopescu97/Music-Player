@@ -15,7 +15,7 @@ import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
 
-//TODO ADD INFO
+//FROZEN
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = "SignUpActivity";
@@ -71,5 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
     //Back to main activity
     public void backToMain(View view) {
         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+    }
+
+    public void displayInfo(View view) {
+        Toast.makeText(getBaseContext(), "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
     }
 }

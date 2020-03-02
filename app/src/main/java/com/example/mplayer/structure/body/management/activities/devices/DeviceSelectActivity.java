@@ -45,8 +45,6 @@ public class DeviceSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_select);
         Log.d(TAG, LogMessages.ACTIVITY_START.label);
 
-
-
         devicesSpinner = findViewById(R.id.deviceSelectSpinner);
 
         userId = new AtomicReference<>();

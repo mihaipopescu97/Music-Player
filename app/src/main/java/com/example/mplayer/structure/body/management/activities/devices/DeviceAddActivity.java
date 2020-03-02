@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Device;
-import com.example.mplayer.structure.body.management.activities.NewBuildActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -45,6 +44,8 @@ public class DeviceAddActivity extends AppCompatActivity {
     private Boolean isEmpty;
     private Boolean isAvailable;
     private Boolean isDuplicate;
+
+    private CheckTask checkTask;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -77,10 +78,17 @@ public class DeviceAddActivity extends AppCompatActivity {
                 }
             }
         });
-        thread.start();
 
+        checkTask = new CheckTask(this);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        thread.start();
         new BackgroundTasks(this).execute();
-        new CheckTask(this).execute();
+        checkTask.execute();
     }
 
     public void addDevice(View view) {
@@ -100,7 +108,10 @@ public class DeviceAddActivity extends AppCompatActivity {
             Log.d(TAG, "Adding device with id:" + device.getId());
             firebaseHandler.updateDevice(device.getId(), device);
             thread.interrupt();
-            startActivity(new Intent(getBaseContext(), NewBuildActivity.class));
+            checkTask.cancel(true);
+            Class<?> cls = prevActivity.get();
+            Intent intent = new Intent(getBaseContext(), cls);
+            startActivity(intent);
         }
     }
 
@@ -119,13 +130,6 @@ public class DeviceAddActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            DeviceAddActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
-        }
-
-        @Override
         protected Void doInBackground(Void... voids) {
 
             DeviceAddActivity activity = weakReference.get();
@@ -138,13 +142,6 @@ public class DeviceAddActivity extends AppCompatActivity {
             activity.firebaseHandler.getDevices(activity.devices);
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            DeviceAddActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
-        }
     }
 
     private static class CheckTask extends AsyncTask<Void, Void, Void> {
@@ -152,13 +149,6 @@ public class DeviceAddActivity extends AppCompatActivity {
 
         CheckTask(DeviceAddActivity fragment) {
             weakReference = new WeakReference<>(fragment);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            DeviceAddActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_START.label);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -195,13 +185,6 @@ public class DeviceAddActivity extends AppCompatActivity {
                     activity.isEmpty = true;
                 }
             }
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            DeviceAddActivity activity = weakReference.get();
-            Log.d(activity.TAG, LogMessages.ASYNC_END.label);
         }
     }
 }
