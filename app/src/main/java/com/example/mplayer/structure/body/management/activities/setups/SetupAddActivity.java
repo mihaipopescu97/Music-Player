@@ -47,7 +47,7 @@ public class SetupAddActivity extends AppCompatActivity {
         resources = SharedResources.getInstance();
         rooms = new ArrayList<>();
 
-
+        new ReadPrevActivity(this).execute();
     }
 
     public void addSetup(View view) {
@@ -96,6 +96,24 @@ public class SetupAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.addSetup(setup);
+            return null;
+        }
+    }
+
+    private static class ReadPrevActivity extends AsyncTask<Void, Void, Void> {
+        WeakReference<SetupAddActivity> weakReference;
+
+        ReadPrevActivity(SetupAddActivity activity) {
+            weakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            SetupAddActivity activity = weakReference.get();
+
+            Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
+
             Intent intent = activity.getIntent();
             activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.BaseActivity;
-import com.example.mplayer.utils.BluetoothSender;
+//import com.example.mplayer.utils.BluetoothSender;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class PlayerActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private int totalTime;
 
-    private BluetoothSender bluetoothSender;
+    //private BluetoothSender bluetoothSender;
 
 
 
@@ -44,11 +44,11 @@ public class PlayerActivity extends AppCompatActivity {
         playBtn = findViewById(R.id.playButton);
         elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
         remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
-        try {
-            bluetoothSender = BluetoothSender.getInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            bluetoothSender = BluetoothSender.getInstance();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
         //Media Player
@@ -92,12 +92,12 @@ public class PlayerActivity extends AppCompatActivity {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         float volumeNum = progress / 100f;
                         mp.setVolume(volumeNum, volumeNum);
-
-                        try {
-                            bluetoothSender.write("action : p");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//
+//                        try {
+//                        //    bluetoothSender.write("action : p");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
 
                     }
 
@@ -123,13 +123,13 @@ public class PlayerActivity extends AppCompatActivity {
                         message.what = mp.getCurrentPosition();
                         handler.sendMessage(message);
 
-                        bluetoothSender.write("asdf");
+                     //   bluetoothSender.write("asdf");
 
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
                     }
                 }
             }
@@ -174,21 +174,21 @@ public class PlayerActivity extends AppCompatActivity {
             mp.start();
             playBtn.setBackgroundResource(R.drawable.stop_button);
 
-            try {
-                bluetoothSender.write("action : play");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                bluetoothSender.write("action : play");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         } else {
             //Stop
             mp.pause();
             playBtn.setBackgroundResource(R.drawable.play_button);
 
-            try {
-                bluetoothSender.write("action : pause");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//               // bluetoothSender.write("action : pause");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

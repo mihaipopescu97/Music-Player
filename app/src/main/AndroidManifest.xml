@@ -23,13 +23,9 @@
         <activity android:name=".structure.body.management.activities.devices.DeviceSelectActivity" />
         <activity android:name=".structure.body.management.activities.devices.DeviceHomeActivity" />
         <activity android:name=".structure.body.management.activities.devices.DeviceDeleteActivity" />
-        <activity android:name=".structure.body.management.activities.SelectBuildActivity" />
         <activity android:name=".structure.body.management.activities.NewBuildActivity" />
         <activity android:name=".structure.body.management.activities.SelectActivity" />
         <activity android:name=".structure.body.management.activities.SettingsActivity" />
-        <activity android:name=".structure.body.management.activities.settings.PlaylistSettingsActivity" />
-        <activity android:name=".structure.body.management.activities.settings.SetupSettingsActivity" />
-        <activity android:name=".structure.body.management.activities.settings.DeviceSettingsActivity" />
         <activity android:name=".structure.body.management.activities.BaseActivity" />
         <activity android:name=".structure.login.SignUpActivity" />
         <activity android:name=".structure.player.PlayerActivity" />
