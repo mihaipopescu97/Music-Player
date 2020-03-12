@@ -163,8 +163,8 @@ public class FirebaseHandler {
         roomHelper.getRooms(rooms);
     }
 
-    public void getSetupRooms(final String setupId, final List<Room> rooms) {
-        roomHelper.getSetupRooms(setupId, rooms);
+    public void getSetupRooms(final String setupId, final List<Room> rooms, final List<String> roomsId) {
+        roomHelper.getSetupRooms(setupId, rooms, roomsId);
     }
 
     public void getRoom(final String id, final AtomicReference<Room> room) {

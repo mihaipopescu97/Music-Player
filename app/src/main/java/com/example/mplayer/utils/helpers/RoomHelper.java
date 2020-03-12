@@ -59,7 +59,7 @@ public class RoomHelper {
         });
     }
 
-    public void getSetupRooms(final String setupId, List<Room> rooms) {
+    public void getSetupRooms(final String setupId, List<Room> rooms, final List<String> roomsId) {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,6 +69,7 @@ public class RoomHelper {
                     Room room = keyNode.getValue(Room.class);
                     if(room.getPlaylistId().equals(setupId)) {
                         rooms.add(room);
+                        roomsId.add(room.getId());
                     }
                 }
             }
