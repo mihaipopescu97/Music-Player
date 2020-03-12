@@ -10,6 +10,7 @@ import com.example.mplayer.R;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.activities.playlists.PlaylistAddActivity;
+import com.example.mplayer.structure.body.management.activities.playlists.RoomSelectActivity;
 import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -39,7 +40,7 @@ public class NewBuildActivity extends AppCompatActivity {
     }
 
     public void addNewPlaylist(View view) {
-        Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
+        Intent intent = new Intent(getBaseContext(), RoomSelectActivity.class);
         intent.putExtra("prevActivity",this.getClass());
         startActivity(intent);
     }

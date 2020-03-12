@@ -31,6 +31,7 @@ public class RoomSelectActivity extends AppCompatActivity {
 
     private List<Room> rooms;
     private List<String> roomsId;
+    ArrayAdapter<String> adapter;
 
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
@@ -50,16 +51,18 @@ public class RoomSelectActivity extends AppCompatActivity {
 
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
-
+        Log.w(TAG, resources.getSetupId());
         new BackgroundTask(this).execute();
 
-        while (rooms.isEmpty()) {
-            Log.d(TAG, "Waiting for room list...");
-        }
+        adapter = null;
+        Thread thread = new Thread(() -> {
+            roomsId.clear();
+            rooms.forEach(room -> roomsId.add(room.getId()));
+            adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
 
-        rooms.forEach(room -> roomsId.add(room.getId()));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
-        roomSpinner.setAdapter(adapter);
+            roomSpinner.setAdapter(adapter);
+        });
+        thread.start();
     }
 
     public void selectRoom(View view) {

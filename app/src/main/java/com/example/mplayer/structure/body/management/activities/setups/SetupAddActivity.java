@@ -62,6 +62,7 @@ public class SetupAddActivity extends AppCompatActivity {
                 rooms.add(room);
             }
             setup.setRooms(rooms);
+            resources.setSetupId(setup.getId());
             Log.d(TAG, "Setup added with id:" + setup.getId());
             new AddSetupAsync(this, setup).execute();
             Class<?> cls = prevActivity.get();
