@@ -2,11 +2,13 @@ package com.example.mplayer.structure.body.management.activities.setups;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
@@ -30,6 +32,7 @@ public class SetupAddActivity extends AppCompatActivity {
 
     private AtomicReference<Class> prevActivity;
     private List<Room> rooms;
+    private List<String> roomsIds;
 
     private EditText nrOfRooms;
 
@@ -46,6 +49,7 @@ public class SetupAddActivity extends AppCompatActivity {
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
         rooms = new ArrayList<>();
+        roomsIds = new ArrayList<>();
 
         new ReadPrevActivity(this).execute();
     }
@@ -60,11 +64,12 @@ public class SetupAddActivity extends AppCompatActivity {
             for(int i = 0; i < nr; i++) {
                 Room room = new Room(setup.getId());
                 rooms.add(room);
+                roomsIds.add(room.getId());
             }
-            setup.setRooms(rooms);
+            setup.setRooms(roomsIds);
             resources.setSetupId(setup.getId());
             Log.d(TAG, "Setup added with id:" + setup.getId());
-            new AddSetupAsync(this, setup).execute();
+            new AddSetupAndRoomsAsync(this, setup, rooms).execute();
             Class<?> cls = prevActivity.get();
             Intent intent = new Intent(getBaseContext(), cls);
             startActivity(intent);
@@ -80,15 +85,18 @@ public class SetupAddActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private static class AddSetupAsync extends AsyncTask<Void, Void, Void> {
+    private static class AddSetupAndRoomsAsync extends AsyncTask<Void, Void, Void> {
         WeakReference<SetupAddActivity> weakReference;
         Setup setup;
+        List<Room> rooms;
 
-        AddSetupAsync(SetupAddActivity activity, Setup setup) {
+        AddSetupAndRoomsAsync(SetupAddActivity activity, Setup setup, List<Room> rooms) {
             weakReference = new WeakReference<>(activity);
             this.setup = setup;
+            this.rooms = rooms;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -97,6 +105,8 @@ public class SetupAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.addSetup(setup);
+            rooms.forEach(room -> activity.firebaseHandler.addRoom(room));
+
             return null;
         }
     }

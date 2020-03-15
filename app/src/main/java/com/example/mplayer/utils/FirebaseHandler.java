@@ -1,6 +1,7 @@
 package com.example.mplayer.utils;
 
 import android.os.Build;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.RequiresApi;
 
@@ -163,8 +164,8 @@ public class FirebaseHandler {
         roomHelper.getRooms(rooms);
     }
 
-    public void getSetupRooms(final String setupId, final List<Room> rooms, final List<String> roomsId) {
-        roomHelper.getSetupRooms(setupId, rooms, roomsId);
+    public void getSetupRooms(final String setupId, final List<Room> rooms, final List<String> roomsId, final ArrayAdapter<String> adapter) {
+        roomHelper.getSetupRooms(setupId, rooms, roomsId, adapter);
     }
 
     public void getRoom(final String id, final AtomicReference<Room> room) {

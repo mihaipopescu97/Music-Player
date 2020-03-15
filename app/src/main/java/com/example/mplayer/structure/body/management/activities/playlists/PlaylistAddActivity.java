@@ -38,15 +38,12 @@ public class PlaylistAddActivity extends AppCompatActivity {
     private List<String> songNames;
 
     private AtomicReference<Class> prevActivity;
-    private AtomicReference<Playlist> playlist;
     private List<String> playlistSongs;
-
-    private  ArrayAdapter<String> playlistAdapter;
 
     private Spinner songsSpinner;
     private Spinner playlistSpinner;
 
-    private Thread thread;
+    private ArrayAdapter<String> playlistAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -62,7 +59,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
         songNames = new ArrayList<>();
 
         prevActivity = new AtomicReference<>();
-        playlist = new AtomicReference<>();
         playlistSongs = new ArrayList<>();
         resources = SharedResources.getInstance();
 
@@ -71,31 +67,19 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
         new BackgroundTask(this).execute();
 
-        while (songs.isEmpty() && playlist.get().equals(null)) {
-             Log.d(TAG, "Waiting for song list and playlist...");
-         }
-
         songs.forEach(song -> songNames.add(song.getName()));
-        playlistSongs.addAll(playlist.get().getSongs());
 
         ArrayAdapter<String> songsAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, songNames);
         songsSpinner.setAdapter(songsAdapter);
 
-        thread = new Thread(() -> {
-            playlistAdapter =  new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlistSongs);
-            playlistSpinner.setAdapter(playlistAdapter);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
+        playlistAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlistSongs);
+        playlistSpinner.setAdapter(playlistAdapter);
     }
 
     public void addSong(View view) {
         if(songsSpinner.getSelectedItem() != null) {
             playlistSongs.add(String.valueOf(songsSpinner.getSelectedItemId()));
+            playlistAdapter.notifyDataSetChanged();
         } else {
             Log.e(TAG, "Song not selected");
             Toast.makeText(getBaseContext(), "Please select a song to be added!", Toast.LENGTH_SHORT).show();
@@ -105,6 +89,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
     public void deleteSong(View view) {
         if(playlistSpinner.getSelectedItem() != null) {
             playlistSongs.remove(String.valueOf(songsSpinner.getSelectedItemId()));
+            playlistAdapter.notifyDataSetChanged();
         } else {
             Log.e(TAG, "Song not selected");
             Toast.makeText(getBaseContext(), "Please select a song to be deleted!", Toast.LENGTH_SHORT).show();
@@ -112,7 +97,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
     }
 
     public void donePlaylistAdd(View view) {
-        thread.interrupt();
         Playlist playlist = new Playlist(resources.getRoomID());
         playlist.setSongs(playlistSongs);
 
@@ -126,7 +110,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
     }
 
     public void backPlaylistSelect(View view) {
-        thread.interrupt();
         startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
     }
 
@@ -142,7 +125,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
             PlaylistAddActivity activity = weakReference.get();
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.getRoomPlaylists(activity.resources.getRoomID(), activity.playlist);
             activity.firebaseHandler.getSongs(activity.songs);
 
             return null;

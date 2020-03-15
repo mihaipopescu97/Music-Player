@@ -35,6 +35,8 @@ public class RoomSelectActivity extends AppCompatActivity {
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
+    private ArrayAdapter<String> adapter;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +54,12 @@ public class RoomSelectActivity extends AppCompatActivity {
         resources = SharedResources.getInstance();
         Log.w(TAG, resources.getSetupId());
         new BackgroundTask(this).execute();
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
+        roomSpinner.setAdapter(adapter);
 //            roomsId.clear();
 //            rooms.forEach(room -> roomsId.add(room.getId()));
 //            adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
 
-        roomSpinner.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId));
     }
 
     public void selectRoom(View view) {
@@ -85,7 +88,7 @@ public class RoomSelectActivity extends AppCompatActivity {
             RoomSelectActivity activity = weakReference.get();
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.getSetupRooms(activity.resources.getSetupId(), activity.rooms, activity.roomsId);
+            activity.firebaseHandler.getSetupRooms(activity.resources.getSetupId(), activity.rooms, activity.roomsId, activity.adapter);
             return null;
         }
     }

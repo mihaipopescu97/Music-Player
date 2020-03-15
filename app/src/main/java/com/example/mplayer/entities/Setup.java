@@ -14,7 +14,7 @@ public class Setup {
     private String id;
     private String userId;
     private String type;
-    private List<Room> rooms;
+    private List<String> rooms;
 
     public Setup() {}
 

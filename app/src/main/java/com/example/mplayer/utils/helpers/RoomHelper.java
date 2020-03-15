@@ -1,6 +1,7 @@
 package com.example.mplayer.utils.helpers;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -59,7 +60,7 @@ public class RoomHelper {
         });
     }
 
-    public void getSetupRooms(final String setupId, List<Room> rooms, final List<String> roomsId) {
+    public void getSetupRooms(final String setupId, List<Room> rooms, final List<String> roomsId, final ArrayAdapter<String> adapter) {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,6 +73,7 @@ public class RoomHelper {
                         roomsId.add(room.getId());
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
