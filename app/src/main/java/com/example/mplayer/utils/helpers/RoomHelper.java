@@ -60,7 +60,7 @@ public class RoomHelper {
         });
     }
 
-    public void getSetupRooms(final String setupId, List<Room> rooms, final List<String> roomsId, final ArrayAdapter<String> adapter) {
+    public void getSetupRooms(final String setupId, final List<String> roomsId, final ArrayAdapter<String> adapter) {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,7 +69,6 @@ public class RoomHelper {
                     keys.add(keyNode.getKey());
                     Room room = keyNode.getValue(Room.class);
                     if(room.getPlaylistId().equals(setupId)) {
-                        rooms.add(room);
                         roomsId.add(room.getId());
                     }
                 }
@@ -82,7 +81,7 @@ public class RoomHelper {
             }
         });
 
-        if(rooms.isEmpty()) {
+        if(roomsId.isEmpty()) {
             Log.w(TAG, "No rooms for playlist:" + setupId);
         }
     }

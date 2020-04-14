@@ -9,7 +9,6 @@ import android.view.View;
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Device;
 import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
-import com.example.mplayer.structure.body.management.activities.playlists.PlaylistAddActivity;
 import com.example.mplayer.structure.body.management.activities.playlists.RoomSelectActivity;
 import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
 import com.example.mplayer.utils.FirebaseHandler;

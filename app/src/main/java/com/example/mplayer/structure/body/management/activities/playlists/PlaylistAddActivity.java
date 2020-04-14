@@ -15,14 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Playlist;
-import com.example.mplayer.entities.Song;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,7 +32,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
     private SharedResources resources;
 
 
-    private List<Song> songs;
     private List<String> songNames;
 
     private AtomicReference<Class> prevActivity;
@@ -42,6 +39,8 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
     private Spinner songsSpinner;
     private Spinner playlistSpinner;
+
+    private ArrayAdapter<String> songsAdapter;
 
     private ArrayAdapter<String> playlistAdapter;
 
@@ -55,7 +54,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
         firebaseHandler = FirebaseHandler.getInstance();
 
-        songs = Collections.synchronizedList(new ArrayList<>());
         songNames = new ArrayList<>();
 
         prevActivity = new AtomicReference<>();
@@ -67,9 +65,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
         new BackgroundTask(this).execute();
 
-        songs.forEach(song -> songNames.add(song.getName()));
-
-        ArrayAdapter<String> songsAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, songNames);
+        songsAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, songNames);
         songsSpinner.setAdapter(songsAdapter);
 
         playlistAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlistSongs);
@@ -78,7 +74,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
     public void addSong(View view) {
         if(songsSpinner.getSelectedItem() != null) {
-            playlistSongs.add(String.valueOf(songsSpinner.getSelectedItemId()));
+            playlistSongs.add(String.valueOf(songsSpinner.getSelectedItem()));
             playlistAdapter.notifyDataSetChanged();
         } else {
             Log.e(TAG, "Song not selected");
@@ -88,7 +84,7 @@ public class PlaylistAddActivity extends AppCompatActivity {
 
     public void deleteSong(View view) {
         if(playlistSpinner.getSelectedItem() != null) {
-            playlistSongs.remove(String.valueOf(songsSpinner.getSelectedItemId()));
+            playlistSongs.remove(String.valueOf(songsSpinner.getSelectedItem()));
             playlistAdapter.notifyDataSetChanged();
         } else {
             Log.e(TAG, "Song not selected");
@@ -110,7 +106,9 @@ public class PlaylistAddActivity extends AppCompatActivity {
     }
 
     public void backPlaylistSelect(View view) {
-        startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
+        Class<?> cls = prevActivity.get();
+        Intent intent = new Intent(getBaseContext(),cls);
+        startActivity(intent);
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
@@ -125,8 +123,9 @@ public class PlaylistAddActivity extends AppCompatActivity {
             PlaylistAddActivity activity = weakReference.get();
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.getSongs(activity.songs);
-
+            activity.firebaseHandler.getSongs(activity.songNames, activity.songsAdapter);
+            Intent intent = activity.getIntent();
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }
@@ -146,8 +145,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.addPlaylist(playlist);
-            Intent intent = activity.getIntent();
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }

@@ -1,6 +1,8 @@
 package com.example.mplayer.utils.helpers;
 
 import android.util.Log;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -40,7 +42,7 @@ public class SongHelper {
                 .addOnFailureListener(e -> Log.e(TAG, "Post song failed"));
     }
 
-    public void getSongs(final List<Song> songs) {
+    public void getSongs(final List<String> songs, final ArrayAdapter<String> adapter) {
         songRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -48,8 +50,9 @@ public class SongHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Song song = keyNode.getValue(Song.class);
-                    songs.add(song);
+                    songs.add(song.getName());
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override

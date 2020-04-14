@@ -14,28 +14,26 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Room;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RoomSelectActivity extends AppCompatActivity {
     private final String TAG = "RoomSelectActivity";
 
     private Spinner roomSpinner;
-
-    private List<Room> rooms;
     private List<String> roomsId;
 
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
     private ArrayAdapter<String> adapter;
+    private AtomicReference<Class> prevActivity;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -46,8 +44,7 @@ public class RoomSelectActivity extends AppCompatActivity {
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
 
         roomSpinner = findViewById(R.id.roomSpinner);
-
-        rooms = Collections.synchronizedList(new ArrayList<>());
+        prevActivity = new AtomicReference<>();
         roomsId = new ArrayList<>();
 
         firebaseHandler = FirebaseHandler.getInstance();
@@ -56,16 +53,14 @@ public class RoomSelectActivity extends AppCompatActivity {
         new BackgroundTask(this).execute();
         adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
         roomSpinner.setAdapter(adapter);
-//            roomsId.clear();
-//            rooms.forEach(room -> roomsId.add(room.getId()));
-//            adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
-
     }
 
     public void selectRoom(View view) {
         if(roomSpinner.getSelectedItem() != null) {
             resources.setRoomId(String.valueOf(roomSpinner.getSelectedItemId()));
-            startActivity(new Intent(getBaseContext(), PlaylistAddActivity.class));
+            Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
+            intent.putExtra("prevActivity", prevActivity.get());
+            startActivity(intent);
         } else {
             Log.e(TAG, "Room not selected");
             Toast.makeText(getBaseContext(), "Please select a room!", Toast.LENGTH_SHORT).show();
@@ -73,7 +68,9 @@ public class RoomSelectActivity extends AppCompatActivity {
     }
 
     public void roomSelectBack(View view) {
-        startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
+        Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
+        intent.putExtra("prevActivity", prevActivity.get());
+        startActivity(intent);
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
@@ -88,7 +85,9 @@ public class RoomSelectActivity extends AppCompatActivity {
             RoomSelectActivity activity = weakReference.get();
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.getSetupRooms(activity.resources.getSetupId(), activity.rooms, activity.roomsId, activity.adapter);
+            activity.firebaseHandler.getSetupRooms(activity.resources.getSetupId(), activity.roomsId, activity.adapter);
+            Intent intent = activity.getIntent();
+            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }

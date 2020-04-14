@@ -13,6 +13,9 @@ public class Song {
     private String name;
 
     public Song() {
+    }
+    public Song(final String name) {
         id = UUID.randomUUID().toString();
+        this.name = name;
     }
 }

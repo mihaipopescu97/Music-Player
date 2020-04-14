@@ -40,14 +40,15 @@
         android:layout_marginTop="464dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
+        android:background="@drawable/button_style"
         android:onClick="selectRoom"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
