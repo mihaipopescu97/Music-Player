@@ -26,7 +26,7 @@ public class SetupHomeActivity extends AppCompatActivity {
 
     public void homeAddSetup(View view) {
         Intent intent = new Intent(getBaseContext(), SetupAddActivity.class);
-        intent.putExtra("prevActivity", getBaseContext().toString());
+        intent.putExtra("prevActivity", this.getClass());
         startActivity(intent);
     }
 

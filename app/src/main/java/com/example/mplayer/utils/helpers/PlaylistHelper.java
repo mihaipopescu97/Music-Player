@@ -2,6 +2,7 @@ package com.example.mplayer.utils.helpers;
 
 import android.os.Build;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -111,6 +112,32 @@ public class PlaylistHelper {
         }
     }
 
+    public void getUserPlaylist(final String userId, final List<String> playlists, final ArrayAdapter<String> adapter) {
+        playlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Playlist playlist = keyNode.getValue(Playlist.class);
+                    if(playlist.getUserId().equals(userId)) {
+                        playlists.add(playlist.getId());
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(playlists.isEmpty()) {
+            Log.w(TAG, "No playlists for user:" + userId);
+        }
+    }
+
     public void getPlaylist(final String id, final AtomicReference<Playlist> searchedPlaylist) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,5 +176,13 @@ public class PlaylistHelper {
         playlistRef.child(id).removeValue()
                 .addOnSuccessListener(aVoid -> Log.i(TAG, "Playlist :" + id + " deleted"))
                 .addOnFailureListener(e -> Log.e(TAG, "Delete playlist failed"));
+    }
+
+    public void deletePlaylist(final String id, final List<String> playlist, final ArrayAdapter<String> adapter) {
+        playlistRef.child(id).removeValue()
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Playlist :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete playlist failed"));
+        playlist.remove(id);
+        adapter.notifyDataSetChanged();
     }
 }

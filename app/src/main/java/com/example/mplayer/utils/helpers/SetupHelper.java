@@ -1,6 +1,7 @@
 package com.example.mplayer.utils.helpers;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -85,6 +86,33 @@ public class SetupHelper {
         }
     }
 
+    public void getUserSetups(final String userId, final List<String> setups, final ArrayAdapter<String> adapter) {
+        setupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Setup setup = keyNode.getValue(Setup.class);
+                    if(setup.getUserId().equals(userId)) {
+                        setups.add(setup.getId());
+                    }
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(setups.isEmpty()) {
+            Log.w(TAG, "No setups for user:" + userId);
+        }
+    }
+
     public void getSetup(final String id, final AtomicReference<Setup> searchedSetup) {
         setupRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,5 +144,13 @@ public class SetupHelper {
         setupRef.child(id).removeValue()
                 .addOnSuccessListener(aVoid -> Log.i(TAG, "Setup :" + id + " deleted"))
                 .addOnFailureListener(e -> Log.e(TAG, "Delete setup failed"));
+    }
+
+    public void deleteSetup(final String id, final List<String> setups, final ArrayAdapter<String> adapter) {
+        setupRef.child(id).removeValue()
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Setup :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete setup failed"));
+        setups.remove(id);
+        adapter.notifyDataSetChanged();
     }
 }

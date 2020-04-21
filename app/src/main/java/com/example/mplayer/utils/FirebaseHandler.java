@@ -115,6 +115,10 @@ public class FirebaseHandler {
         deviceHelper.getUserDevices(userId, devices);
     }
 
+    public void getUserDevices(final String userId, final List<String> devices, final ArrayAdapter<String> adapter) {
+        deviceHelper.getUserDevices(userId, devices, adapter);
+    }
+
     public void getDevice(final String id, final AtomicReference<Device> device) {
         deviceHelper.getDevice(id, device);
     }
@@ -125,6 +129,10 @@ public class FirebaseHandler {
 
     public void deleteDevice(final String id) {
        deviceHelper.deleteDevice(id);
+    }
+
+    public void deleteDevice(final String id, final List<String> devices, final ArrayAdapter<String> adapter) {
+        deviceHelper.deleteDevice(id, devices, adapter);
     }
 
     ///////////////////
@@ -142,6 +150,10 @@ public class FirebaseHandler {
         setupHelper.getUserSetups(userId, setups);
     }
 
+    public void getUserSetups(final String userId, final List<String> setups, final ArrayAdapter<String> adapter) {
+        setupHelper.getUserSetups(userId, setups, adapter);
+    }
+
     public void getSetup(final String id, final AtomicReference<Setup> setup) {
         setupHelper.getSetup(id, setup);
     }
@@ -152,6 +164,10 @@ public class FirebaseHandler {
 
     public void deleteSetup(final String id) {
       setupHelper.deleteSetup(id);
+    }
+
+    public void deleteSetup(final String id, final List<String> setups, final ArrayAdapter<String> adapter) {
+        setupHelper.deleteSetup(id, setups, adapter);
     }
 
     ///////////////////
@@ -200,6 +216,10 @@ public class FirebaseHandler {
         playlistHelper.getUserPlaylist(userId, playlists);
     }
 
+    public void getUserPlaylists(final String userId, final List<String> playlists, final ArrayAdapter<String> adapter) {
+        playlistHelper.getUserPlaylist(userId, playlists, adapter);
+    }
+
     public void getPlaylist(final String id, final AtomicReference<Playlist> playlist) {
         playlistHelper.getPlaylist(id, playlist);
     }
@@ -214,6 +234,10 @@ public class FirebaseHandler {
 
     public void deletePlaylist(final String id) {
        playlistHelper.deletePlaylist(id);
+    }
+
+    public void deletePlaylist(final String id, final List<String> playlists, final ArrayAdapter<String> adapter) {
+        playlistHelper.deletePlaylist(id, playlists, adapter);
     }
 
     ///////////////////

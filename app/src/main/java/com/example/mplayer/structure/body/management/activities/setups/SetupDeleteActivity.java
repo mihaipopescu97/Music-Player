@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -23,21 +22,18 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SetupDeleteActivity extends AppCompatActivity {
     private final String TAG = "SetupDeleteActivity";
 
-    private List<Setup> setups;
+    private List<String> setups;
 
     private Spinner setupSpinner;
 
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
-    private AtomicReference<ArrayAdapter<String>> adapter;
-    private Thread thread;
-    private UpdateSpinner updateSpinner;
+    private ArrayAdapter<String> adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -50,31 +46,18 @@ public class SetupDeleteActivity extends AppCompatActivity {
         setupSpinner = findViewById(R.id.setupDeleteSpinner);
 
         setups = Collections.synchronizedList(new ArrayList<>());
-        adapter = new AtomicReference<>();
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, setups);
 
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
-
+        setupSpinner.setAdapter(adapter);
         new BackgroundTask(this).execute();
-
-        updateSpinner = new UpdateSpinner(this);
-        updateSpinner.execute();
-
-        thread = new Thread(() -> {
-            setupSpinner.setAdapter(adapter.get());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
     }
 
     public void deleteSetup(View view) {
         if(setupSpinner.getSelectedItem() != null) {
             Log.d(TAG, "Deleting setup:" + setupSpinner.getSelectedItem().toString());
-            new DeleteAsync(this, String.valueOf(setupSpinner.getSelectedItemId())).execute();
+            new DeleteAsync(this).execute(String.valueOf(setupSpinner.getSelectedItemId()));
         } else {
             Log.e(TAG, "Device not selected");
             Toast.makeText(getBaseContext(), "Please select a device!", Toast.LENGTH_SHORT).show();
@@ -82,8 +65,6 @@ public class SetupDeleteActivity extends AppCompatActivity {
     }
 
     public void doneDeleteSetup(View view) {
-        thread.interrupt();
-        updateSpinner.cancel(true);
         startActivity(new Intent(getBaseContext(), SetupHomeActivity.class));
     }
 
@@ -98,55 +79,25 @@ public class SetupDeleteActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             SetupDeleteActivity activity =weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
-            activity.firebaseHandler.getUserSetups(activity.resources.getUserId(), activity.setups);
+            activity.firebaseHandler.getUserSetups(activity.resources.getUserId(), activity.setups, activity.adapter);
             return null;
         }
     }
 
-    private static class UpdateSpinner extends AsyncTask<Void, Void, Void> {
+    private static class DeleteAsync extends AsyncTask<String, Void, Void> {
         WeakReference<SetupDeleteActivity> weakReference;
 
-        UpdateSpinner(SetupDeleteActivity activity) {
+        DeleteAsync(SetupDeleteActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        protected Void doInBackground(Void... voids) {
-            SetupDeleteActivity activity =weakReference.get();
-            Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
-
-            List<String> setupsId = new ArrayList<>();
-            //noinspection InfiniteLoopStatement
-            while (true) {
-                setupsId.clear();
-                activity.setups.forEach(setup -> setupsId.add(setup.getId()));
-                activity.adapter.set(new ArrayAdapter<>(activity.getBaseContext(), android.R.layout.simple_spinner_dropdown_item, setupsId));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private static class DeleteAsync extends AsyncTask<Void, Void, Void> {
-        WeakReference<SetupDeleteActivity> weakReference;
-        String id;
-
-        DeleteAsync(SetupDeleteActivity activity, String id) {
-            weakReference = new WeakReference<>(activity);
-            this.id = id;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(String... strings) {
             SetupDeleteActivity activity = weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.deleteSetup(id);
+            activity.firebaseHandler.deleteSetup(strings[0], activity.setups, activity.adapter);
             return null;
         }
     }

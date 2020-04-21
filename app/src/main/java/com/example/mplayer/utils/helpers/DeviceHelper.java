@@ -1,6 +1,7 @@
 package com.example.mplayer.utils.helpers;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -65,10 +66,34 @@ public class DeviceHelper {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     Device device = keyNode.getValue(Device.class);
-                    if(device.getUserId().equals(userId)) {
+                    if(userId.equals(device.getUserId())) {
                         devices.add(device);
                     }
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(devices.isEmpty()) {
+            Log.w(TAG, "No devices for user:" + userId);
+        }
+    }
+
+    public void getUserDevices(final String userId, final List<String> devices, final ArrayAdapter<String> adapter) {
+        deviceRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    Device device = keyNode.getValue(Device.class);
+                    if(userId.equals(device.getUserId())) {
+                        devices.add(device.getId());
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -90,7 +115,7 @@ public class DeviceHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Device device = keyNode.getValue(Device.class);
-                    if (device.getId().equals(id)) {
+                    if (id.equals(device.getId())) {
                          searchedDevice.set(device);
                     }
                 }
@@ -115,5 +140,13 @@ public class DeviceHelper {
         deviceRef.child(id).removeValue()
                 .addOnSuccessListener(aVoid -> Log.i(TAG, "Device :" + id + " deleted"))
                 .addOnFailureListener(e -> Log.e(TAG, "Delete device failed"));
+    }
+
+    public void deleteDevice(final String id, final List<String> devices, final ArrayAdapter<String> adapter) {
+        deviceRef.child(id).removeValue()
+                .addOnSuccessListener(aVoid -> Log.i(TAG, "Device :" + id + " deleted"))
+                .addOnFailureListener(e -> Log.e(TAG, "Delete device failed"));
+        devices.remove(id);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -30,13 +29,10 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
     private final String TAG = "PlaylistDeleteActivity";
 
     private AtomicReference<String> userId;
-    private List<Playlist> playlists;
-    private SharedResources resources;
+    private List<String> playlists;
     private FirebaseHandler firebaseHandler;
-    private AtomicReference<ArrayAdapter<String>> adapter;
+    private ArrayAdapter<String> adapter;
 
-    private Thread thread;
-    private UpdateSpinner updateSpinner;
     private Spinner playlistSpinner;
 
     @Override
@@ -48,32 +44,23 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
 
         playlistSpinner = findViewById(R.id.playlistDeleteSpinner);
 
-        resources = SharedResources.getInstance();
+        SharedResources resources = SharedResources.getInstance();
         userId = new AtomicReference<>();
-        adapter = new AtomicReference<>();
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlists);
         playlists = Collections.synchronizedList(new ArrayList<>());
         firebaseHandler = FirebaseHandler.getInstance();
-
+        playlistSpinner.setAdapter(adapter);
+        userId.set(resources.getUserId());
         new BackgroundTask(this).execute();
 
-        updateSpinner = new UpdateSpinner(this);
-        updateSpinner.execute();
 
-        thread = new Thread(() -> {
-            playlistSpinner.setAdapter(adapter.get());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
+
     }
 
     public void playlistDelete(View view) {
         if(playlistSpinner.getSelectedItem() != null) {
             Log.d(TAG, "Deleting playlist with id:" + playlistSpinner.getSelectedItem().toString());
-            firebaseHandler.deletePlaylist(String.valueOf(playlistSpinner.getSelectedItemId()));
+            new DeleteTask(this).execute(String.valueOf(playlistSpinner.getSelectedItemId()));
         } else {
             Log.e(TAG, "Playlist not selected");
             Toast.makeText(getBaseContext(), "Please select a playlist!", Toast.LENGTH_SHORT).show();
@@ -81,8 +68,6 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
     }
 
     public void playlistDeleteDone(View view) {
-        thread.interrupt();
-        updateSpinner.cancel(true);
         startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
     }
 
@@ -99,39 +84,27 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
 
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.userId.set(activity.resources.getUserId());
-            activity.firebaseHandler.getUserPlaylists(activity.userId.get(), activity.playlists);
+            activity.firebaseHandler.getUserPlaylists(activity.userId.get(), activity.playlists, activity.adapter);
             return null;
         }
     }
 
-    private static class UpdateSpinner extends AsyncTask<Void, Void, Void> {
+    private static class DeleteTask extends AsyncTask<String, Void, Void> {
         WeakReference<PlaylistDeleteActivity> weakReference;
 
-        UpdateSpinner(PlaylistDeleteActivity activity) {
+        DeleteTask(PlaylistDeleteActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(String... strings) {
             PlaylistDeleteActivity activity = weakReference.get();
 
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            List<String> playlistsId = new ArrayList<>();
-
-            //noinspection InfiniteLoopStatement
-            while(true) {
-                playlistsId.clear();
-                activity.playlists.forEach(playlist -> playlistsId.add(playlist.getId()));
-                activity.adapter.set(new ArrayAdapter<>(activity.getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlistsId));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+           activity.firebaseHandler.deletePlaylist(strings[0], activity.playlists, activity.adapter);
+           return null;
         }
     }
 }

@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -27,13 +26,14 @@ import java.util.List;
 public class SetupSelectActivity extends AppCompatActivity {
     private final String TAG = "SetupSelectActivity";
 
-    private List<Setup> setups;
-    private List<String> setupsId;
+    private List<String> setups;
 
     private  FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
     private Spinner setupSpinner;
+    private ArrayAdapter<String> adapter;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +44,13 @@ public class SetupSelectActivity extends AppCompatActivity {
         setupSpinner = findViewById(R.id.setupSelectSpinner);
 
         setups = Collections.synchronizedList(new ArrayList<>());
-        setupsId = new ArrayList<>();
 
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, setups);
+        setupSpinner.setAdapter(adapter);
 
         new BackgroundTask(this).execute();
-
-        while (setups.isEmpty()) {
-            Log.i(TAG, "Waiting for setup list...");
-        }
-        setups.forEach(setup -> setupsId.add(setup.getId()));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, setupsId);
-        setupSpinner.setAdapter(adapter);
     }
 
     public void deviceSelect(View view) {
@@ -86,7 +80,7 @@ public class SetupSelectActivity extends AppCompatActivity {
             SetupSelectActivity activity =weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.firebaseHandler.getUserSetups(activity.resources.getUserId(), activity.setups);
+            activity.firebaseHandler.getUserSetups(activity.resources.getUserId(), activity.setups, activity.adapter);
             return null;
         }
     }

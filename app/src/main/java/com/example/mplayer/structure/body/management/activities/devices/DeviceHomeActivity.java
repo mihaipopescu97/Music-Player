@@ -27,7 +27,7 @@ public class DeviceHomeActivity extends AppCompatActivity {
 
     public void homeAddDevice(View view) {
         Intent intent = new Intent(getBaseContext(), DeviceAddActivity.class);
-        intent.putExtra("prevActivity", getBaseContext().toString());
+        intent.putExtra("prevActivity", this.getClass());
         startActivity(intent);
     }
 

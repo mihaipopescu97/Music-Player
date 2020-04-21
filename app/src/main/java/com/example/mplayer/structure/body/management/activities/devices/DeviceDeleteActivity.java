@@ -1,11 +1,9 @@
 package com.example.mplayer.structure.body.management.activities.devices;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -30,15 +27,11 @@ public class DeviceDeleteActivity extends AppCompatActivity {
     private final String TAG = "DeviceDeleteActivity";
 
     private FirebaseHandler firebaseHandler;
-    private SharedResources resources;
 
     private Spinner devicesSpinner;
-    private AtomicReference<ArrayAdapter<String>> adapter;
+    private ArrayAdapter<String> adapter;
     private AtomicReference<String> userId;
-    private List<Device> devices;
-
-    private UpdateSpinner updateSpinner;
-    private Thread thread;
+    private List<String> devices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,33 +43,25 @@ public class DeviceDeleteActivity extends AppCompatActivity {
         devicesSpinner = findViewById(R.id.deviceDeleteSpinner);
 
         userId = new AtomicReference<>();
-        adapter = new AtomicReference<>();
-
         devices = Collections.synchronizedList(new ArrayList<>());
 
         firebaseHandler = FirebaseHandler.getInstance();
-        resources = SharedResources.getInstance();
+        SharedResources resources = SharedResources.getInstance();
 
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, devices);
+        devicesSpinner.setAdapter(adapter);
+
+        userId.set(resources.getUserId());
         new BackgroundTasks(this).execute();
 
-        updateSpinner = new UpdateSpinner(this);
-        updateSpinner.execute();
 
-        thread = new Thread(() -> {
-            devicesSpinner.setAdapter(adapter.get());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
     }
 
     public void deleteDevice(View view) {
         if(devicesSpinner.getSelectedItem() != null) {
             Log.d(TAG, "Deleting device:" + devicesSpinner.getSelectedItem().toString());
-            firebaseHandler.deleteDevice(String.valueOf(devicesSpinner.getSelectedItemId()));
+//            firebaseHandler.deleteDevice(String.valueOf(devicesSpinner.getSelectedItemId()), devices, adapter);
+            new DeleteTask(this).execute(String.valueOf(devicesSpinner.getSelectedItemId()));
         } else {
             Log.e(TAG, "Device not selected");
             Toast.makeText(getBaseContext(), "Please select a device!", Toast.LENGTH_SHORT).show();
@@ -84,8 +69,6 @@ public class DeviceDeleteActivity extends AppCompatActivity {
     }
 
     public void doneDeleteDevice(View view) {
-        thread.interrupt();
-        updateSpinner.cancel(true);
         startActivity(new Intent(getBaseContext(), DeviceHomeActivity.class));
     }
 
@@ -102,37 +85,24 @@ public class DeviceDeleteActivity extends AppCompatActivity {
 
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            activity.userId.set(activity.resources.getUserId());
-            activity.firebaseHandler.getUserDevices(activity.userId.get(), activity.devices);
+            activity.firebaseHandler.getUserDevices(activity.userId.get(), activity.devices, activity.adapter);
             return null;
         }
     }
 
-    private static class UpdateSpinner extends AsyncTask<Void, Void, Void> {
+    private static class DeleteTask extends AsyncTask<String, Void, Void> {
         WeakReference<DeviceDeleteActivity> weakReference;
 
-        UpdateSpinner(DeviceDeleteActivity activity) {
+        DeleteTask(DeviceDeleteActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(String... strings) {
             DeviceDeleteActivity activity = weakReference.get();
-            Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            List<String> devicesId = new ArrayList<>();
-            //noinspection InfiniteLoopStatement
-            while(true) {
-                devicesId.clear();
-                activity.devices.forEach(device -> devicesId.add(device.getId()));
-                activity.adapter.set(new ArrayAdapter<>(activity.getBaseContext(), android.R.layout.simple_spinner_dropdown_item, devicesId));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            activity.firebaseHandler.deleteDevice(strings[0], activity.devices, activity.adapter);
+            return null;
         }
     }
 }

@@ -6,16 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Device;
 import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.activities.playlists.RoomSelectActivity;
 import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
-import com.example.mplayer.utils.FirebaseHandler;
+import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
 //REMOVE ADD DEVICE AFTER
 public class NewBuildActivity extends AppCompatActivity {
+
+    private SharedResources resources;
+    private Button setupAddBtn;
+    private Button playlistAddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,21 @@ public class NewBuildActivity extends AppCompatActivity {
 
         String TAG = "NewBuildActivity";
         Log.i(TAG, LogMessages.ACTIVITY_START.label);
+        resources = SharedResources.getInstance();
+        setupAddBtn = findViewById(R.id.addNewSetupBtn);
+        playlistAddBtn = findViewById(R.id.addNewPlaylistBtn);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(resources.getDeviceId() == null) {
+            setupAddBtn.setVisibility(View.GONE);
+            playlistAddBtn.setVisibility(View.GONE);
+        } else if (resources.getSetupId() == null) {
+            playlistAddBtn.setVisibility(View.GONE);
+        }
     }
 
     public void addNewDevice(View view) {
@@ -46,9 +66,5 @@ public class NewBuildActivity extends AppCompatActivity {
 
     public void backNewBuild(View view) {
         startActivity(new Intent(getBaseContext(), BaseActivity.class));
-    }
-
-    public void addDeviceKms(View view) {
-        FirebaseHandler.getInstance().addDevice(new Device("0"));
     }
 }

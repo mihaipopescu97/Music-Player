@@ -26,7 +26,7 @@ public class PlaylistHomeActivity extends AppCompatActivity {
 
     public void homeAddPlaylist(View view) {
         Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
-        intent.putExtra("prevActivity", getBaseContext().toString());
+        intent.putExtra("prevActivity", this.getClass());
         startActivity(intent);
     }
 

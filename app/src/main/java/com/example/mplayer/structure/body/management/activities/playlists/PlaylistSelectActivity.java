@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Playlist;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -31,9 +30,9 @@ public class PlaylistSelectActivity extends AppCompatActivity {
     private Spinner playlistSpinner;
 
     private AtomicReference<String> userId;
-    private List<Playlist> playlists;
+    private List<String> playlists;
 
-    private List<String> playlistsId;
+    private ArrayAdapter<String> adapter;
 
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
@@ -48,25 +47,18 @@ public class PlaylistSelectActivity extends AppCompatActivity {
         playlistSpinner = findViewById(R.id.playlistSelectSpinner);
         userId = new AtomicReference<>();
         playlists = Collections.synchronizedList(new ArrayList<>());
-        playlistsId = new ArrayList<>();
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
 
-        new BackgroundTask(this).execute();
-
-        while (playlists.isEmpty()) {
-            Log.d(TAG, "Waiting for playlist list...");
-        }
-
-        playlists.forEach(playlist -> playlistsId.add(playlist.getId()));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlistsId);
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlists);
         playlistSpinner.setAdapter(adapter);
+        new BackgroundTask(this).execute();
     }
 
     public void playlistSelect(View view) {
         if(playlistSpinner.getSelectedItem() != null) {
             resources.setPlaylistId(String.valueOf(playlistSpinner.getSelectedItem()));
+            startActivity(new Intent(getBaseContext(), PlaylistHomeActivity.class));
         } else {
           Log.e(TAG, "Playlist not selected");
           Toast.makeText(getBaseContext(), "Please select a playlist!", Toast.LENGTH_SHORT).show();
@@ -90,7 +82,7 @@ public class PlaylistSelectActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.userId.set(activity.resources.getUserId());
-            activity.firebaseHandler.getUserPlaylists(activity.userId.get(), activity.playlists);
+            activity.firebaseHandler.getUserPlaylists(activity.userId.get(), activity.playlists, activity.adapter);
 
             return null;
         }

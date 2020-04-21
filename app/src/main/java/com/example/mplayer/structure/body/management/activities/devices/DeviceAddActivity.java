@@ -67,6 +67,7 @@ public class DeviceAddActivity extends AppCompatActivity {
         isAvailable = false;
         isDuplicate = false;
 
+
         //Update the device id once per sec with the user input
         thread = new Thread(() -> {
             while (true) {
@@ -78,9 +79,7 @@ public class DeviceAddActivity extends AppCompatActivity {
                 }
             }
         });
-
         checkTask = new CheckTask(this);
-
     }
 
     @Override
@@ -89,6 +88,7 @@ public class DeviceAddActivity extends AppCompatActivity {
         thread.start();
         new BackgroundTasks(this).execute();
         checkTask.execute();
+        prevActivity.set((Class) getIntent().getExtras().get("prevActivity"));
     }
 
     public void addDevice(View view) {
@@ -107,6 +107,7 @@ public class DeviceAddActivity extends AppCompatActivity {
 
             Log.d(TAG, "Adding device with id:" + device.getId());
             firebaseHandler.updateDevice(device.getId(), device);
+            resources.setDeviceId(device.getId());
             thread.interrupt();
             checkTask.cancel(true);
             Class<?> cls = prevActivity.get();
@@ -117,6 +118,7 @@ public class DeviceAddActivity extends AppCompatActivity {
 
     public void doneDeviceAddActivity(View view) {
         thread.interrupt();
+        checkTask.cancel(true);
         Class<?> cls = prevActivity.get();
         Intent intent = new Intent(getBaseContext(), cls);
         startActivity(intent);
@@ -136,8 +138,6 @@ public class DeviceAddActivity extends AppCompatActivity {
 
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
-            Intent intent = activity.getIntent();
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             activity.firebaseHandler.getUserDevices(activity.resources.getUserId(), activity.userDevices);
             activity.firebaseHandler.getDevices(activity.devices);
             return null;
@@ -162,7 +162,7 @@ public class DeviceAddActivity extends AppCompatActivity {
                 activity.isAvailable = false;
                 activity.isDuplicate = false;
 
-                if(!activity.deviceId.get().isEmpty()) {
+                if(activity.deviceId.get() != null) {
                     activity.isEmpty = false;
                     activity.userDevices.forEach(userDevice -> {
                         if (userDevice.getId().equals(activity.deviceId.get())) {

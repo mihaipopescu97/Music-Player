@@ -50,7 +50,12 @@ public class SetupAddActivity extends AppCompatActivity {
         resources = SharedResources.getInstance();
         rooms = new ArrayList<>();
         roomsIds = new ArrayList<>();
+        new ReadPrevActivity(this).execute();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         new ReadPrevActivity(this).execute();
     }
 

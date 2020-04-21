@@ -14,14 +14,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
-import com.example.mplayer.entities.Device;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,11 +30,12 @@ public class DeviceSelectActivity extends AppCompatActivity {
     private Spinner devicesSpinner;
 
     private AtomicReference<String> userId;
-    private List<Device> devices;
     private List<String> devicesId;
 
     private SharedResources resources;
     private FirebaseHandler firebaseHandler;
+
+    private ArrayAdapter<String> adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -48,22 +47,15 @@ public class DeviceSelectActivity extends AppCompatActivity {
         devicesSpinner = findViewById(R.id.deviceSelectSpinner);
 
         userId = new AtomicReference<>();
-        devices = Collections.synchronizedList(new ArrayList<>());
         devicesId = new ArrayList<>();
 
         resources = SharedResources.getInstance();
         firebaseHandler = FirebaseHandler.getInstance();
 
-        new BackgroundTask(this).execute();
-
-        while(devices.isEmpty()) {
-            Log.d(TAG, "Waiting for device list...");
-        }
-
-        devices.forEach(device -> devicesId.add(device.getId()));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, devicesId);
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, devicesId);
         devicesSpinner.setAdapter(adapter);
+
+        new BackgroundTask(this).execute();
     }
 
     public void deviceSelect(View view) {
@@ -94,7 +86,7 @@ public class DeviceSelectActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.userId.set(activity.resources.getUserId());
-            activity.firebaseHandler.getUserDevices(activity.userId.get(), activity.devices);
+            activity.firebaseHandler.getUserDevices(activity.userId.get(), activity.devicesId, activity.adapter);
 
             return null;
         }
