@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
+import com.example.mplayer.structure.body.management.activities.NewBuildActivity;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -50,9 +51,15 @@ public class RoomSelectActivity extends AppCompatActivity {
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
         Log.w(TAG, resources.getSetupId());
-        new BackgroundTask(this).execute();
         adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, roomsId);
         roomSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prevActivity.set((Class) getIntent().getExtras().get("prevActivity"));
+        new BackgroundTask(this).execute();
     }
 
     public void selectRoom(View view) {
@@ -68,7 +75,7 @@ public class RoomSelectActivity extends AppCompatActivity {
     }
 
     public void roomSelectBack(View view) {
-        Intent intent = new Intent(getBaseContext(), PlaylistAddActivity.class);
+        Intent intent = new Intent(getBaseContext(), NewBuildActivity.class);
         intent.putExtra("prevActivity", prevActivity.get());
         startActivity(intent);
     }
@@ -86,8 +93,6 @@ public class RoomSelectActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.getSetupRooms(activity.resources.getSetupId(), activity.roomsId, activity.adapter);
-            Intent intent = activity.getIntent();
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }

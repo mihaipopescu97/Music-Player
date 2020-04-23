@@ -46,8 +46,8 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
 
         SharedResources resources = SharedResources.getInstance();
         userId = new AtomicReference<>();
-        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlists);
         playlists = Collections.synchronizedList(new ArrayList<>());
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, playlists);
         firebaseHandler = FirebaseHandler.getInstance();
         playlistSpinner.setAdapter(adapter);
         userId.set(resources.getUserId());

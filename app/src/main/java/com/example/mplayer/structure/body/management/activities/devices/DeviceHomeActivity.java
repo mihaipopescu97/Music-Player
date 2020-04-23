@@ -36,7 +36,7 @@ public class DeviceHomeActivity extends AppCompatActivity {
     }
 
     public void homeDeleteDevice(View view) {
-        startActivity(new Intent(getBaseContext(), DeviceAddActivity.class));
+        startActivity(new Intent(getBaseContext(), DeviceDeleteActivity.class));
     }
 
     public void homeDeviceBack(View view) {

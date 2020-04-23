@@ -120,7 +120,7 @@ public class PlaylistHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Playlist playlist = keyNode.getValue(Playlist.class);
-                    if(playlist.getUserId().equals(userId)) {
+                    if(userId.equals(playlist.getUserId())) {
                         playlists.add(playlist.getId());
                     }
                 }

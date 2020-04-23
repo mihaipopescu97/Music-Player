@@ -94,7 +94,7 @@ public class SetupHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     Setup setup = keyNode.getValue(Setup.class);
-                    if(setup.getUserId().equals(userId)) {
+                    if(userId.equals(setup.getUserId())) {
                         setups.add(setup.getId());
                     }
                 }

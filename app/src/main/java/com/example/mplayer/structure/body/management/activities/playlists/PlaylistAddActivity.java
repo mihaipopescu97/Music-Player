@@ -72,6 +72,12 @@ public class PlaylistAddActivity extends AppCompatActivity {
         playlistSpinner.setAdapter(playlistAdapter);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prevActivity.set((Class) getIntent().getExtras().get("prevActivity"));
+    }
+
     public void addSong(View view) {
         if(songsSpinner.getSelectedItem() != null) {
             playlistSongs.add(String.valueOf(songsSpinner.getSelectedItem()));
@@ -124,8 +130,6 @@ public class PlaylistAddActivity extends AppCompatActivity {
             Log.d(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.getSongs(activity.songNames, activity.songsAdapter);
-            Intent intent = activity.getIntent();
-            activity.prevActivity.set((Class) intent.getExtras().get("prevActivity"));
             return null;
         }
     }
