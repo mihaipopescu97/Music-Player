@@ -160,7 +160,7 @@ public class PlaylistHelper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getPlaylistSongsNames(final String id, List<String> songs) {
+    public void getPlaylistSongsNames(final String id, final List<String> songs) {
         AtomicReference<Playlist> playlist = new AtomicReference<>();
         getPlaylist(id, playlist);
         songs.addAll(playlist.get().getSongs());

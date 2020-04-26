@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.SelectActivity;
+import com.example.mplayer.structure.player.BluetoothActivity;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,5 +80,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, SignUpActivity.class));
     }
 
-
+    public void test(View view) {
+        startActivity(new Intent(MainActivity.this, BluetoothActivity.class));
+    }
 }
