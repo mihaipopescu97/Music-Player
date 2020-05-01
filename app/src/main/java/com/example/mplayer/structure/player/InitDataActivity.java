@@ -3,10 +3,12 @@ package com.example.mplayer.structure.player;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.mplayer.R;
 import com.example.mplayer.utils.FirebaseHandler;
@@ -14,9 +16,9 @@ import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 import com.example.mplayer.utils.helpers.DownloadTask;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,6 +43,11 @@ public class InitDataActivity extends AppCompatActivity {
         super.onStart();
         urls.clear();
         new BackgroundTask(this).execute();
+    }
+
+    public void playBtn(View view) {
+        Intent intent = new Intent(InitDataActivity.this, PlayerActivity.class);
+        intent.putExtra("playlist", (Serializable) urls);
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
@@ -72,13 +79,6 @@ public class InitDataActivity extends AppCompatActivity {
             names = namesList.toArray(names);
             DownloadTask task = new DownloadTask(activity, activity.urls);
             task.execute(names);
-        }
-
-        private String[] add(final String[] array, final String element) {
-            String[] newArray = Arrays.copyOf(array, array.length + 1);
-            newArray[0] = element;
-            System.arraycopy(array, 0, newArray, 1, array.length);
-            return newArray;
         }
     }
 }

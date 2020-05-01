@@ -1,11 +1,13 @@
 package com.example.mplayer.structure.player;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,11 +18,13 @@ import android.widget.TextView;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.BaseActivity;
-//import com.example.mplayer.utils.BluetoothSender;
+import com.example.mplayer.utils.SharedResources;
+import com.example.mplayer.utils.enums.PlayType;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class PlayerActivity extends AppCompatActivity {
 
 
@@ -31,10 +35,12 @@ public class PlayerActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private int totalTime;
 
-    //private BluetoothSender bluetoothSender;
+    private LocalPlayerHandler localPlayerHandler;
+    private BluetoothPlayerHandler bluetoothPlayerHandler;
 
+    private SharedResources resources;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +50,25 @@ public class PlayerActivity extends AppCompatActivity {
         playBtn = findViewById(R.id.playButton);
         elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
         remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
-//        try {
-//            bluetoothSender = BluetoothSender.getInstance();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
+        totalTime = 0;
+
+        final List<String> urls = (ArrayList<String>) getIntent().getSerializableExtra("playlist");
+        resources = SharedResources.getInstance();
 
         //Media Player
-        mp = MediaPlayer.create(this, R.raw.music);
-        mp.setLooping(true);
-        mp.seekTo(0);
-        mp.setVolume(0.5f, 0.5f);
-        totalTime = mp.getDuration();
+        mp = new MediaPlayer();
 
+        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+            //Bluetooth player
+            bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls);
+            mp.setVolume(0f, 0f);
+        } else {
+            localPlayerHandler = new LocalPlayerHandler(mp, urls);
+            mp.setVolume(0.5f, 0.5f);
+        }
+
+        totalTime = mp.getDuration();
 
         //Position Bar
         positionBar = findViewById(R.id.positionBar);
@@ -79,7 +90,10 @@ public class PlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-
+                        //TODO check here
+                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+                            bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
+                        }
                     }
                 }
         );
@@ -91,14 +105,11 @@ public class PlayerActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         float volumeNum = progress / 100f;
-                        mp.setVolume(volumeNum, volumeNum);
-//
-//                        try {
-//                        //    bluetoothSender.write("action : p");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-
+                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+                            bluetoothPlayerHandler.changeVol(volumeNum);
+                        } else {
+                            mp.setVolume(volumeNum, volumeNum);
+                        }
                     }
 
                     @Override
@@ -114,23 +125,16 @@ public class PlayerActivity extends AppCompatActivity {
         );
 
         //Update position bar & time labels
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (mp != null) {
-                    try {
-                        Message message = new Message();
-                        message.what = mp.getCurrentPosition();
-                        handler.sendMessage(message);
+        new Thread(() -> {
+            while (mp != null) {
+                try {
+                    Message message = new Message();
+                    message.what = mp.getCurrentPosition();
+                    handler.sendMessage(message);
 
-                     //   bluetoothSender.write("asdf");
-
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-                    }
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -167,40 +171,53 @@ public class PlayerActivity extends AppCompatActivity {
         return timeLabel;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mp.isPlaying()) {
+            mp.stop();
+            mp.release();
+        }
+    }
+
     //Play button functionality
     public void playBtnClick(View view) {
-        if (!mp.isPlaying()) {
-            //Play
-            mp.start();
-            playBtn.setBackgroundResource(R.drawable.stop_button);
-
-//            try {
-//                bluetoothSender.write("action : play");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+            if(bluetoothPlayerHandler.play()) {
+                //Play
+                playBtn.setBackgroundResource(R.drawable.stop_button);
+            } else {
+                //Stop
+                playBtn.setBackgroundResource(R.drawable.play_button);
+            }
         } else {
-            //Stop
-            mp.pause();
-            playBtn.setBackgroundResource(R.drawable.play_button);
-
-//            try {
-//               // bluetoothSender.write("action : pause");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            if (localPlayerHandler.play()) {
+                //Play
+                playBtn.setBackgroundResource(R.drawable.stop_button);
+            } else {
+                //Stop
+                playBtn.setBackgroundResource(R.drawable.play_button);
+            }
         }
     }
 
     //Next button functionality
     public void nextBtnClick(View view) {
-
+        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+            bluetoothPlayerHandler.next();
+        } else {
+            localPlayerHandler.next();
+        }
 
     }
 
     //Previous button functionality
     public void prevBtnClick(View view) {
-
+        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+            bluetoothPlayerHandler.prev();
+        } else {
+            localPlayerHandler.prev();
+        }
     }
 
     public void back(View view) {
