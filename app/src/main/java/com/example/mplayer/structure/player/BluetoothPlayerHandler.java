@@ -1,10 +1,13 @@
 package com.example.mplayer.structure.player;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.mplayer.utils.BluetoothConnectionService;
 import com.example.mplayer.utils.helpers.BluetoothMessage;
 
 import java.util.List;
@@ -12,9 +15,12 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 class BluetoothPlayerHandler extends PlayerHandler{
     private int pos;
+    private final BluetoothConnectionService service;
 
-    BluetoothPlayerHandler(MediaPlayer mp, List<String> urls) {
+    BluetoothPlayerHandler(final MediaPlayer mp, final List<String> urls, final Context context,
+                           final BluetoothAdapter adapter, final String UUID) {
         super(mp, urls);
+        service = new BluetoothConnectionService(context, adapter, UUID);
         pos = 0;
         init(0);
     }

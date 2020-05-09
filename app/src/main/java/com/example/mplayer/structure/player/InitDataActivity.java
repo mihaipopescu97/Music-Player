@@ -27,6 +27,7 @@ public class InitDataActivity extends AppCompatActivity {
     private FirebaseHandler firebaseHandler;
     private SharedResources resources;
     private List<String> urls;
+    private List<String> namesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +37,38 @@ public class InitDataActivity extends AppCompatActivity {
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
         urls = Collections.synchronizedList(new ArrayList<>());
+        namesList = Collections.synchronizedList(new ArrayList<>());
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        urls.clear();
+    public void getDataBtn(View view) {
+        namesList.clear();
         new BackgroundTask(this).execute();
     }
 
+    public void getUrls(View view) {
+        urls.clear();
+        String[] names = new String[namesList.size()];
+        names = namesList.toArray(names);
+        DownloadTask task = new DownloadTask(urls);
+        task.execute(names);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void playBtn(View view) {
+        urls.forEach(url -> Log.i(TAG, url));
         Intent intent = new Intent(InitDataActivity.this, PlayerActivity.class);
         intent.putExtra("playlist", (Serializable) urls);
+        startActivity(intent);
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
         WeakReference<InitDataActivity> weakReference;
-        List<String> namesList;
+
 
 
 
         BackgroundTask(InitDataActivity activity) {
             weakReference = new WeakReference<>(activity);
-
-            namesList = Collections.synchronizedList(new ArrayList<>());
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -67,18 +76,8 @@ public class InitDataActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             InitDataActivity activity = weakReference.get();
 
-            activity.firebaseHandler.getPlaylistSongsNames(activity.resources.getPlaylistId(), namesList);
+            activity.firebaseHandler.getPlaylistSongsNames(activity.resources.getPlaylistId(), activity.namesList);
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            InitDataActivity activity = weakReference.get();
-            String[] names = new String[namesList.size()];
-            names = namesList.toArray(names);
-            DownloadTask task = new DownloadTask(activity, activity.urls);
-            task.execute(names);
         }
     }
 }

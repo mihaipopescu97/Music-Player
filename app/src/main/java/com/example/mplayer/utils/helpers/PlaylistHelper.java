@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.example.mplayer.entities.Playlist;
+import com.example.mplayer.entities.Song;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -159,11 +160,32 @@ public class PlaylistHelper {
         });
     }
 
+    public void getPlaylist(final String id, final AtomicReference<Playlist> searchedPlaylist, final List<String> songs) {
+        playlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Playlist playlist = keyNode.getValue(Playlist.class);
+                    if (playlist.getId().equals(id)) {
+                        searchedPlaylist.set(playlist);
+                        songs.addAll(playlist.getSongs());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getPlaylistSongsNames(final String id, final List<String> songs) {
         AtomicReference<Playlist> playlist = new AtomicReference<>();
-        getPlaylist(id, playlist);
-        songs.addAll(playlist.get().getSongs());
+        getPlaylist(id, playlist, songs);
     }
 
     public void updatePlaylist(final String id, Playlist playlist) {

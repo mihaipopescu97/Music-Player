@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -61,7 +62,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             //Bluetooth player
-            bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls);
+            bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls, getBaseContext(),
+                    BluetoothAdapter.getDefaultAdapter(), resources.getDeviceId());
             mp.setVolume(0f, 0f);
         } else {
             localPlayerHandler = new LocalPlayerHandler(mp, urls);

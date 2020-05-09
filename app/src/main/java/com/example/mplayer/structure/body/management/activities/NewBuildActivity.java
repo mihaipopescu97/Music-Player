@@ -12,6 +12,7 @@ import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.devices.DeviceAddActivity;
 import com.example.mplayer.structure.body.management.activities.playlists.RoomSelectActivity;
 import com.example.mplayer.structure.body.management.activities.setups.SetupAddActivity;
+import com.example.mplayer.structure.player.InitDataActivity;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
 
@@ -66,5 +67,10 @@ public class NewBuildActivity extends AppCompatActivity {
 
     public void backNewBuild(View view) {
         startActivity(new Intent(getBaseContext(), BaseActivity.class));
+    }
+
+    public void testData(View view) {
+        resources.setPlaylistId("d458c0b7-b03e-4f90-a397-40f0d36b893a");
+        startActivity(new Intent(getBaseContext(), InitDataActivity.class));
     }
 }

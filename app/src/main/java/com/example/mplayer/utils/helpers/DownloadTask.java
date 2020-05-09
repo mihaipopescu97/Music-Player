@@ -11,7 +11,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -22,10 +21,8 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
     private List<String> urls;
 
     private final StorageReference storageReference;
-    private final WeakReference<? extends AppCompatActivity> weakReference;
 
-    public DownloadTask(final AppCompatActivity activity, final List<String> urls) {
-        weakReference = new WeakReference<>(activity);
+    public DownloadTask(final List<String> urls) {
         storageReference = FirebaseStorage.getInstance().getReference();
         this.urls = urls;
     }
@@ -33,15 +30,11 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected Void doInBackground(String... strings) {
-        final String[] names = Arrays.copyOfRange(strings, 1, strings.length);
-        Stream.of(names).forEach(name -> {
+        Stream.of(strings).forEach(name -> {
             StorageReference reference = storageReference.child(name + EXTENSION);
-            reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                String url = uri.toString();
-                urls.add(url);
-            }).addOnFailureListener(e -> Log.e(TAG, "Download failed"));
+            reference.getDownloadUrl().addOnSuccessListener(uri -> urls.add(uri.toString())).addOnFailureListener(e -> Log.e(TAG, "Download failed"));
         });
-
+        urls.forEach(url -> Log.i(TAG, url));
         return null;
     }
 }

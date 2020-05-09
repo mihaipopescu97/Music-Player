@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
         android:layout_marginLeft="85dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="85dp"
         android:layout_marginRight="85dp"
         android:layout_marginBottom="400dp"
@@ -23,8 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.801"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:ignore="LabelFor"
         tools:targetApi="o" />
 
@@ -34,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
         android:layout_marginLeft="85dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="85dp"
         android:layout_marginRight="85dp"
         android:autofillHints="password"
@@ -52,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
-        android:layout_marginTop="492dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/button_style"
         android:onClick="login"
         android:shadowColor="#A8A5A7"
@@ -61,7 +60,7 @@
         android:shadowRadius="5"
         android:text="@string/log_in"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPass"
         tools:ignore="RtlHardcoded" />
 
     <TextView
@@ -70,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="164dp"
         android:layout_marginLeft="164dp"
-        android:layout_marginTop="587dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="165dp"
         android:layout_marginRight="165dp"
         android:onClick="goToSignUp"
@@ -79,7 +78,7 @@
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn"
         tools:ignore="RtlHardcoded" />
 
     <ImageView
