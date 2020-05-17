@@ -13,26 +13,38 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mplayer.R;
+import com.example.mplayer.utils.BluetoothConnectionService;
+import com.example.mplayer.utils.SharedResources;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class BluetoothActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class BluetoothActivity extends AppCompatActivity {
     private static final String TAG = "BluetoothActivity";
 
 
     private BluetoothAdapter bluetoothAdapter;
     public List<BluetoothDevice> bluetoothDevices;
-    public DeviceListAdapter deviceListAdapter;
-    private ListView listView;
+
+    private BluetoothConnectionService bluetoothConnectionService;
+    private EditText text;
+
+    private static final UUID uuid = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
+
+    private BluetoothDevice bluetoothDevice;
+
+    private SharedResources resources;
+    private ArrayAdapter<String> adapter;
+    private List<String> bluetoothDeviceData;
 
 
     //Create a BroadcastReceiver for ACTION_FOUND
@@ -106,8 +118,8 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 bluetoothDevices.add(device);
                 Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                deviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, bluetoothDevices);
-                listView.setAdapter(deviceListAdapter);
+                bluetoothDeviceData.add(device.getName());
+                adapter.notifyDataSetChanged();
             }
         }
     };
@@ -126,6 +138,7 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
                 //case1: bonded already
                 if(device.getBondState() == BluetoothDevice.BOND_BONDED) {
                     Log.d(TAG, "BroadcastReceiver: BOND_BONDED");
+                    bluetoothDevice = device;
                 }
                 //case2: creating bond
                 if(device.getBondState() == BluetoothDevice.BOND_BONDING) {
@@ -159,12 +172,19 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
         CheckBox enableBt = findViewById(R.id.btEnableCheckBox);
         CheckBox visibleBt = findViewById(R.id.btVisibleCheckBox);
         Button discoverButton = findViewById(R.id.findUnpairedDevicesBtn);
-        listView = findViewById(R.id.lvNewDevices);
+        ListView listView = findViewById(R.id.lvNewDevices);
+        Button startConnectionBtn = findViewById(R.id.startConnectionBtm);
+        Button sendBtn = findViewById(R.id.sendBtn);
+        text = findViewById(R.id.editText);
+        resources = SharedResources.getInstance();
+
+        bluetoothDeviceData = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bluetoothDeviceData);
+        listView.setAdapter(adapter);
 
         bluetoothDevices = new ArrayList<>();
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        listView.setOnItemClickListener(BluetoothActivity.this);
 
         if(bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth not supported!", Toast.LENGTH_SHORT).show();
@@ -230,6 +250,44 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
         //Broadcast when bond state changes (ie: pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(broadcastReceiver4, filter);
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            //first cancel discovery
+            bluetoothAdapter.cancelDiscovery();
+
+            Log.d(TAG, "onItemClick: You clicked on a device");
+            String deviceName = bluetoothDevices.get(position).getName();
+            String deviceAddress = bluetoothDevices.get(position).getAddress();
+
+            Log.d(TAG, "onItemClick: device name: " + deviceName);
+            Log.d(TAG, "onItemClick: device address: " + deviceAddress);
+
+            //create bond
+            //NOTE: Requires API 17+
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                Log.d(TAG, "Trying to pair with " + deviceName);
+                bluetoothDevices.get(position).createBond();
+                bluetoothDevice = bluetoothDevices.get(position);
+                resources.setBluetoothAdapter(bluetoothAdapter);
+                bluetoothConnectionService = new BluetoothConnectionService(bluetoothAdapter);
+            }
+        });
+
+        startConnectionBtn.setOnClickListener(v -> startBluetoothConnection(bluetoothDevice, uuid));
+
+        sendBtn.setOnClickListener(v -> {
+            byte[] bytes = text.getText().toString().getBytes();
+            bluetoothConnectionService.write(bytes);
+        });
+    }
+
+    /**
+     *  starting the client connection
+     */
+    public void startBluetoothConnection(BluetoothDevice device, UUID uuid) {
+        Log.d(TAG, "startBluetoothConnection: Initializing RFCOM Bluetooth Connection");
+
+        bluetoothConnectionService.startClient(device, uuid);
     }
 
     /**
@@ -249,27 +307,6 @@ public class BluetoothActivity extends AppCompatActivity implements AdapterView.
             }
         } else {
             Log.d(TAG, "checkBluetoothPermissions: No need to check permissions. SDK version < LOLLIPOP");
-        }
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //first cancel discovery
-        bluetoothAdapter.cancelDiscovery();
-
-        Log.d(TAG, "onItemClick: You clicked on a device");
-        String deviceName = bluetoothDevices.get(position).getName();
-        String deviceAddress = bluetoothDevices.get(position).getAddress();
-
-        Log.d(TAG, "onItemClick: device name: " + deviceName);
-        Log.d(TAG, "onItemClick: device address: " + deviceAddress);
-
-        //create bond
-        //NOTE: Requires API 17+
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Log.d(TAG, "Trying to pair with " + deviceName);
-            bluetoothDevices.get(position).createBond();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.mplayer.utils;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -17,6 +18,7 @@ public class SharedResources {
     private static AtomicReference<String> playlistId;
     private static AtomicReference<String> roomId;
     private static AtomicReference<String> playType;
+    private static AtomicReference<BluetoothAdapter> bluetoothAdapter;
 
     private SharedResources(){
         userId = new AtomicReference<>();
@@ -25,6 +27,7 @@ public class SharedResources {
         playlistId = new AtomicReference<>();
         roomId = new AtomicReference<>();
         playType = new AtomicReference<>();
+        bluetoothAdapter = new AtomicReference<>();
     }
 
     public static SharedResources getInstance() {
@@ -88,7 +91,13 @@ public class SharedResources {
         playType.set(null);
     }
 
+    public BluetoothAdapter getBluetoothAdapter() {
+        return bluetoothAdapter.get();
+    }
 
+    public void setBluetoothAdapter(final BluetoothAdapter ba) {
+        bluetoothAdapter.set(ba);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void resetAll() {

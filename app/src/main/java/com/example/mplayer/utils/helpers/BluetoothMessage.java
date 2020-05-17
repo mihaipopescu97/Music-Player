@@ -1,40 +1,46 @@
 package com.example.mplayer.utils.helpers;
 
+import com.example.mplayer.utils.BluetoothConnectionService;
+import com.example.mplayer.utils.SharedResources;
+
 public class BluetoothMessage {
     private static String message = "";
+
+    private static SharedResources resources = SharedResources.getInstance();
+    private static BluetoothConnectionService bluetoothConnectionService = new BluetoothConnectionService(resources.getBluetoothAdapter());
     private BluetoothMessage() {
 
     }
 
-    public static byte[] changeProgress(final int progress) {
+    public static void  changeProgress(final int progress) {
         message = "{command:changeProgress,progress:" + progress + "}";
-        return message.getBytes();
+        bluetoothConnectionService.write(message.getBytes());
     }
 
-    public static byte[] changeTrack(final boolean direction) {
+    public static void  changeTrack(final boolean direction) {
         if (direction) {
             message = "{command:next}";
-            return message.getBytes();
+            bluetoothConnectionService.write(message.getBytes());
         }
 
         message = "{command:prev}";
-        return message.getBytes();
+        bluetoothConnectionService.write(message.getBytes());
 
     }
 
-    public static byte[] changeVolume(final float volume) {
+    public static void changeVolume(final float volume) {
         message = "{command:volume,volume:" + volume + "}";
-        return message.getBytes();
+        bluetoothConnectionService.write(message.getBytes());
     }
 
-    public static byte[] play(final boolean status) {
+    public static void play(final boolean status) {
         if(status) {
             message = "{command:play}";
-            return message.getBytes();
+            bluetoothConnectionService.write(message.getBytes());
         }
 
         message = "stop";
-        return message.getBytes();
+        bluetoothConnectionService.write(message.getBytes());
 
     }
 }

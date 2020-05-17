@@ -20,7 +20,7 @@ class BluetoothPlayerHandler extends PlayerHandler{
     BluetoothPlayerHandler(final MediaPlayer mp, final List<String> urls, final Context context,
                            final BluetoothAdapter adapter, final String UUID) {
         super(mp, urls);
-        service = new BluetoothConnectionService(context, adapter, UUID);
+        service = new BluetoothConnectionService(adapter);
         pos = 0;
         init(0);
     }
