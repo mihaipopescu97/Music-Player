@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.mplayer.R;
+import com.example.mplayer.entities.Setup;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
@@ -21,6 +22,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class InitDataActivity extends AppCompatActivity {
     private static final String TAG = "InitDataActivity";
@@ -28,6 +30,8 @@ public class InitDataActivity extends AppCompatActivity {
     private SharedResources resources;
     private List<String> urls;
     private List<String> namesList;
+    private AtomicReference<Setup> setup;
+    private AtomicReference<String> playlistId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +40,15 @@ public class InitDataActivity extends AppCompatActivity {
         Log.i(TAG ,LogMessages.ACTIVITY_START.label);
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
+        playlistId = new AtomicReference<>();
         urls = Collections.synchronizedList(new ArrayList<>());
         namesList = Collections.synchronizedList(new ArrayList<>());
+        setup = new AtomicReference<>();
     }
 
-    public void getDataBtn(View view) {
+    public void getSongs(View view) {
         namesList.clear();
-        new BackgroundTask(this).execute();
+        new SongTask(this).execute();
     }
 
     public void getUrls(View view) {
@@ -53,6 +59,14 @@ public class InitDataActivity extends AppCompatActivity {
         task.execute(names);
     }
 
+    public void getRoom(View view) {
+        new RoomTask(this).execute();
+    }
+
+    public void getPlaylist(View view) {
+        new PlaylistTask(this, setup.get().getRooms().get(0)).execute();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void playBtn(View view) {
         urls.forEach(url -> Log.i(TAG, url));
@@ -61,13 +75,10 @@ public class InitDataActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
+    private static class SongTask extends AsyncTask<Void, Void, Void> {
         WeakReference<InitDataActivity> weakReference;
 
-
-
-
-        BackgroundTask(InitDataActivity activity) {
+        SongTask(InitDataActivity activity) {
             weakReference = new WeakReference<>(activity);
         }
 
@@ -76,7 +87,43 @@ public class InitDataActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             InitDataActivity activity = weakReference.get();
 
-            activity.firebaseHandler.getPlaylistSongsNames(activity.resources.getPlaylistId(), activity.namesList);
+            activity.firebaseHandler.getPlaylistSongsNames(activity.playlistId.get(), activity.namesList);
+            return null;
+        }
+    }
+
+    private static class RoomTask extends AsyncTask<Void, Void, Void> {
+        WeakReference<InitDataActivity> weakReference;
+
+        RoomTask(InitDataActivity activity) {
+            weakReference = new WeakReference<>(activity);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Void doInBackground(Void... voids) {
+            InitDataActivity activity = weakReference.get();
+
+            activity.firebaseHandler.getSetup(activity.resources.getSetupId(), activity.setup);
+            return null;
+        }
+    }
+
+    private static class PlaylistTask extends AsyncTask<Void, Void, Void> {
+        WeakReference<InitDataActivity> weakReference;
+        String id;
+
+        PlaylistTask(InitDataActivity activity, final String id) {
+            weakReference = new WeakReference<>(activity);
+            this.id = id;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Void doInBackground(Void... voids) {
+            InitDataActivity activity = weakReference.get();
+
+            activity.firebaseHandler.getRoomPlaylistId(id, activity.playlistId);
             return null;
         }
     }

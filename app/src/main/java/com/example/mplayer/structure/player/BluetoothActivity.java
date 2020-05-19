@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -279,6 +280,10 @@ public class BluetoothActivity extends AppCompatActivity {
             byte[] bytes = text.getText().toString().getBytes();
             bluetoothConnectionService.write(bytes);
         });
+    }
+
+    public void doneBtn(View view) {
+        startActivity(new Intent(getBaseContext(), InitDataActivity.class));
     }
 
     /**

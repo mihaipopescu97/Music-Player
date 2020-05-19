@@ -88,6 +88,27 @@ public class PlaylistHelper {
         }
     }
 
+    public void getRoomPlaylistId(final String roomId, final AtomicReference<String> ps) {
+        playlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Playlist playlist = keyNode.getValue(Playlist.class);
+                    if(playlist.getRoomId().equals(roomId)) {
+                        ps.set(playlist.getId());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+    }
+
     public void getUserPlaylist(final String userId, final List<Playlist> playlists) {
         playlistRef.addValueEventListener(new ValueEventListener() {
             @Override

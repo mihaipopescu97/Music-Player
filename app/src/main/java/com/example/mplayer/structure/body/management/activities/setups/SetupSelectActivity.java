@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SetupSelectActivity extends AppCompatActivity {
     private final String TAG = "SetupSelectActivity";
@@ -31,6 +32,7 @@ public class SetupSelectActivity extends AppCompatActivity {
     private  FirebaseHandler firebaseHandler;
     private SharedResources resources;
 
+    private AtomicReference<Class> prevActivity;
     private Spinner setupSpinner;
     private ArrayAdapter<String> adapter;
 
@@ -44,7 +46,7 @@ public class SetupSelectActivity extends AppCompatActivity {
         setupSpinner = findViewById(R.id.setupSelectSpinner);
 
         setups = Collections.synchronizedList(new ArrayList<>());
-
+        prevActivity = new AtomicReference<>();
         firebaseHandler = FirebaseHandler.getInstance();
         resources = SharedResources.getInstance();
         adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, setups);
@@ -53,11 +55,18 @@ public class SetupSelectActivity extends AppCompatActivity {
         new BackgroundTask(this).execute();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prevActivity.set((Class) getIntent().getExtras().get("prevActivity"));
+    }
+
     public void deviceSelect(View view) {
         if(setupSpinner.getSelectedItem() != null) {
-            resources.setSetupId(String.valueOf(setupSpinner.getSelectedItemId()));
+            resources.setSetupId(setupSpinner.getSelectedItem().toString());
             Log.d(TAG, LogMessages.CHANGE_HOME.label);
-            startActivity(new Intent(getBaseContext(), SetupHomeActivity.class));
+            Class<?> cls = prevActivity.get();
+            startActivity(new Intent(getBaseContext(), cls));
         } else {
             Log.e(TAG, "Device not selected");
             Toast.makeText(getBaseContext(), "Please select a device!", Toast.LENGTH_SHORT).show();
@@ -65,7 +74,8 @@ public class SetupSelectActivity extends AppCompatActivity {
     }
 
     public void backSetupSelect(View view) {
-        startActivity(new Intent(getBaseContext(), SetupHomeActivity.class));
+        Class<?> cls = prevActivity.get();
+        startActivity(new Intent(getBaseContext(), cls));
     }
 
     private static class BackgroundTask extends AsyncTask<Void, Void, Void> {
@@ -77,7 +87,7 @@ public class SetupSelectActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            SetupSelectActivity activity =weakReference.get();
+            SetupSelectActivity activity = weakReference.get();
             Log.i(activity.TAG, LogMessages.ASYNC_WORKING.label);
 
             activity.firebaseHandler.getUserSetups(activity.resources.getUserId(), activity.setups, activity.adapter);

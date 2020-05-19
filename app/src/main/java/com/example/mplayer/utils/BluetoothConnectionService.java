@@ -212,7 +212,7 @@ public class BluetoothConnectionService {
 
         //Start the thread to manage the connection and perform transmission
         connectedThread = new ConnectedThread(mmSocket);
-        connectThread.start();
+        connectedThread.start();
     }
 
     /**

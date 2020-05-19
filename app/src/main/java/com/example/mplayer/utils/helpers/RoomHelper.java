@@ -60,6 +60,31 @@ public class RoomHelper {
         });
     }
 
+    public void getSetupRooms(final String setupId, final List<String> roomsId) {
+        roomRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Room room = keyNode.getValue(Room.class);
+                    if(room.getPlaylistId().equals(setupId)) {
+                        roomsId.add(room.getId());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+
+        if(roomsId.isEmpty()) {
+            Log.w(TAG, "No rooms for playlist:" + setupId);
+        }
+    }
+
     public void getSetupRooms(final String setupId, final List<String> roomsId, final ArrayAdapter<String> adapter) {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override

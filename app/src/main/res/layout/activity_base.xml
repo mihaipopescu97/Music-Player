@@ -12,10 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="100dp"
         android:background="@drawable/button_style"
         android:onClick="createNewSetup"
         android:shadowColor="#A8A5A7"
@@ -23,10 +22,10 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/create_new_setup"
-        app:layout_constraintBottom_toTopOf="@+id/useSetupBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backSingleBtn" />
 
     <Button
         android:id="@+id/useSetupBtn"
@@ -34,10 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="100dp"
         android:background="@drawable/button_style"
         android:onClick="useSetup"
         android:shadowColor="#A8A5A7"
@@ -45,10 +43,10 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/use_setup"
-        app:layout_constraintBottom_toTopOf="@+id/manageSettingsBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/createNewSetupBtn" />
 
     <Button
         android:id="@+id/playBtn"
@@ -56,10 +54,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="71dp"
         android:background="@drawable/button_style"
         android:onClick="play"
         android:shadowColor="#A8A5A7"
@@ -67,12 +64,10 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/play"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/manageSettingsBtn" />
 
     <Button
         android:id="@+id/manageSettingsBtn"
@@ -80,10 +75,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="100dp"
         android:background="@drawable/button_style"
         android:onClick="manageSettings"
         android:shadowColor="#A8A5A7"
@@ -91,10 +85,10 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/manage_settings"
-        app:layout_constraintBottom_toTopOf="@+id/playBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/useSetupBtn" />
 
     <Button
         android:id="@+id/backSingleBtn"

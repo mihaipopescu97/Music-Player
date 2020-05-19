@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="125dp"
         android:layout_marginLeft="125dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:layout_marginBottom="20dp"
@@ -96,5 +96,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginRight="27dp"
+        android:onClick="doneBtn"
+        android:text="@string/done"
+        app:layout_constraintEnd_toStartOf="@+id/startConnectionBtm"
+        app:layout_constraintTop_toBottomOf="@+id/lvNewDevices" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

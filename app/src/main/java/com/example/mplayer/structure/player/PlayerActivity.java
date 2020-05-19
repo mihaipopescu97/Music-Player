@@ -80,8 +80,12 @@ public class PlayerActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         if (fromUser) {
-                            mp.seekTo(progress);
-                            positionBar.setProgress(progress);
+                            if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+                                bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
+                            } else {
+                                mp.seekTo(progress);
+                                positionBar.setProgress(progress);
+                            }
                         }
                     }
 
@@ -92,10 +96,6 @@ public class PlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-                        //TODO check here
-                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
-                            bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
-                        }
                     }
                 }
         );
@@ -205,6 +205,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     //Next button functionality
     public void nextBtnClick(View view) {
+        playBtn.setBackgroundResource(R.drawable.play_button);
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             bluetoothPlayerHandler.next();
         } else {
@@ -215,6 +216,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     //Previous button functionality
     public void prevBtnClick(View view) {
+        playBtn.setBackgroundResource(R.drawable.play_button);
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             bluetoothPlayerHandler.prev();
         } else {

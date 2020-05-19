@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 class PlayerHandler {
-    final MediaPlayer mp;
+    MediaPlayer mp;
     final List<String> urls;
 
     PlayerHandler(MediaPlayer mp, List<String> urls) {
@@ -21,6 +21,8 @@ class PlayerHandler {
 
     void init(final int ps) {
         try {
+            mp.stop();
+            mp.reset();
             mp.setDataSource(urls.get(ps));
             mp.setAudioAttributes(
                     new AudioAttributes

@@ -35,7 +35,9 @@ public class SetupHomeActivity extends AppCompatActivity {
     }
 
     public void homeSelectSetup(View view) {
-        startActivity(new Intent(getBaseContext(), SetupSelectActivity.class));
+        Intent intent = new Intent(getBaseContext(), SetupSelectActivity.class);
+        intent.putExtra("prevActivity", this.getClass());
+        startActivity(intent);
     }
 
     public void backHomeSetup(View view) {

@@ -181,6 +181,9 @@ public class FirebaseHandler {
         roomHelper.getRooms(rooms);
     }
 
+    public void getSetupRooms(final String setupId, final List<String> roomsId) {
+        roomHelper.getSetupRooms(setupId, roomsId);
+    }
     public void getSetupRooms(final String setupId, final List<String> roomsId, final ArrayAdapter<String> adapter) {
         roomHelper.getSetupRooms(setupId, roomsId, adapter);
     }
@@ -210,6 +213,10 @@ public class FirebaseHandler {
 
     public void getRoomPlaylists(final String roomId, final AtomicReference<Playlist> playlists) {
         playlistHelper.getRoomPlaylist(roomId, playlists);
+    }
+
+    public void getRoomPlaylistId(final String roomId,  final AtomicReference<String> playlistId ) {
+        playlistHelper.getRoomPlaylistId(roomId, playlistId);
     }
 
     public void getUserPlaylists(final String userId, final List<Playlist> playlists) {
