@@ -12,21 +12,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="125dp"
+        android:background="@drawable/button_style"
         android:onClick="homeSelectSetup"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/select_setup"
-        app:layout_constraintBottom_toTopOf="@+id/setupHomeAddBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/setupHomeBackBtn" />
 
     <Button
         android:id="@+id/setupHomeAddBtn"
@@ -34,21 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="303dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="125dp"
+        android:background="@drawable/button_style"
         android:onClick="homeAddSetup"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/add_setup"
-        app:layout_constraintBottom_toTopOf="@+id/setupHomeDeleteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/setupHomeSelectBtn" />
 
     <Button
         android:id="@+id/setupHomeDeleteBtn"
@@ -56,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="532dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:background="@drawable/button_style"
@@ -69,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/setupHomeAddBtn" />
 
     <Button
         android:id="@+id/setupHomeBackBtn"
@@ -78,6 +74,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="297dp"
+        android:layout_marginRight="297dp"
         android:background="@drawable/button_style"
         android:onClick="backHomeSetup"
         android:shadowColor="#A8A5A7"
@@ -85,6 +83,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

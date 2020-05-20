@@ -12,21 +12,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_style"
         android:onClick="homeSelectPlaylist"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/select_playlist"
-        app:layout_constraintBottom_toTopOf="@+id/playlistHomeAddBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistHomeBackBtn" />
 
     <Button
         android:id="@+id/playlistHomeAddBtn"
@@ -34,21 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="404dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_style"
         android:onClick="homeAddPlaylist"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/add_playlist"
-        app:layout_constraintBottom_toTopOf="@+id/playlistHomeDeleteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistHomeSelectBtn" />
 
     <Button
         android:id="@+id/playlistHomeDeleteBtn"
@@ -56,20 +52,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="556dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
+        android:background="@drawable/button_style"
         android:onClick="homeDeletePlaylist"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/delete_playlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistHomeAddBtn" />
 
     <Button
         android:id="@+id/playlistHomeBackBtn"
@@ -78,6 +74,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="282dp"
+        android:layout_marginRight="282dp"
         android:background="@drawable/button_style"
         android:onClick="homeBackPlaylist"
         android:shadowColor="#A8A5A7"
@@ -85,6 +83,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

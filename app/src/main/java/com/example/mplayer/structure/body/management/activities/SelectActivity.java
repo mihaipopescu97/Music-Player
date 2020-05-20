@@ -49,12 +49,6 @@ public class SelectActivity extends AppCompatActivity {
         backgroundTask.execute();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        resources.resetPlayType();
-    }
-
     public void single(View view) {
         if(!userId.get().isEmpty()) {
             resources.setUserId(userId.get());
@@ -67,6 +61,7 @@ public class SelectActivity extends AppCompatActivity {
 
     public void family(View view) {
         if(!userId.get().isEmpty()) {
+            resources.setUserId(userId.get());
             resources.setPlayType(PlayType.FAMILY.label);
             startActivity(new Intent(getBaseContext(), BaseActivity.class));
         } else {

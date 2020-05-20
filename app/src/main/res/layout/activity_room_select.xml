@@ -13,6 +13,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="277dp"
+        android:layout_marginRight="277dp"
         android:background="@drawable/button_style"
         android:onClick="roomSelectBack"
         android:shadowColor="#A8A5A7"
@@ -20,6 +22,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,9 +30,9 @@
         android:id="@+id/roomSpinner"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <Button
         android:id="@+id/select"
@@ -37,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:background="@drawable/button_style"
@@ -49,6 +52,6 @@
         android:text="@string/select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/roomSpinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

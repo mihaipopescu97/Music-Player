@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.mplayer.R;
 import com.example.mplayer.structure.body.management.activities.BaseActivity;
+import com.example.mplayer.utils.BluetoothConnectionService;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.PlayType;
 
@@ -38,6 +38,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private LocalPlayerHandler localPlayerHandler;
     private BluetoothPlayerHandler bluetoothPlayerHandler;
+    private BluetoothConnectionService bluetoothConnectionService;
 
     private SharedResources resources;
 
@@ -62,8 +63,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             //Bluetooth player
-            bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls, getBaseContext(),
-                    BluetoothAdapter.getDefaultAdapter(), resources.getDeviceId());
+            bluetoothConnectionService = BluetoothConnectionService.getInstance();
+            bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls, bluetoothConnectionService);
             mp.setVolume(0f, 0f);
         } else {
             localPlayerHandler = new LocalPlayerHandler(mp, urls);
@@ -80,9 +81,7 @@ public class PlayerActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         if (fromUser) {
-                            if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
-                                bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
-                            } else {
+                            if(!PlayType.FAMILY.label.equals(resources.getPlayType())) {
                                 mp.seekTo(progress);
                                 positionBar.setProgress(progress);
                             }
@@ -96,6 +95,9 @@ public class PlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+                            bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
+                        }
                     }
                 }
         );
@@ -107,9 +109,7 @@ public class PlayerActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         float volumeNum = progress / 100f;
-                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
-                            bluetoothPlayerHandler.changeVol(volumeNum);
-                        } else {
+                        if(!PlayType.FAMILY.label.equals(resources.getPlayType())) {
                             mp.setVolume(volumeNum, volumeNum);
                         }
                     }
@@ -121,7 +121,10 @@ public class PlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-
+                        float volumeNum = seekBar.getProgress() / 100f;
+                        if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
+                            bluetoothPlayerHandler.changeVol(volumeNum);
+                        }
                     }
                 }
         );
@@ -187,25 +190,25 @@ public class PlayerActivity extends AppCompatActivity {
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             if(bluetoothPlayerHandler.play()) {
                 //Play
-                playBtn.setBackgroundResource(R.drawable.stop_button);
+                playBtn.setBackgroundResource(R.mipmap.stop_button);
             } else {
                 //Stop
-                playBtn.setBackgroundResource(R.drawable.play_button);
+                playBtn.setBackgroundResource(R.mipmap.play_button);
             }
         } else {
             if (localPlayerHandler.play()) {
                 //Play
-                playBtn.setBackgroundResource(R.drawable.stop_button);
+                playBtn.setBackgroundResource(R.mipmap.stop_button);
             } else {
                 //Stop
-                playBtn.setBackgroundResource(R.drawable.play_button);
+                playBtn.setBackgroundResource(R.mipmap.play_button);
             }
         }
     }
 
     //Next button functionality
     public void nextBtnClick(View view) {
-        playBtn.setBackgroundResource(R.drawable.play_button);
+        playBtn.setBackgroundResource(R.mipmap.play_button);
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             bluetoothPlayerHandler.next();
         } else {
@@ -216,7 +219,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     //Previous button functionality
     public void prevBtnClick(View view) {
-        playBtn.setBackgroundResource(R.drawable.play_button);
+        playBtn.setBackgroundResource(R.mipmap.play_button);
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             bluetoothPlayerHandler.prev();
         } else {

@@ -79,8 +79,4 @@ public class MainActivity extends AppCompatActivity {
     public void goToSignUp(View view) {
         startActivity(new Intent(MainActivity.this, SignUpActivity.class));
     }
-
-    public void test(View view) {
-        startActivity(new Intent(MainActivity.this, BluetoothActivity.class));
-    }
 }

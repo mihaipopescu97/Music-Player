@@ -16,11 +16,9 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="85dp"
         android:layout_marginRight="85dp"
-        android:layout_marginBottom="400dp"
         android:autofillHints="email"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
@@ -52,6 +50,8 @@
         android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="113dp"
+        android:layout_marginRight="113dp"
         android:background="@drawable/button_style"
         android:onClick="login"
         android:shadowColor="#A8A5A7"
@@ -59,6 +59,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/log_in"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpPass"
         tools:ignore="RtlHardcoded" />
@@ -88,21 +89,12 @@
         android:layout_marginStart="155dp"
         android:layout_marginLeft="155dp"
         android:layout_marginTop="79dp"
+        android:layout_marginEnd="155dp"
+        android:layout_marginRight="155dp"
         android:contentDescription="@string/start_icon"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/music_player_icon_clipart" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="99dp"
-        android:onClick="test"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

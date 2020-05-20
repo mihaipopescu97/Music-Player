@@ -1,46 +1,51 @@
 package com.example.mplayer.utils.helpers;
 
 import com.example.mplayer.utils.BluetoothConnectionService;
-import com.example.mplayer.utils.SharedResources;
 
 public class BluetoothMessage {
-    private static String message = "";
+    private StringBuilder message;
+    private BluetoothConnectionService bluetoothConnectionService;
 
-    private static SharedResources resources = SharedResources.getInstance();
-    private static BluetoothConnectionService bluetoothConnectionService = new BluetoothConnectionService(resources.getBluetoothAdapter());
-    private BluetoothMessage() {
-
+    public BluetoothMessage(final BluetoothConnectionService bluetoothConnectionService) {
+        this.bluetoothConnectionService = bluetoothConnectionService;
     }
 
-    public static void  changeProgress(final int progress) {
-        message = "{command:changeProgress,progress:" + progress + "}";
-        bluetoothConnectionService.write(message.getBytes());
+    public void  changeProgress(final int progress) {
+        message = new StringBuilder();
+        message.append("progress:");
+        message.append(progress);
+        bluetoothConnectionService.write(message.toString().getBytes());
     }
 
-    public static void  changeTrack(final boolean direction) {
+    public void  changeTrack(final boolean direction) {
+        message = new StringBuilder();
+        message.append("change:");
         if (direction) {
-            message = "{command:next}";
-            bluetoothConnectionService.write(message.getBytes());
+            message.append("next");
+            bluetoothConnectionService.write(message.toString().getBytes());
         }
-
-        message = "{command:prev}";
-        bluetoothConnectionService.write(message.getBytes());
+        message.append("prev");
+        bluetoothConnectionService.write(message.toString().getBytes());
 
     }
 
-    public static void changeVolume(final float volume) {
-        message = "{command:volume,volume:" + volume + "}";
-        bluetoothConnectionService.write(message.getBytes());
+    public void changeVolume(final float volume) {
+        message = new StringBuilder();
+        message.append("sound:");
+        message.append(volume);
+        bluetoothConnectionService.write(message.toString().getBytes());
     }
 
-    public static void play(final boolean status) {
+    public void play(final boolean status) {
+        message = new StringBuilder();
+        message.append("play:");
         if(status) {
-            message = "{command:play}";
-            bluetoothConnectionService.write(message.getBytes());
+            message.append("true");
+            bluetoothConnectionService.write(message.toString().getBytes());
         }
 
-        message = "stop";
-        bluetoothConnectionService.write(message.getBytes());
+        message.append("false");
+        bluetoothConnectionService.write(message.toString().getBytes());
 
     }
 }

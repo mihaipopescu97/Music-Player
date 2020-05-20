@@ -12,10 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="479dp"
         android:background="@drawable/button_style"
         android:onClick="addNewDevice"
         android:shadowColor="#A8A5A7"
@@ -23,10 +22,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/add_new_device"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
         android:id="@+id/addNewSetupBtn"
@@ -34,10 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="356dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="327dp"
         android:background="@drawable/button_style"
         android:onClick="addNewSetup"
         android:shadowColor="#A8A5A7"
@@ -45,10 +42,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/add_new_setup"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addNewDeviceBtn" />
 
     <Button
         android:id="@+id/addNewPlaylistBtn"
@@ -56,10 +52,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="183dp"
         android:background="@drawable/button_style"
         android:onClick="addNewPlaylist"
         android:shadowColor="#A8A5A7"
@@ -67,10 +62,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/add_ne_playlist"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addNewSetupBtn" />
 
     <Button
         android:id="@+id/button"
@@ -81,7 +75,6 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="285dp"
         android:layout_marginRight="285dp"
-        android:layout_marginBottom="107dp"
         android:background="@drawable/button_style"
         android:onClick="backNewBuild"
         android:shadowColor="#A8A5A7"
@@ -89,20 +82,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
-        app:layout_constraintBottom_toTopOf="@+id/addNewDeviceBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginLeft="158dp"
-        android:layout_marginTop="115dp"
-        android:onClick="testData"
-        android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

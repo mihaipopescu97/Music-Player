@@ -1,9 +1,8 @@
 package com.example.mplayer.structure.player;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -14,13 +13,13 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 class BluetoothPlayerHandler extends PlayerHandler{
+    private static final String TAG = "BluetoothPlayerHandler";
     private int pos;
-    private final BluetoothConnectionService service;
+    private final BluetoothMessage bluetoothMessage;
 
-    BluetoothPlayerHandler(final MediaPlayer mp, final List<String> urls, final Context context,
-                           final BluetoothAdapter adapter, final String UUID) {
+    BluetoothPlayerHandler(final MediaPlayer mp, final List<String> urls, final BluetoothConnectionService bluetoothConnectionService) {
         super(mp, urls);
-        service = new BluetoothConnectionService(adapter);
+        bluetoothMessage = new BluetoothMessage(bluetoothConnectionService);
         pos = 0;
         init(0);
     }
@@ -28,13 +27,13 @@ class BluetoothPlayerHandler extends PlayerHandler{
     boolean play() {
         if(!mp.isPlaying()) {
             mp.start();
-            //TODO
-            BluetoothMessage.play(true);
+            Log.i(TAG, "play: write start");
+            bluetoothMessage.play(true);
             return true;
         } else {
             mp.pause();
-            //TODO
-            BluetoothMessage.play(false);
+            Log.i(TAG, "play: write stop");
+            bluetoothMessage.play(false);
             return false;
         }
     }
@@ -44,7 +43,8 @@ class BluetoothPlayerHandler extends PlayerHandler{
         if(pos == urls.size()) {
             pos = 0;
         }
-        BluetoothMessage.changeTrack(true);
+        Log.i(TAG, "play: write next");
+        bluetoothMessage.changeTrack(true);
         init(pos);
     }
 
@@ -54,15 +54,18 @@ class BluetoothPlayerHandler extends PlayerHandler{
         } else {
             pos -= 1;
         }
-        BluetoothMessage.changeTrack(false);
+        Log.i(TAG, "play: write prev");
+        bluetoothMessage.changeTrack(false);
         init(pos);
     }
 
     void changeVol(final float vol) {
-        BluetoothMessage.changeVolume(vol);
+        Log.i(TAG, "play: write change vol to " + vol);
+        bluetoothMessage.changeVolume(vol);
     }
 
     void changeProgress(final int progress) {
-        BluetoothMessage.changeProgress(progress);
+        Log.i(TAG, "play: write change pro to " + progress);
+        bluetoothMessage.changeProgress(progress);
     }
 }

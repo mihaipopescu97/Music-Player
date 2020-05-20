@@ -12,21 +12,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
-        android:onClick="homeSelectDevice"
         android:background="@drawable/button_style"
+        android:onClick="homeSelectDevice"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/select_device"
-        app:layout_constraintBottom_toTopOf="@+id/deviceHomeAddBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceHomeBackBtn" />
 
     <Button
         android:id="@+id/deviceHomeAddBtn"
@@ -34,21 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="388dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
-        android:onClick="homeAddDevice"
         android:background="@drawable/button_style"
+        android:onClick="homeAddDevice"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/add_device"
-        app:layout_constraintBottom_toTopOf="@+id/deviceHomeDeleteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceHomeSelectBtn" />
 
     <Button
         android:id="@+id/deviceHomeBackBtn"
@@ -57,6 +53,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="289dp"
+        android:layout_marginRight="289dp"
         android:background="@drawable/button_style"
         android:onClick="homeDeviceBack"
         android:shadowColor="#A8A5A7"
@@ -64,6 +62,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,11 +72,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="524dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:onClick="homeDeleteDevice"
         android:background="@drawable/button_style"
+        android:onClick="homeDeleteDevice"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
@@ -85,5 +84,5 @@
         android:text="@string/delete_device"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceHomeAddBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

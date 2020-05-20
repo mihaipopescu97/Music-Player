@@ -20,10 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
         android:background="@drawable/button_style"
         android:onClick="deleteSetup"
         android:shadowColor="#A8A5A7"
@@ -31,10 +30,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/delete_setup"
-        app:layout_constraintBottom_toTopOf="@+id/setupDeleteDoneBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/setupDeleteSpinner" />
 
     <Button
         android:id="@+id/setupDeleteDoneBtn"
@@ -42,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="484dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:background="@drawable/button_style"
@@ -54,5 +52,5 @@
         android:text="@string/done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/setupDeleteBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

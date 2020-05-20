@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:background="@drawable/button_style"
@@ -24,7 +24,7 @@
         android:text="Local"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logOutFromSelectBtn" />
 
     <Button
         android:id="@+id/familyBtn"
@@ -32,10 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="436dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="275dp"
         android:background="@drawable/button_style"
         android:onClick="family"
         android:shadowColor="#A8A5A7"
@@ -43,10 +42,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="bluetooth"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/singleBtn" />
 
     <Button
         android:id="@+id/logOutFromSelectBtn"
@@ -57,7 +55,6 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="288dp"
         android:layout_marginRight="288dp"
-        android:layout_marginBottom="134dp"
         android:background="@drawable/button_style"
         android:onClick="logOutFromSelect"
         android:shadowColor="#A8A5A7"
@@ -65,11 +62,9 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/log_out"
-        app:layout_constraintBottom_toTopOf="@+id/singleBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

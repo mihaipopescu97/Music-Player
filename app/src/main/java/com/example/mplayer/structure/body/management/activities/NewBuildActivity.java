@@ -68,9 +68,4 @@ public class NewBuildActivity extends AppCompatActivity {
     public void backNewBuild(View view) {
         startActivity(new Intent(getBaseContext(), BaseActivity.class));
     }
-
-    public void testData(View view) {
-        resources.setPlaylistId("d458c0b7-b03e-4f90-a397-40f0d36b893a");
-        startActivity(new Intent(getBaseContext(), InitDataActivity.class));
-    }
 }

@@ -20,21 +20,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="100dp"
+        android:background="@drawable/button_style"
         android:onClick="playlistDelete"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/delete"
-        app:layout_constraintBottom_toTopOf="@+id/playlistDeleteDoneBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistDeleteSpinner" />
 
     <Button
         android:id="@+id/playlistDeleteDoneBtn"
@@ -42,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:background="@drawable/button_style"
@@ -54,5 +52,5 @@
         android:text="@string/done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistDeleteBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

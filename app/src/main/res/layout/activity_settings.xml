@@ -12,21 +12,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_style"
         android:onClick="manageDevices"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/manage_devices"
-        app:layout_constraintBottom_toTopOf="@+id/manageSetupsBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backSettingsBtn" />
 
     <Button
         android:id="@+id/manageSetupsBtn"
@@ -34,21 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="372dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_style"
         android:onClick="manageSetups"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/manage_setups"
-        app:layout_constraintBottom_toTopOf="@+id/managePlaylistBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/manageDevicesBtn" />
 
     <Button
         android:id="@+id/managePlaylistBtn"
@@ -56,20 +52,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
+        android:background="@drawable/button_style"
         android:onClick="managePlaylist"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:background="@drawable/button_style"
         android:text="@string/manage_playlists"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/manageSetupsBtn" />
 
     <Button
         android:id="@+id/backSettingsBtn"
@@ -78,6 +74,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="297dp"
+        android:layout_marginRight="297dp"
         android:background="@drawable/button_style"
         android:onClick="backSettings"
         android:shadowColor="#A8A5A7"
@@ -85,6 +83,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

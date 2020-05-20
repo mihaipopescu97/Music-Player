@@ -12,9 +12,11 @@ import android.view.View;
 
 import com.example.mplayer.R;
 import com.example.mplayer.entities.Setup;
+import com.example.mplayer.utils.BluetoothConnectionService;
 import com.example.mplayer.utils.FirebaseHandler;
 import com.example.mplayer.utils.SharedResources;
 import com.example.mplayer.utils.enums.LogMessages;
+import com.example.mplayer.utils.enums.PlayType;
 import com.example.mplayer.utils.helpers.DownloadTask;
 
 import java.io.Serializable;
@@ -32,6 +34,9 @@ public class InitDataActivity extends AppCompatActivity {
     private List<String> namesList;
     private AtomicReference<Setup> setup;
     private AtomicReference<String> playlistId;
+    private StringBuilder stringBuilder;
+    private BluetoothConnectionService bluetoothConnectionService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +49,24 @@ public class InitDataActivity extends AppCompatActivity {
         urls = Collections.synchronizedList(new ArrayList<>());
         namesList = Collections.synchronizedList(new ArrayList<>());
         setup = new AtomicReference<>();
+        if (resources.getPlayType().equals(PlayType.FAMILY.label)) {
+            bluetoothConnectionService = BluetoothConnectionService.getInstance();
+        }
+
+        stringBuilder = new StringBuilder();
+        stringBuilder.append("data:");
+        stringBuilder.append(resources.getUserId());
+        stringBuilder.append(":");
+        stringBuilder.append(resources.getSetupId());
     }
 
     public void getSongs(View view) {
         namesList.clear();
         new SongTask(this).execute();
+        if (resources.getPlayType().equals(PlayType.FAMILY.label)) {
+            Log.i(TAG, "getSongs: writing, GOD HELP");
+            bluetoothConnectionService.write(stringBuilder.toString().getBytes());
+        }
     }
 
     public void getUrls(View view) {

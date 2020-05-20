@@ -52,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
     public void play(View view) {
         if(resources.getSetupId() != null) {
             if (resources.getPlayType().equals(PlayType.FAMILY.label)) {
-                startActivity(new Intent(BaseActivity.this, BluetoothActivity.class));
+                startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
             } else {
                 startActivity(new Intent(getBaseContext(), InitDataActivity.class));
             }
@@ -61,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void backBase(View view) {
-        startActivity( new Intent(BaseActivity.this, SelectActivity.class));
+        startActivity( new Intent(getBaseContext(), SelectActivity.class));
     }
 
 }

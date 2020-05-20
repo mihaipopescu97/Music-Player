@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,7 +36,6 @@ public class BluetoothActivity extends AppCompatActivity {
     public List<BluetoothDevice> bluetoothDevices;
 
     private BluetoothConnectionService bluetoothConnectionService;
-    private EditText text;
 
     private static final UUID uuid = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
 
@@ -175,8 +173,6 @@ public class BluetoothActivity extends AppCompatActivity {
         Button discoverButton = findViewById(R.id.findUnpairedDevicesBtn);
         ListView listView = findViewById(R.id.lvNewDevices);
         Button startConnectionBtn = findViewById(R.id.startConnectionBtm);
-        Button sendBtn = findViewById(R.id.sendBtn);
-        text = findViewById(R.id.editText);
         resources = SharedResources.getInstance();
 
         bluetoothDeviceData = new ArrayList<>();
@@ -270,20 +266,15 @@ public class BluetoothActivity extends AppCompatActivity {
                 bluetoothDevices.get(position).createBond();
                 bluetoothDevice = bluetoothDevices.get(position);
                 resources.setBluetoothAdapter(bluetoothAdapter);
-                bluetoothConnectionService = new BluetoothConnectionService(bluetoothAdapter);
+                bluetoothConnectionService = BluetoothConnectionService.getInstance(bluetoothAdapter);
             }
         });
 
         startConnectionBtn.setOnClickListener(v -> startBluetoothConnection(bluetoothDevice, uuid));
-
-        sendBtn.setOnClickListener(v -> {
-            byte[] bytes = text.getText().toString().getBytes();
-            bluetoothConnectionService.write(bytes);
-        });
     }
 
     public void doneBtn(View view) {
-        startActivity(new Intent(getBaseContext(), InitDataActivity.class));
+        startActivity( new Intent(getBaseContext(), InitDataActivity.class));
     }
 
     /**

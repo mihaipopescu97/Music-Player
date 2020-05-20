@@ -18,13 +18,38 @@ public class BluetoothConnectionService {
 
     private final BluetoothAdapter bluetoothAdapter;
 
-    private ConnectThread connectThread;
-    private ConnectedThread connectedThread;
+    private static BluetoothConnectionService instance = null;
+    private static ConnectThread connectThread;
+    private static ConnectedThread connectedThread;
 
     private Handler handler = new Handler();
 
-    public BluetoothConnectionService(final BluetoothAdapter bluetoothAdapter) {
+    private BluetoothConnectionService(final BluetoothAdapter bluetoothAdapter) {
         this.bluetoothAdapter = bluetoothAdapter;
+    }
+
+    public static BluetoothConnectionService getInstance(final BluetoothAdapter bluetoothAdapter) {
+        if (instance == null) {
+            instance = new BluetoothConnectionService(bluetoothAdapter);
+        }
+
+        return instance;
+    }
+
+    public static BluetoothConnectionService getInstance() {
+        if (instance == null) {
+           return null;
+        }
+
+        return instance;
+    }
+
+    public ConnectThread getConnectThread() {
+        return connectThread;
+    }
+
+    public ConnectedThread getConnectedThread() {
+        return connectedThread;
     }
 
     /**
@@ -76,10 +101,10 @@ public class BluetoothConnectionService {
                 return;
             }
 
-            connected(mmSocket, mmDevice);
+            connected(mmSocket);
         }
 
-        public void cancel() {
+        void cancel() {
             try {
                 Log.d(TAG, "ConnectThread: Closing client socket");
                 mmSocket.close();
@@ -105,16 +130,16 @@ public class BluetoothConnectionService {
 
     public void cancel() {
         connectedThread.cancel();
-        connectedThread.interrupt();;
+        connectedThread.interrupt();
         connectThread.cancel();
         connectThread.interrupt();
     }
 
 
     private interface MessageConstants {
-        public static final int MESSAGE_READ = 0;
-        public static final int MESSAGE_WRITE = 1;
-        public static final int MESSAGE_TOAST = 2;
+        int MESSAGE_READ = 0;
+        int MESSAGE_WRITE = 1;
+        int MESSAGE_TOAST = 2;
     }
     /**
      * The ConnectedThread which is responsible for maintaining the BTConnection,
@@ -126,7 +151,7 @@ public class BluetoothConnectionService {
         private final OutputStream outputStream;
         private byte[] buffer;
 
-        public ConnectedThread(BluetoothSocket socket) {
+        ConnectedThread(BluetoothSocket socket) {
             Log.d(TAG, "ConnectedThread: start");
 
             mmSocket = socket;
@@ -175,7 +200,7 @@ public class BluetoothConnectionService {
         }
 
         //Call from the activity to send data to the remote service
-        public void write(byte[] bytes) {
+        void write(byte[] bytes) {
             try {
                 outputStream.write(bytes);
 
@@ -198,7 +223,7 @@ public class BluetoothConnectionService {
         }
 
         //Call from activity to shutdown the connection
-        public void cancel() {
+        void cancel() {
             try {
                 mmSocket.close();
             } catch (IOException e) {
@@ -207,7 +232,7 @@ public class BluetoothConnectionService {
         }
     }
 
-    private synchronized void connected(final BluetoothSocket mmSocket, final BluetoothDevice mmDevice) {
+    private synchronized void connected(final BluetoothSocket mmSocket) {
         Log.d(TAG, "connected: starting");
 
         //Start the thread to manage the connection and perform transmission
@@ -222,10 +247,6 @@ public class BluetoothConnectionService {
      * @see ConnectedThread#write(byte[])
      */
     public void write(byte[] bytes) {
-        //Create temporary object
-        ConnectedThread r;
-
-        //Synchronize a copy of the ConnectedThread
         Log.d(TAG, "write: write called");
         //perform the write
         connectedThread.write(bytes);

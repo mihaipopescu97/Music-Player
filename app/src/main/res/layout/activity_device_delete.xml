@@ -10,7 +10,7 @@
         android:id="@+id/deviceDeleteSpinner"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="100dp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,21 +21,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="150dp"
-        android:onClick="deleteDevice"
         android:background="@drawable/button_style"
+        android:onClick="deleteDevice"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/delete"
-        app:layout_constraintBottom_toTopOf="@+id/deviceDeleteDoneBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceDeleteSpinner" />
 
     <Button
         android:id="@+id/deviceDeleteDoneBtn"
@@ -43,11 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginLeft="99dp"
-        android:layout_marginTop="504dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:onClick="doneDeleteDevice"
         android:background="@drawable/button_style"
+        android:onClick="doneDeleteDevice"
         android:shadowColor="#A8A5A7"
         android:shadowDx="0"
         android:shadowDy="0"
@@ -55,5 +53,5 @@
         android:text="@string/done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceDeleteBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
