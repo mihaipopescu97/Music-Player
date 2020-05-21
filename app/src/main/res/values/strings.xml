@@ -38,4 +38,10 @@
     <string name="enable">Enable</string>
     <string name="visible">Visible</string>
     <string name="discover">Discover</string>
+    <string name="get_playlist">get playlist</string>
+    <string name="get_songs">Get Songs</string>
+    <string name="get_urls">Get Urls</string>
+    <string name="get_room">Get Room</string>
+    <string name="local">Local</string>
+    <string name="bluetooth">bluetooth</string>
 </resources>
