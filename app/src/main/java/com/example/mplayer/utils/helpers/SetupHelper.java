@@ -113,6 +113,49 @@ public class SetupHelper {
         }
     }
 
+    public void getSetupRooms(final String id, final List<String> rooms) {
+        setupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Setup setup = keyNode.getValue(Setup.class);
+                    if (setup.getId().equals(id)) {
+                        rooms.addAll(setup.getRooms());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+    }
+
+    public void getSetupRooms(final String id, final List<String> rooms, final ArrayAdapter<String> adapter ) {
+        setupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Setup setup = keyNode.getValue(Setup.class);
+                    if (setup.getId().equals(id)) {
+                        rooms.addAll(setup.getRooms());
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCanceled", databaseError.toException());
+            }
+        });
+    }
+
     public void getSetup(final String id, final AtomicReference<Setup> searchedSetup) {
         setupRef.addValueEventListener(new ValueEventListener() {
             @Override

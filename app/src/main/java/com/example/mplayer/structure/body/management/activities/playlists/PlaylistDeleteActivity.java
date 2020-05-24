@@ -40,7 +40,7 @@ public class PlaylistDeleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_delete);
 
-        Log.i(TAG, "Playlist delete fragment started");
+        Log.i(TAG, "Playlist delete activity started");
 
         playlistSpinner = findViewById(R.id.playlistDeleteSpinner);
 
