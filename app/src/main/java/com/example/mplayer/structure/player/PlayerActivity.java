@@ -38,7 +38,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     private LocalPlayerHandler localPlayerHandler;
     private BluetoothPlayerHandler bluetoothPlayerHandler;
-    private BluetoothConnectionService bluetoothConnectionService;
 
     private SharedResources resources;
 
@@ -63,7 +62,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
             //Bluetooth player
-            bluetoothConnectionService = BluetoothConnectionService.getInstance();
+            BluetoothConnectionService bluetoothConnectionService = BluetoothConnectionService.getInstance();
             bluetoothPlayerHandler = new BluetoothPlayerHandler(mp, urls, bluetoothConnectionService);
             mp.setVolume(0f, 0f);
         } else {
@@ -95,8 +94,11 @@ public class PlayerActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+                        float progress = seekBar.getProgress() / 100f;
                         if(PlayType.FAMILY.label.equals(resources.getPlayType())) {
-                            bluetoothPlayerHandler.changeProgress(seekBar.getProgress());
+                            mp.seekTo(seekBar.getProgress());
+                            positionBar.setProgress(seekBar.getProgress());
+                            bluetoothPlayerHandler.changeProgress(progress);
                         }
                     }
                 }

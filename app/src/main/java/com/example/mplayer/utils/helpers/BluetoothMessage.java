@@ -10,7 +10,7 @@ public class BluetoothMessage {
         this.bluetoothConnectionService = bluetoothConnectionService;
     }
 
-    public void  changeProgress(final int progress) {
+    public void  changeProgress(final float progress) {
         message = new StringBuilder();
         message.append("progress:");
         message.append(progress);
@@ -23,9 +23,10 @@ public class BluetoothMessage {
         if (direction) {
             message.append("next");
             bluetoothConnectionService.write(message.toString().getBytes());
+        } else {
+            message.append("prev");
+            bluetoothConnectionService.write(message.toString().getBytes());
         }
-        message.append("prev");
-        bluetoothConnectionService.write(message.toString().getBytes());
 
     }
 
@@ -42,10 +43,9 @@ public class BluetoothMessage {
         if(status) {
             message.append("true");
             bluetoothConnectionService.write(message.toString().getBytes());
+        } else {
+            message.append("false");
+            bluetoothConnectionService.write(message.toString().getBytes());
         }
-
-        message.append("false");
-        bluetoothConnectionService.write(message.toString().getBytes());
-
     }
 }

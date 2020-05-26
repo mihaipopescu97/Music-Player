@@ -64,7 +64,7 @@ class BluetoothPlayerHandler extends PlayerHandler{
         bluetoothMessage.changeVolume(vol);
     }
 
-    void changeProgress(final int progress) {
+    void changeProgress(final float progress) {
         Log.i(TAG, "play: write change pro to " + progress);
         bluetoothMessage.changeProgress(progress);
     }
